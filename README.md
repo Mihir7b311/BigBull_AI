@@ -8,7 +8,7 @@
 ## System Architecture
 
 ### GPU Slice Management
-```mermaidgraph TD;
+```mermaid
   subgraph Trading Strategy Management
     A[Strategy Manager Agent] -->|Selects Strategy| B[Trade Execution Agent]
     A -->|Monitors Risk| C[Risk Assessment Agent]
