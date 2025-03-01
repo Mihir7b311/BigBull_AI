@@ -8,62 +8,42 @@
 ## System Architecture
 
 ### GPU Slice Management
-```mermaid
-classDiagram
-    class GpuSliceManagerManager {
-        +int min_memory
-        +int max_memory
-        +int default_compute
-        +float oversubscription_limit
-        +__init__(gpu_config: Dict)
-        +_parse_memory(memory_str: str) : int
-        +allocate_slice(request: Dict) : Dict
-        +__del__()
-    }
+```mermaidgraph TD;
+  subgraph Trading Strategy Management
+    A[Strategy Manager Agent] -->|Selects Strategy| B[Trade Execution Agent]
+    A -->|Monitors Risk| C[Risk Assessment Agent]
+    A -->|Tracks Performance| D[Performance Monitoring Agent]
+  end
 
-    class KubernetesControllerController {
-        +str namespace
-        +str service_account
-        +Dict pod_limits
-        +__init__(k8s_config: Dict)
-        +create_pod(request: Dict, gpu_slice: Dict) : Dict
-        +delete_pod(pod_name: str)
-        +get_pod_status(pod_name: str) : str
-    }
+  subgraph Trade Execution
+    B -->|Fetch Market Data| E[Market Data Fetcher Agent]
+    B -->|Optimize Trade Route| F[DEX Aggregator Agent]
+    B -->|Executes Order| G[MultiversX Blockchain]
+    B -->|Logs Trade| D
+  end
 
-    GpuSliceManagerManager --> KubernetesControllerController : Calls
-```
+  subgraph Risk & Sentiment Analysis
+    C -->|Evaluates Market Risk| H[On-Chain Data Analyzer Agent]
+    C -->|Analyzes News & Socials| I[Sentiment Analyzer Agent]
+    H -->|Tracks Liquidity & Whale Moves| C
+    I -->|Adjusts Risk Levels| C
+  end
 
-### Super-Agent System
-```mermaid
-graph TD;
-    A[Super-Agent System] -->|Monitors Risks| B[Risk Analyzer Agent]
-    A -->|Manages Liquidity| C[Liquidity Manager Agent]
-    A -->|Executes Trades| D[Trader Agent]
-    A -->|Analyzes Sentiment| E[Sentiment Analyzer Agent]
-```
+  subgraph Portfolio & Arbitrage
+    J[Portfolio Manager Agent] -->|Monitors PnL & Balances| D
+    J -->|Rebalances Assets| A
+    K[Arbitrage Agent] -->|Finds Price Inefficiencies| B
+  end
 
-### Data Processing Workflow
-```mermaid
-graph TD;
-    A[Data Preparation: Input CSVs -> Address Data] --> B[Preprocessing: Address Data -> Transformed Data, Vectorizer];
-    B --> C[Model Training: Transformed Data, Labels -> Trained Model];
-    C --> D[Inference & Prediction: Test Data, Model, Vectorizer -> Predictions Output];
-    D --> E[Evaluation: Training Data, Predictions -> Accuracy Report];
-```
+  subgraph Yield & DAO
+    L[Yield Farming & Staking Agent] -->|Optimizes Rewards| J
+    M[DAO Participation Agent] -->|Votes on Proposals| H
+  end
 
-### Trade Execution Sequence
-```mermaid
-sequenceDiagram
-    participant MarketDataFetcher
-    participant DEXAggregator
-    participant LiquidityManager
-    participant TradeExecutionAgent
+  subgraph Backtesting & Optimization
+    N[Backtester & Optimizer Agent] -->|Tests Strategy| A
+    N -->|Refines Parameters| D
+  end
 
-    MarketDataFetcher->>DEXAggregator: Provide DEX Prices & Liquidity Data
-    DEXAggregator->>LiquidityManager: Check Liquidity Levels
-    LiquidityManager->>DEXAggregator: Return Available Liquidity
-    DEXAggregator->>TradeExecutionAgent: Suggest Best Execution Route
-    TradeExecutionAgent->>DEXAggregator: Execute Order
 ```
 
