@@ -1,41 +1,28 @@
 // src/components/Header/Header.jsx
 import React from 'react';
-import { Menu, DollarSign, Bell, Settings } from 'lucide-react';
+import { Wallet, ChevronDown } from 'lucide-react';
 import './Header.css';
 
-const Header = ({ isSidebarOpen, onToggleSidebar }) => {
+const Header = () => {
   return (
     <div className="header">
-      {!isSidebarOpen && (
-        <button onClick={onToggleSidebar} className="icon-btn sidebar-toggle">
-          <Menu size={24} />
-        </button>
-      )}
-      
-      <div className="header-tabs">
-        <div className="tab active">Trading</div>
-        <div className="tab">Layer 1</div>
-        <div className="tab">Layer 2</div>
+      <div className="header-left">
+        <div className="logo">
+          <span className="logo-text">MARP</span> Trades
+        </div>
       </div>
       
-      <div className="header-actions">
-        <button className="icon-btn notification-btn">
-          <Bell size={20} />
-          <span className="notification-badge">3</span>
-        </button>
-        
-        <button className="icon-btn">
-          <Settings size={20} />
-        </button>
-        
-        <div className="network-selector">
-          <span className="network-dot"></span>
-          Ethereum
-        </div>
-        
-        <button className="wallet-btn">
-          <DollarSign size={16} />
-          <span>0x7A...4E9F</span>
+      <div className="nav-links">
+        <div className="nav-item active">Home</div>
+        <div className="nav-item">Library</div>
+        <div className="nav-item">Transactions</div>
+      </div>
+      
+      <div className="header-right">
+        <button className="wallet-connect-btn">
+          <Wallet size={18} />
+          <span>Connect Wallet</span>
+          <ChevronDown size={16} />
         </button>
       </div>
     </div>

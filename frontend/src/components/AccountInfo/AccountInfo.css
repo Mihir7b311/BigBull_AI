@@ -1,0 +1,79 @@
+/* src/components/AccountInfo/AccountInfo.css */
+
+.account-info {
+    padding: 16px;
+    background-color: #1d2029;
+    border-bottom: 1px solid #2a2f3c;
+  }
+  
+  .account-header {
+    margin-bottom: 16px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #e0e0e0;
+  }
+  
+  .wallet-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: #242836;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .wallet-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(59, 130, 246, 0.1);
+    border-radius: 8px;
+    color: #3b82f6;
+  }
+  
+  .wallet-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .wallet-label {
+    font-size: 14px;
+    color: #9ca3af;
+  }
+  
+  .wallet-address {
+    font-size: 16px;
+    font-weight: 500;
+    color: #e0e0e0;
+  }
+  
+  .balances-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  
+  .balance-card {
+    background-color: #242836;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  
+  .balance-header {
+    font-size: 14px;
+    color: #9ca3af;
+    margin-bottom: 8px;
+  }
+  
+  .balance-amount {
+    font-size: 18px;
+    font-weight: 600;
+    color: #e0e0e0;
+  }

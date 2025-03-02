@@ -1,136 +1,68 @@
 /* src/components/CommandInput/CommandInput.css */
 
 .command-container {
-    background-color: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: height 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  }
-  
-  .command-container.expanded {
-    height: 280px;
-  }
-  
-  .command-header {
-    padding: 12px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1c2129;
-    border-bottom: 1px solid #30363d;
-  }
-  
-  .command-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 500;
-    color: #e0e0e0;
-  }
-  
-  .expand-btn {
-    background: transparent;
-    border: none;
-    color: #8b949e;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px;
-    border-radius: 4px;
-  }
-  
-  .expand-btn:hover {
-    color: #e0e0e0;
-    background-color: rgba(99, 100, 104, 0.1);
+    padding: 24px 30px;
+    background-color: #1d2029;
+    border-top: 1px solid #2a2f3c;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
   }
   
   .command-form {
-    padding: 12px 16px;
     display: flex;
     gap: 12px;
-    background-color: #161b22;
+    max-width: 900px;
+    margin: 0 auto;
   }
   
   .command-input {
     flex: 1;
-    background-color: #0d1117;
-    border: 1px solid #30363d;
-    border-radius: 6px;
-    padding: 10px 16px;
+    background-color: #242836;
+    border: 1px solid #2a2f3c;
+    border-radius: 10px;
     color: #e0e0e0;
-    font-family: 'Fira Code', 'Consolas', monospace;
-    font-size: 14px;
+    padding: 16px 20px;
+    font-size: 16px;
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) inset;
   }
   
   .command-input:focus {
-    border-color: #1f6feb;
-    box-shadow: 0 0 0 2px rgba(31, 111, 235, 0.2);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) inset;
   }
   
   .command-input::placeholder {
-    color: #8b949e;
+    color: #9ca3af;
   }
   
-  .command-send-btn {
-    background-color: #21262d;
-    border: 1px solid #30363d;
-    border-radius: 6px;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #e0e0e0;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .command-send-btn:hover {
-    background-color: #30363d;
+  .send-button {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: white;
-  }
-  
-  .command-send-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .command-history {
-    border-top: 1px solid #30363d;
-    height: calc(100% - 125px);
-    overflow-y: auto;
-  }
-  
-  .history-title {
-    padding: 12px 16px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #8b949e;
-    background-color: #1c2129;
-  }
-  
-  .history-list {
-    padding: 8px 0;
-  }
-  
-  .history-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    padding: 0 24px;
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s;
-    color: #8b949e;
-    font-family: 'Fira Code', 'Consolas', monospace;
-    font-size: 13px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    min-width: 100px;
   }
   
-  .history-item:hover {
-    background-color: #21262d;
-    color: #e0e0e0;
+  .send-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+  }
+  
+  .send-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  }
+  
+  .send-button:disabled {
+    background: #4b5563;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
   }

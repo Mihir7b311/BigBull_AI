@@ -1,79 +1,59 @@
 // src/components/Chat/ChatArea.jsx
-import React, { useState, useRef, useEffect } from 'react';
-import { Settings, Maximize2, Star, Share2 } from 'lucide-react';
-import MessageBubble from './MessageBubble';
-import ChatInput from './ChatInput';
+import React, { useRef, useEffect } from 'react';
 import './Chat.css';
 
 const ChatArea = ({ messages, addMessage }) => {
   const messagesEndRef = useRef(null);
-  const [isTyping, setIsTyping] = useState(false);
   
   // Scroll to bottom whenever messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Simulate typing indicator after user message
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    if (lastMessage && lastMessage.sender === 'user') {
-      setIsTyping(true);
-      const timer = setTimeout(() => {
-        setIsTyping(false);
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [messages]);
-
   return (
     <div className="chat-area">
       <div className="chat-header">
-        <div className="chat-header-left">
-          <h2>Trading Assistant</h2>
-          <div className="chat-status">
-            <span className="status-dot online"></span>
-            <span className="status-text">Online</span>
+        <div className="chat-title">
+          <div className="chat-logo">
+            <img src="https://via.placeholder.com/36" alt="Marp" className="chat-logo-img" />
           </div>
-        </div>
-        <div className="chat-header-actions">
-          <button className="icon-btn">
-            <Star size={18} />
-          </button>
-          <button className="icon-btn">
-            <Share2 size={18} />
-          </button>
-          <button className="icon-btn">
-            <Settings size={18} />
-          </button>
-          <button className="icon-btn">
-            <Maximize2 size={18} />
-          </button>
+          <div className="chat-info">
+            <div className="chat-info-title">Marp Trades</div>
+            <div className="chat-info-subtitle">Powered by advanced market analysis</div>
+          </div>
         </div>
       </div>
       
       <div className="chat-messages">
-        <div className="messages-container">
-          {messages.map(message => (
-            <MessageBubble 
-              key={message.id} 
-              message={message} 
-            />
-          ))}
-          
-          {isTyping && (
-            <div className="typing-indicator">
-              <div className="dot"></div>
-              <div className="dot"></div>
-              <div className="dot"></div>
+        {messages.map(message => (
+          <div key={message.id} className={`message ${message.sender}`}>
+            <div className="message-content">
+              {message.sender === 'agent' && (
+                <div className="agent-icon">
+                  <img src="https://via.placeholder.com/36" alt="Agent" className="agent-icon-img" />
+                </div>
+              )}
+              
+              <div className="message-bubble">
+                {message.text && <div className="message-text">{message.text}</div>}
+                
+                {message.bullets && (
+                  <ul className="message-bullets">
+                    {message.bullets.map((bullet, index) => (
+                      <li key={index} className="message-bullet">{bullet}</li>
+                    ))}
+                  </ul>
+                )}
+                
+                {message.footer && <div className="message-footer">{message.footer}</div>}
+                
+                <div className="message-timestamp">{message.timestamp}</div>
+              </div>
             </div>
-          )}
-          
-          <div ref={messagesEndRef} />
-        </div>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
       </div>
-      
-      <ChatInput onSendMessage={addMessage} />
     </div>
   );
 };

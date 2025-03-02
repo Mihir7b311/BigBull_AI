@@ -4,6 +4,8 @@ import Sidebar from './Sidebar/Sidebar';
 import Header from './Header/Header';
 import ChatArea from './Chat/ChatArea';
 import CommandInput from './CommandInput/CommandInput';
+import AccountInfo from './AccountInfo/AccountInfo';
+import RecentTransactions from './Transactions/RecentTransactions';
 import '../styles/global.css';
 
 const DeFiAgent = () => {
@@ -11,16 +13,27 @@ const DeFiAgent = () => {
   
   // Sample messages for the chat
   const [messages, setMessages] = useState([
-    { id: 1, sender: 'agent', text: 'Welcome to DeFi Agent! I can help you trade, monitor markets, and manage your portfolio. What would you like to do today?' },
-    { id: 2, sender: 'user', text: 'Show me the current price of Ethereum' },
-    { id: 3, sender: 'agent', text: 'Ethereum (ETH) is currently trading at $2,103.48, down 0.78% in the last 24 hours. The 24-hour trading volume is $14.8B. Would you like to see more market data or execute a trade?' }
+    { 
+      id: 1, 
+      sender: 'agent', 
+      text: "Hello! I'm your Marp Trades assistant. I can help you with:", 
+      bullets: [
+        "Trading on Starknet (type 'trade' to start)",
+        "Token swaps (e.g., 'swap 0.1 ETH to USDC')",
+        "Information about our platform and features",
+        "Trading strategies and market analysis"
+      ],
+      footer: "What would you like to do?",
+      timestamp: "09:28 PM"
+    }
   ]);
 
   const addMessage = (text, sender = 'user') => {
     const newMessage = { 
       id: messages.length + 1, 
       sender, 
-      text 
+      text,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
     
     setMessages([...messages, newMessage]);
@@ -28,7 +41,7 @@ const DeFiAgent = () => {
     // Simulate agent response
     if (sender === 'user') {
       setTimeout(() => {
-        addMessage('I\'m processing your request. Can you please provide more details about what you\'d like to do?', 'agent');
+        addMessage("I'll help you with that. What specific information are you looking for?", 'agent');
       }, 1000);
     }
   };
@@ -39,18 +52,14 @@ const DeFiAgent = () => {
 
   return (
     <div className="defi-container">
-      <Sidebar 
-        isOpen={isSidebarOpen} 
-        onToggle={toggleSidebar} 
-      />
+      <Header />
       
       <div className="main-content">
-        <Header 
-          isSidebarOpen={isSidebarOpen} 
-          onToggleSidebar={toggleSidebar} 
+        <Sidebar 
+          isOpen={isSidebarOpen}
         />
         
-        <div className="app-container">
+        <div className="chat-container">
           <ChatArea 
             messages={messages} 
             addMessage={addMessage} 
@@ -59,6 +68,11 @@ const DeFiAgent = () => {
           <CommandInput 
             onSubmit={(command) => addMessage(command)} 
           />
+        </div>
+        
+        <div className="right-sidebar">
+          <AccountInfo />
+          <RecentTransactions />
         </div>
       </div>
     </div>
