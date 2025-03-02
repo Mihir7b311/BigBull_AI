@@ -20,26 +20,13 @@
     flex-direction: column;
     height: 100vh;
     width: 100vw;
-    max-width: 100%;
     overflow: hidden;
-    position: relative;
   }
   
-  .background-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  }
-  
-  /* Main content area */
-  .main-content {
-    flex: 1;
+  .app-layout {
     display: flex;
-    overflow: hidden;
-    position: relative;
+    width: 100%;
+    height: 100vh;
   }
   
   /* Chat container */
@@ -47,20 +34,9 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    background-color: #191c24;
-    position: relative;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2) inset;
-  }
-  
-  /* Right sidebar */
-  .right-sidebar {
-    width: 280px;
-    min-width: 280px;
-    background-color: #1d2029;
-    border-left: 1px solid #2a2f3c;
-    display: flex;
-    flex-direction: column;
+    height: 100%;
     overflow: hidden;
+    background-color: #0a0a0a;
   }
   
   /* Button styles */
@@ -117,12 +93,12 @@
   }
   
   ::-webkit-scrollbar-track {
-    background: #2a303c;
+    background: #1a1a1a;
     border-radius: 3px;
   }
   
   ::-webkit-scrollbar-thumb {
-    background: #3d4451;
+    background: #333333;
     border-radius: 3px;
   }
   

@@ -1,12 +1,12 @@
 // src/components/CommandInput/CommandInput.jsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip, PlusCircle } from 'lucide-react';
+import { Send } from 'lucide-react';
 import './CommandInput.css';
 
 const CommandInput = ({ onSubmit }) => {
   const [message, setMessage] = useState('');
   const textareaRef = useRef(null);
-  const minHeight = 60;
+  const minHeight = 24;
   const maxHeight = 200;
 
   const adjustHeight = (reset = false) => {
@@ -67,59 +67,30 @@ const CommandInput = ({ onSubmit }) => {
 
   return (
     <div className="command-container">
-      <div className="command-box">
-        <div className="textarea-container">
-          <textarea
-            ref={textareaRef}
-            value={message}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            placeholder="Type 'trade' to start trading or ask me anything..."
-            className="command-textarea"
-          />
-        </div>
-        
-        <div className="command-actions">
-          <div className="left-actions">
-            <button className="action-btn attach-btn">
-              <Paperclip size={16} />
-              <span className="action-label">Attach</span>
-            </button>
-          </div>
-          
-          <div className="right-actions">
-            <button className="action-btn project-btn">
-              <PlusCircle size={16} />
-              <span>Project</span>
-            </button>
-            
-            <button 
-              className={`send-button ${!message.trim() ? 'disabled' : ''}`}
-              onClick={handleSubmit}
-              disabled={!message.trim()}
-            >
-              <Send size={16} />
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <div className="command-suggestions">
-        <SuggestionButton icon={<Send size={14} />} label="Swap 0.5 ETH to USDC" />
-        <SuggestionButton icon={<Send size={14} />} label="Check gas prices" />
-        <SuggestionButton icon={<Send size={14} />} label="Show my portfolio" />
-        <SuggestionButton icon={<Send size={14} />} label="Set limit order" />
+      <form className="command-form" onSubmit={handleSubmit}>
+        <textarea
+          ref={textareaRef}
+          value={message}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Type a message..."
+          className="command-textarea"
+          rows={1}
+        />
+        <button 
+          type="submit" 
+          className={`send-button ${!message.trim() ? 'disabled' : ''}`}
+          disabled={!message.trim()}
+        >
+          <Send size={16} />
+        </button>
+      </form>
+      <div className="command-footer">
+        <p className="footer-text">
+          Marp Trades uses advanced AI to help you with trading decisions. Your data is secure.
+        </p>
       </div>
     </div>
-  );
-};
-
-const SuggestionButton = ({ icon, label }) => {
-  return (
-    <button className="suggestion-btn">
-      {icon}
-      <span>{label}</span>
-    </button>
   );
 };
 

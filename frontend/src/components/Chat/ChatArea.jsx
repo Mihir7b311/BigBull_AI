@@ -18,14 +18,14 @@ const ChatArea = ({ messages, addMessage }) => {
             <img src="https://via.placeholder.com/36" alt="Marp" className="chat-logo-img" />
           </div>
           <div className="chat-info">
-            <div className="chat-info-title">Marp Trades</div>
+            <div className="chat-info-title">Marp Trades Assistant</div>
             <div className="chat-info-subtitle">Powered by advanced market analysis</div>
           </div>
         </div>
       </div>
       
       <div className="chat-messages">
-        <h1 className="chat-welcome-title">What can I help you trade today?</h1>
+        <h1 className="chat-welcome-title">How can I help with your trading today?</h1>
         
         {messages.map(message => (
           <div key={message.id} className={`message ${message.sender}`}>

@@ -1,148 +1,78 @@
 /* src/components/CommandInput/CommandInput.css */
 
 .command-container {
-    max-width: 900px;
-    width: 100%;
+    border-top: 1px solid #1e1e1e;
+    background-color: #0a0a0a;
+    padding: 16px 0;
     margin: 0 auto;
-    padding: 0 32px 32px 32px;
-  }
-  
-  .command-box {
-    background-color: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(42, 47, 60, 0.8);
-    border-radius: 12px;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  }
-  
-  .textarea-container {
     width: 100%;
+  }
+  
+  .command-form {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 10px 16px;
+    position: relative;
   }
   
   .command-textarea {
     width: 100%;
-    min-height: 60px;
+    min-height: 24px;
     max-height: 200px;
-    padding: 16px;
+    padding: 0;
     background-color: transparent;
     border: none;
     color: #e0e0e0;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.5;
     resize: none;
     outline: none;
     overflow: hidden;
+    font-family: inherit;
   }
   
   .command-textarea::placeholder {
     color: #9ca3af;
   }
   
-  .command-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    border-top: 1px solid #2a2f3c;
-  }
-  
-  .left-actions, .right-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .action-btn {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: transparent;
-    border: none;
-    color: #9ca3af;
-    padding: 6px 8px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .action-btn:hover {
-    background-color: #2a2f3c;
-    color: #e0e0e0;
-  }
-  
-  .attach-btn {
-    position: relative;
-  }
-  
-  .action-label {
-    display: none;
-    position: absolute;
-    left: 32px;
-  }
-  
-  .attach-btn:hover .action-label {
-    display: inline;
-  }
-  
-  .project-btn {
-    border: 1px dashed #2a2f3c;
-  }
-  
   .send-button {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
-    border: 1px solid #2a2f3c;
-    background-color: transparent;
-    color: #9ca3af;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .send-button:not(.disabled):hover {
-    border-color: #3b82f6;
-    color: #3b82f6;
-  }
-  
-  .send-button:not(.disabled):active {
     background-color: #3b82f6;
     color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  
+  .send-button:hover {
+    background-color: #2563eb;
   }
   
   .send-button.disabled {
-    opacity: 0.5;
+    background-color: #333;
+    color: #6b7280;
     cursor: not-allowed;
   }
   
-  .command-suggestions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
-    justify-content: center;
+  .command-footer {
+    max-width: 800px;
+    margin: 8px auto 0;
+    text-align: center;
   }
   
-  .suggestion-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #242836;
-    border: 1px solid #2a2f3c;
-    color: #9ca3af;
-    border-radius: 24px;
-    padding: 8px 12px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .suggestion-btn:hover {
-    background-color: #2a2f3c;
-    color: #e0e0e0;
-    border-color: #3b82f6;
+  .footer-text {
+    font-size: 12px;
+    color: #6b7280;
   }

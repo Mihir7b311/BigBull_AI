@@ -1,27 +1,19 @@
-.chat-welcome-title {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 36px;
-    text-align: center;
-    color: #ffffff;
-    text-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
-  }/* src/components/Chat/Chat.css */
-  
-  /* Chat area */
-  .chat-area {
+/* src/components/Chat/Chat.css */
+
+/* Chat area */
+.chat-area {
     display: flex;
     flex-direction: column;
     flex: 1;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-    margin: 0 16px;
+    background-color: #0a0a0a;
   }
   
   /* Chat header */
   .chat-header {
     padding: 16px;
-    border-bottom: 1px solid #2a2f3c;
+    border-bottom: 1px solid #1e1e1e;
+    background-color: #0a0a0a;
   }
   
   .chat-title {
@@ -33,7 +25,7 @@
   .chat-logo {
     width: 36px;
     height: 36px;
-    border-radius: 50%;
+    border-radius: 6px;
     overflow: hidden;
     background-color: #3b82f6;
   }
@@ -68,9 +60,18 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-    max-width: 900px;
+    max-width: 800px;
     width: 100%;
     margin: 0 auto;
+  }
+  
+  /* Welcome title */
+  .chat-welcome-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 32px;
+    text-align: center;
+    color: #e0e0e0;
   }
   
   /* Message components */
@@ -95,7 +96,7 @@
   .agent-icon {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: 6px;
     overflow: hidden;
     background-color: #3b82f6;
     flex-shrink: 0;
@@ -108,26 +109,22 @@
   }
   
   .message-bubble {
-    background-color: rgba(20, 20, 24, 0.7);
+    background-color: #1a1a1a;
     padding: 20px 24px;
     border-radius: 16px;
     color: #e0e0e0;
     position: relative;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(42, 47, 60, 0.8);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   }
   
   .message.user .message-bubble {
-    background: rgba(37, 99, 235, 0.6);
+    background-color: #3b82f6;
     color: white;
     border-bottom-right-radius: 4px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(59, 130, 246, 0.8);
   }
   
   .message.agent .message-bubble {
-    background-color: #242836;
+    background-color: #1a1a1a;
     color: #e0e0e0;
     border-bottom-left-radius: 4px;
   }

@@ -1,11 +1,8 @@
 // src/components/DeFiAgent.jsx
 import React, { useState } from 'react';
-import Header from './Header/Header';
+import Sidebar from './Sidebar/Sidebar';
 import ChatArea from './Chat/ChatArea';
 import CommandInput from './CommandInput/CommandInput';
-import AccountInfo from './AccountInfo/AccountInfo';
-import RecentTransactions from './Transactions/RecentTransactions';
-import WavyBackground from './WavyBackground/WavyBackground';
 import '../styles/global.css';
 
 const DeFiAgent = () => {
@@ -46,20 +43,10 @@ const DeFiAgent = () => {
 
   return (
     <div className="defi-container">
-      <div className="background-container">
-        <WavyBackground 
-          colors={["#2563eb", "#4f46e5", "#7c3aed", "#9333ea", "#0284c7"]} 
-          backgroundFill="#000000" 
-          blur={15}
-          waveOpacity={0.2}
-          speed="slow"
-        />
-      </div>
-      
-      <Header />
-      
-      <div className="main-content">
-        <div className="chat-container">
+      <div className="app-layout">
+        <Sidebar />
+        
+        <main className="chat-container">
           <ChatArea 
             messages={messages} 
             addMessage={addMessage} 
@@ -68,12 +55,7 @@ const DeFiAgent = () => {
           <CommandInput 
             onSubmit={(command) => addMessage(command)} 
           />
-        </div>
-        
-        <div className="right-sidebar">
-          <AccountInfo />
-          <RecentTransactions />
-        </div>
+        </main>
       </div>
     </div>
   );
