@@ -2,12 +2,15 @@
 
 .header {
     height: 60px;
-    background-color: #1d2029;
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
     padding: 0 24px;
     justify-content: space-between;
-    border-bottom: 1px solid #2a2f3c;
+    border-bottom: 1px solid rgba(42, 47, 60, 0.8);
+    backdrop-filter: blur(8px);
+    position: relative;
+    z-index: 10;
   }
   
   .header-left {
@@ -23,6 +26,7 @@
   
   .logo-text {
     font-weight: 700;
+    color: #fff;
   }
   
   .nav-links {
@@ -67,8 +71,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background-color: rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.5);
     color: #3b82f6;
     border-radius: 6px;
     padding: 8px 16px;
@@ -79,5 +83,5 @@
   }
   
   .wallet-connect-btn:hover {
-    background-color: rgba(59, 130, 246, 0.2);
+    background-color: rgba(59, 130, 246, 0.3);
   }

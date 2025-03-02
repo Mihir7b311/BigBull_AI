@@ -1,68 +1,148 @@
 /* src/components/CommandInput/CommandInput.css */
 
 .command-container {
-    padding: 24px 30px;
-    background-color: #1d2029;
-    border-top: 1px solid #2a2f3c;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  .command-form {
-    display: flex;
-    gap: 12px;
     max-width: 900px;
+    width: 100%;
     margin: 0 auto;
+    padding: 0 32px 32px 32px;
   }
   
-  .command-input {
-    flex: 1;
-    background-color: #242836;
-    border: 1px solid #2a2f3c;
-    border-radius: 10px;
+  .command-box {
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(42, 47, 60, 0.8);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .textarea-container {
+    width: 100%;
+  }
+  
+  .command-textarea {
+    width: 100%;
+    min-height: 60px;
+    max-height: 200px;
+    padding: 16px;
+    background-color: transparent;
+    border: none;
     color: #e0e0e0;
-    padding: 16px 20px;
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: none;
     outline: none;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) inset;
+    overflow: hidden;
   }
   
-  .command-input:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1) inset;
-  }
-  
-  .command-input::placeholder {
+  .command-textarea::placeholder {
     color: #9ca3af;
   }
   
-  .send-button {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
+  .command-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-top: 1px solid #2a2f3c;
+  }
+  
+  .left-actions, .right-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
     border: none;
-    border-radius: 10px;
-    padding: 0 24px;
-    font-size: 16px;
-    font-weight: 500;
+    color: #9ca3af;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 13px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-    min-width: 100px;
+    transition: all 0.2s;
   }
   
-  .send-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+  .action-btn:hover {
+    background-color: #2a2f3c;
+    color: #e0e0e0;
   }
   
-  .send-button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  .attach-btn {
+    position: relative;
   }
   
-  .send-button:disabled {
-    background: #4b5563;
+  .action-label {
+    display: none;
+    position: absolute;
+    left: 32px;
+  }
+  
+  .attach-btn:hover .action-label {
+    display: inline;
+  }
+  
+  .project-btn {
+    border: 1px dashed #2a2f3c;
+  }
+  
+  .send-button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: 1px solid #2a2f3c;
+    background-color: transparent;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .send-button:not(.disabled):hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+  }
+  
+  .send-button:not(.disabled):active {
+    background-color: #3b82f6;
+    color: white;
+  }
+  
+  .send-button.disabled {
+    opacity: 0.5;
     cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+  }
+  
+  .command-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    justify-content: center;
+  }
+  
+  .suggestion-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #242836;
+    border: 1px solid #2a2f3c;
+    color: #9ca3af;
+    border-radius: 24px;
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .suggestion-btn:hover {
+    background-color: #2a2f3c;
+    color: #e0e0e0;
+    border-color: #3b82f6;
   }

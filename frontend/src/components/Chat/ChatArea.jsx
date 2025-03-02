@@ -25,6 +25,8 @@ const ChatArea = ({ messages, addMessage }) => {
       </div>
       
       <div className="chat-messages">
+        <h1 className="chat-welcome-title">What can I help you trade today?</h1>
+        
         {messages.map(message => (
           <div key={message.id} className={`message ${message.sender}`}>
             <div className="message-content">

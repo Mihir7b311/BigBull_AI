@@ -2,8 +2,9 @@
 
 .account-info {
     padding: 16px;
-    background-color: #1d2029;
-    border-bottom: 1px solid #2a2f3c;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(42, 47, 60, 0.8);
+    backdrop-filter: blur(8px);
   }
   
   .account-header {
@@ -21,9 +22,10 @@
     align-items: center;
     gap: 12px;
     padding: 16px;
-    background-color: #242836;
+    background-color: rgba(20, 20, 24, 0.6);
     border-radius: 8px;
     margin-bottom: 16px;
+    border: 1px solid rgba(42, 47, 60, 0.8);
   }
   
   .wallet-icon {
@@ -32,7 +34,7 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: rgba(59, 130, 246, 0.2);
     border-radius: 8px;
     color: #3b82f6;
   }
@@ -60,10 +62,11 @@
   }
   
   .balance-card {
-    background-color: #242836;
+    background-color: rgba(20, 20, 24, 0.6);
     border-radius: 8px;
     padding: 16px;
     text-align: center;
+    border: 1px solid rgba(42, 47, 60, 0.8);
   }
   
   .balance-header {
