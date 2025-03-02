@@ -1,0 +1,129 @@
+/* src/components/Header/Header.css */
+
+.header {
+    height: 60px;
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    justify-content: space-between;
+    z-index: 5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .sidebar-toggle {
+    margin-right: 16px;
+  }
+  
+  .header-tabs {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex: 1;
+  }
+  
+  .tab {
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    color: #8b949e;
+  }
+  
+  .tab:hover {
+    color: #e0e0e0;
+    background-color: rgba(99, 100, 104, 0.1);
+  }
+  
+  .tab.active {
+    color: #e0e0e0;
+    background-color: #21262d;
+    font-weight: 500;
+  }
+  
+  .tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: #1f6feb;
+    border-radius: 50%;
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .notification-btn {
+    position: relative;
+  }
+  
+  .notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #F85149;
+    color: white;
+    font-size: 10px;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+  }
+  
+  .network-selector {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #21262d;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  
+  .network-selector:hover {
+    background-color: #30363d;
+  }
+  
+  .network-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #3FB950;
+    animation: pulse 2s infinite;
+  }
+  
+  .wallet-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #1f6feb;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(31, 111, 235, 0.3);
+  }
+  
+  .wallet-btn:hover {
+    background-color: #388bfd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(31, 111, 235, 0.4);
+  }
