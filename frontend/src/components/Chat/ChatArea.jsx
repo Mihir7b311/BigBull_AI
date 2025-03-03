@@ -1,5 +1,6 @@
 // src/components/Chat/ChatArea.jsx
 import React, { useRef, useEffect } from 'react';
+import MessageContent from './MessageContent';
 import './Chat.css';
 
 const ChatArea = ({ messages, addMessage }) => {
@@ -9,6 +10,19 @@ const ChatArea = ({ messages, addMessage }) => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const handleComponentAction = (type, data) => {
+    // Handle different component actions
+    if (type === 'crypto-transfer') {
+      // Add a user message showing the transfer request
+      addMessage(`I want to send ${data.amount} ${data.crypto} to ${data.address}`, 'user');
+      
+      // Add the agent response confirming the transfer
+      setTimeout(() => {
+        addMessage(`I've initiated a transfer of ${data.amount} ${data.crypto} to ${data.address}. The transaction has been submitted to the blockchain.`, 'agent');
+      }, 1000);
+    }
+  };
 
   return (
     <div className="chat-area">
@@ -37,17 +51,10 @@ const ChatArea = ({ messages, addMessage }) => {
               )}
               
               <div className="message-bubble">
-                {message.text && <div className="message-text">{message.text}</div>}
-                
-                {message.bullets && (
-                  <ul className="message-bullets">
-                    {message.bullets.map((bullet, index) => (
-                      <li key={index} className="message-bullet">{bullet}</li>
-                    ))}
-                  </ul>
-                )}
-                
-                {message.footer && <div className="message-footer">{message.footer}</div>}
+                <MessageContent 
+                  message={message} 
+                  onAction={handleComponentAction} 
+                />
                 
                 <div className="message-timestamp">{message.timestamp}</div>
               </div>

@@ -11,6 +11,7 @@ const DeFiAgent = () => {
     { 
       id: 1, 
       sender: 'agent', 
+      type: 'text',
       text: "Hello! I'm your Marp Trades assistant. I can help you with:", 
       bullets: [
         "Trading on Starknet (type 'trade' to start)",
@@ -23,22 +24,50 @@ const DeFiAgent = () => {
     }
   ]);
 
-  const addMessage = (text, sender = 'user') => {
+  const addMessage = (text, sender = 'user', extraData = {}) => {
+    // Basic message
     const newMessage = { 
       id: messages.length + 1, 
-      sender, 
+      sender,
+      type: 'text',
       text,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      ...extraData
     };
     
     setMessages([...messages, newMessage]);
     
-    // Simulate agent response
+    // Generate a response if the message is from the user
     if (sender === 'user') {
-      setTimeout(() => {
-        addMessage("I'll help you with that. What specific information are you looking for?", 'agent');
-      }, 1000);
+      handleUserMessage(text);
     }
+  };
+
+  const handleUserMessage = (text) => {
+    // Check for keywords to trigger UI components
+    const lowerText = text.toLowerCase();
+    
+    setTimeout(() => {
+      if (lowerText.includes('send crypto') || lowerText.includes('transfer crypto') || lowerText.includes('send token')) {
+        // Add the crypto transfer UI component
+        setMessages(prev => [...prev, {
+          id: prev.length + 1,
+          sender: 'agent',
+          type: 'ui-component',
+          text: "Sure, I can help you send crypto. Please fill in the details below:",
+          component: {
+            type: 'crypto-transfer',
+            options: {
+              cryptoOptions: ['ETH', 'BTC', 'USDC', 'SOL', 'LINK']
+            }
+          },
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }]);
+      } else {
+        // Default response
+        addMessage("I'll help you with that. What specific information are you looking for?", 'agent');
+      }
+    }, 1000);
   };
 
   return (
