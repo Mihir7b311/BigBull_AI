@@ -1,107 +1,158 @@
 /* src/components/UI/CryptoTransfer.css */
 
 .crypto-transfer {
-    background-color: #1a1a1a;
-    border-radius: 10px;
+    background-color: rgba(26, 26, 26, 0.7);
+    border-radius: 14px;
     overflow: hidden;
     width: 100%;
-    border: 1px solid #333;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .crypto-transfer:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
   }
   
   .transfer-header {
-    padding: 12px 16px;
-    border-bottom: 1px solid #333;
-    background-color: #222;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: rgba(34, 34, 38, 0.7);
+    backdrop-filter: blur(8px);
   }
   
   .transfer-header h3 {
     margin: 0;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: #e0e0e0;
+    background: linear-gradient(90deg, #e0e0e0, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.3px;
   }
   
   .transfer-form {
-    padding: 16px;
+    padding: 20px;
   }
   
   .form-row {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
   
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
   
   .form-group label {
     font-size: 14px;
-    color: #9ca3af;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    margin-left: 4px;
   }
   
   .input-with-select {
     display: flex;
     width: 100%;
+    position: relative;
   }
   
   .amount-input {
     flex: 1;
-    background-color: #111;
-    border: 1px solid #333;
+    background-color: rgba(17, 17, 17, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-right: none;
-    border-radius: 6px 0 0 6px;
+    border-radius: 10px 0 0 10px;
     color: #e0e0e0;
-    font-size: 14px;
-    padding: 10px 12px;
+    font-size: 15px;
+    padding: 12px 14px;
     outline: none;
+    transition: all 0.2s ease;
   }
   
   .crypto-select {
-    width: 100px;
-    background-color: #222;
-    border: 1px solid #333;
-    border-radius: 0 6px 6px 0;
+    width: 110px;
+    background-color: rgba(34, 34, 38, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0 10px 10px 0;
     color: #e0e0e0;
-    font-size: 14px;
-    padding: 0 12px;
+    font-size: 15px;
+    padding: 0 14px;
     outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
   
   .address-input {
     width: 100%;
-    background-color: #111;
-    border: 1px solid #333;
-    border-radius: 6px;
+    background-color: rgba(17, 17, 17, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
     color: #e0e0e0;
-    font-size: 14px;
-    padding: 10px 12px;
+    font-size: 15px;
+    padding: 12px 14px;
     outline: none;
+    transition: all 0.2s ease;
   }
   
   .amount-input:focus, .address-input:focus {
-    border-color: #3b82f6;
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+    background-color: rgba(23, 23, 23, 0.7);
+  }
+  
+  .crypto-select:focus {
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
   }
   
   .send-button {
     width: 100%;
-    background-color: #3b82f6;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
     border: none;
-    border-radius: 6px;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: 500;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    letter-spacing: 0.2px;
   }
   
   .send-button:hover {
-    background-color: #2563eb;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
   }
   
   .send-button.disabled {
-    background-color: #333;
-    color: #6b7280;
+    background: rgba(30, 30, 35, 0.6);
+    color: rgba(255, 255, 255, 0.3);
     cursor: not-allowed;
+    transform: translateY(0);
+    box-shadow: none;
+  }
+  
+  /* Add animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .crypto-transfer {
+    animation: fadeInUp 0.4s ease-out forwards;
   }

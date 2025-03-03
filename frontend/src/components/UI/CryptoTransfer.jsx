@@ -1,11 +1,13 @@
 // src/components/UI/CryptoTransfer.jsx
 import React, { useState } from 'react';
+import { Send, ArrowRight } from 'lucide-react';
 import './CryptoTransfer.css';
 
 const CryptoTransfer = ({ onSend, cryptoOptions = ['ETH', 'BTC', 'USDC'] }) => {
   const [amount, setAmount] = useState('');
   const [address, setAddress] = useState('');
   const [selectedCrypto, setSelectedCrypto] = useState(cryptoOptions[0]);
+  const [isHovering, setIsHovering] = useState(false);
 
   const handleSend = () => {
     if (amount && address) {
@@ -18,7 +20,11 @@ const CryptoTransfer = ({ onSend, cryptoOptions = ['ETH', 'BTC', 'USDC'] }) => {
   };
 
   return (
-    <div className="crypto-transfer">
+    <div 
+      className="crypto-transfer"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
       <div className="transfer-header">
         <h3>Crypto Transfer</h3>
       </div>
@@ -66,7 +72,15 @@ const CryptoTransfer = ({ onSend, cryptoOptions = ['ETH', 'BTC', 'USDC'] }) => {
           className={`send-button ${(!amount || !address) ? 'disabled' : ''}`}
           disabled={!amount || !address}
         >
-          Send {amount ? `${amount} ${selectedCrypto}` : 'Crypto'}
+          {isHovering && amount && address ? (
+            <>
+              Send Now <ArrowRight size={16} />
+            </>
+          ) : (
+            <>
+              Send {amount ? `${amount} ${selectedCrypto}` : 'Crypto'}
+            </>
+          )}
         </button>
       </div>
     </div>
