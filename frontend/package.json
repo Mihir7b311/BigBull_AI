@@ -10,7 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@elizaos/plugin-multiversx": "^0.25.6-alpha.1",
+    "@multiversx/sdk-network-providers": "^2.9.3",
+    "@walletconnect/qrcode-modal": "^1.8.0",
+    "@walletconnect/web3-provider": "^1.8.0",
+    "ethers": "^6.13.5",
     "lucide-react": "^0.477.0",
+    "qrcode.react": "^4.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
