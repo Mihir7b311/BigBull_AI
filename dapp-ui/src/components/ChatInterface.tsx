@@ -893,3 +893,7 @@ Error details: ${error?.message || 'Unknown error'}`,
 }
 
 export default ChatInterface 
+
+function startTradeSimulation(arg0: number) {
+  throw new Error('Function not implemented.')
+}
