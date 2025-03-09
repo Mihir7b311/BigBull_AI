@@ -1,10 +1,8 @@
 {
+  "/not-found": "app/not-found.js",
   "/page": "app/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/api/agents/route": "app/api/agents/route.js",
-  "/library/page": "app/library/page.js",
-  "/api/agents/[id]/route": "app/api/agents/[id]/route.js",
   "/agent/[id]/page": "app/agent/[id]/page.js",
-  "/transactions/page": "app/transactions/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/api/agents/[id]/route": "app/api/agents/[id]/route.js",
+  "/api/agents/route": "app/api/agents/route.js"
 }

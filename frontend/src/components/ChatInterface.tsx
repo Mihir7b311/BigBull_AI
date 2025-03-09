@@ -47,8 +47,6 @@ import {
   Link,
 } from '@chakra-ui/react'
 import TradingView from './TradingView'
-import { useAccount, useContract } from '@starknet-react/core'
-import { Contract, uint256, Account } from 'starknet'
 
 function formatTime(date: Date): string {
   return date.toLocaleTimeString('en-US', {
@@ -265,8 +263,6 @@ const TeamView = ({ owners }: { owners: typeof MARP_KNOWLEDGE.owners }) => (
   </Grid>
 );
 
-const TRADING_CONTRACT = '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d'
-
 const ChatInterface = () => {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -286,24 +282,6 @@ const ChatInterface = () => {
     }
   })
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { address } = useAccount()
-  const { contract } = useContract({
-    address: TRADING_CONTRACT,
-    abi: [
-      {
-        name: 'deposit',
-        type: 'function',
-        inputs: [
-          {
-            name: 'amount',
-            type: 'uint256'
-          }
-        ],
-        outputs: [],
-        state_mutability: 'external'
-      }
-    ]
-  })
 
   const bgGradient = 'linear(to-b, gray.900, gray.800)'
   const borderColor = 'whiteAlpha.100'

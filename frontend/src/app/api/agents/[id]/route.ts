@@ -37,7 +37,7 @@ export async function PATCH(
 ) {
   try {
     const body = await request.json()
-    const { status, balance, strategy } = body
+    const { status, balance, strategy, tradingPairs } = body
 
     const agent = await prisma.agent.update({
       where: { id: params.id },
@@ -45,7 +45,12 @@ export async function PATCH(
         status: status,
         balance: balance,
         strategy: strategy ? {
-          create: strategy
+          create: {
+            ...strategy,
+            parameters: {
+              tradingPairs: tradingPairs || []
+            }
+          }
         } : undefined,
       },
       include: {
