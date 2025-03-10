@@ -58,7 +58,7 @@ const mockMarketData = {
       trend: 'down',
     },
     {
-      symbol: 'STRK/USDC',
+      symbol: 'EGLD/USDC',
       price: 4.32,
       change24h: 12.5,
       volume: '25M',

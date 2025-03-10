@@ -128,7 +128,7 @@ const BigBull_TRADES_KNOWLEDGE = {
     { symbol: 'USDC', name: 'USD Coin' },
     { symbol: 'DAI', name: 'Dai' },
     { symbol: 'LORDS', name: 'Lords' },
-    { symbol: 'STRK', name: 'Starknet Token' }
+    { symbol: 'EGLD', name: 'Starknet Token' }
   ]
 };
 
@@ -312,9 +312,9 @@ const ChatInterface = () => {
       id: messages.length + 2,
       content: `Welcome to BigBulls! Let's set up your trading bot.
 
-First, how much STRK would you like to deposit to start trading? (minimum 0.01 STRK)
+First, how much EGLD would you like to deposit to start trading? (minimum 0.01 EGLD)
 
-Example: Type "0.05" to deposit 0.05 STRK`,
+Example: Type "0.05" to deposit 0.05 EGLD`,
       sender: 'bot',
       timestamp: new Date(),
     };
@@ -325,7 +325,7 @@ Example: Type "0.05" to deposit 0.05 STRK`,
     if (amount < 0.01) {
       const errorMessage: Message = {
         id: messages.length + 2,
-        content: `The minimum deposit amount is 0.01 STRK. Please enter a larger amount.`,
+        content: `The minimum deposit amount is 0.01 EGLD. Please enter a larger amount.`,
         sender: 'bot',
         timestamp: new Date(),
       };
@@ -337,7 +337,7 @@ Example: Type "0.05" to deposit 0.05 STRK`,
     
     const successMessage: Message = {
       id: messages.length + 4,
-      content: `🎉 ${amount} STRK ready for trading!
+      content: `🎉 ${amount} EGLD ready for trading!
 
 Select a trading pair:
 
@@ -346,7 +346,7 @@ Select a trading pair:
    📊 24h Volume: $1.2B
    📈 24h Change: +2.5%
    
-2. STRK-USDC
+2. EGLD-USDC
    💰 Price: $4.32
    📊 24h Volume: $50M
    📈 24h Change: +5.2%
@@ -421,7 +421,7 @@ Type 1, 2, or 3 to select your strategy.`,
       id: messages.length + 2,
       content: `🚀 Trading bot initialized!
 
-✅ Deposit: ${tradeState.amount} STRK
+✅ Deposit: ${tradeState.amount} EGLD
 ✅ Pair: ${tradeState.selectedToken}-USDC
 ✅ Strategy: ${strategy}
 ✅ Risk Level: ${riskLevel}
@@ -458,7 +458,7 @@ Trading dashboard is now open! You can monitor your trades and performance in re
         id: messages.length + 2,
         content: `🔄 Initiating deposit to Starknet trading contract...
 
-1. Approving STRK spend...
+1. Approving EGLD spend...
 2. Waiting for confirmation...`,
         sender: 'bot',
         timestamp: new Date(),
@@ -474,7 +474,7 @@ Trading dashboard is now open! You can monitor your trades and performance in re
 ✅ Funds received
 
 Your trading bot is now being initialized with:
-• Deposit: ${amount} STRK
+• Deposit: ${amount} EGLD
 • Trading Pair: ${tradeState.selectedToken}-USDC
 • Strategy: ${tradeState.strategy}
 
@@ -633,7 +633,7 @@ Error details: ${error?.message || 'Unknown error'}`,
       
       if (tradeState.amount && !tradeState.selectedToken) {
         // Handle token selection
-        const tokenPairs = ['BTC', 'STRK', 'ETH'];
+        const tokenPairs = ['BTC', 'EGLD', 'ETH'];
         handleTokenSelection(tokenPairs[selection - 1]);
         return;
       } else if (tradeState.amount && tradeState.selectedToken && !tradeState.strategy) {

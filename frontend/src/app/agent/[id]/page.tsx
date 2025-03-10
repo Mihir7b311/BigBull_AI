@@ -70,7 +70,7 @@ const TradingViewComponent = () => {
             'RSI@tv-basicstudies'
           ],
           width: '100%',
-          height: '100%',
+          height: '600px',
           save_image: false,
           show_popup_button: true,
           popup_width: '1000',
@@ -366,7 +366,7 @@ export default function AgentInterface() {
         id: '1',
         type: 'BUY',
         amount: 0.5,
-        price: 64200.00,
+        price: 19.00,
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
         status: 'completed',
       },
@@ -374,7 +374,7 @@ export default function AgentInterface() {
         id: '2',
         type: 'SELL',
         amount: 0.2,
-        price: 65100.00,
+        price: 18.7,
         timestamp: new Date(Date.now() - 1000 * 60 * 30),
         status: 'completed',
       },
@@ -858,7 +858,7 @@ export default function AgentInterface() {
               <Card p={6} borderRadius="xl" boxShadow="xl" bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="green.800">
                 <VStack align="stretch" spacing={4}>
                   <HStack justify="space-between">
-                    <Text fontSize="lg" fontWeight="bold" color="green.400">Buy SOL</Text>
+                    <Text fontSize="lg" fontWeight="bold" color="green.400">buy EGLD</Text>
                     <Select
                       size="sm"
                       w="120px"
@@ -907,7 +907,7 @@ export default function AgentInterface() {
                         borderRadius="lg"
                       />
                     </NumberInput>
-                    <InputRightAddon children="SOL" bg="green.800" borderColor="green.600" />
+                    <InputRightAddon children="EGLD" bg="green.800" borderColor="green.600" />
                   </InputGroup>
                   <Button 
                     colorScheme="green" 
@@ -915,7 +915,7 @@ export default function AgentInterface() {
                     onClick={handleOrderSubmit}
                     borderRadius="lg"
                   >
-                    Buy SOL
+                    buy EGLD
                   </Button>
                 </VStack>
               </Card>
@@ -924,7 +924,7 @@ export default function AgentInterface() {
               <Card p={6} borderRadius="xl" boxShadow="xl" bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="red.800">
                 <VStack align="stretch" spacing={4}>
                   <HStack justify="space-between">
-                    <Text fontSize="lg" fontWeight="bold" color="red.400">Sell SOL</Text>
+                    <Text fontSize="lg" fontWeight="bold" color="red.400">buy EGLD</Text>
                     <Select
                       size="sm"
                       w="120px"
@@ -973,7 +973,7 @@ export default function AgentInterface() {
                         borderRadius="lg"
                       />
                     </NumberInput>
-                    <InputRightAddon children="SOL" bg="red.800" borderColor="red.600" />
+                    <InputRightAddon children="EGLD" bg="red.800" borderColor="red.600" />
                   </InputGroup>
                   <Button 
                     colorScheme="red" 
@@ -981,7 +981,7 @@ export default function AgentInterface() {
                     onClick={handleOrderSubmit}
                     borderRadius="lg"
                   >
-                    Sell SOL
+                    Sell EGLD
                   </Button>
                 </VStack>
               </Card>
