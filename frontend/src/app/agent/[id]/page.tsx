@@ -37,7 +37,7 @@ import {
   SliderFilledTrack,
   SliderThumb,
 } from '@chakra-ui/react';
-import { FaChartLine, FaWallet, FaChartPie, FaTrophy, FaComments, FaRobot, FaPlay, FaStop, FaList, FaCog, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { FaChartLine, FaWallet, FaChartPie, FaTrophy, FaComments, FaRobot, FaPlay, FaStop, FaList, FaCog, FaArrowUp, FaArrowDown, FaExchangeAlt } from 'react-icons/fa';
 import { Card } from '@/components/ui/Card';
 
 // TradingView widget component
@@ -88,6 +88,14 @@ interface Message {
   role: 'assistant' | 'user';
   content: string;
   timestamp: Date;
+  type?: 'default' | 'transaction' | 'wallet' | 'market' | 'transfer' | 'swap';
+  metadata?: {
+    address?: string;
+    amount?: number;
+    txHash?: string;
+    fromToken?: string;
+    toToken?: string;
+  };
 }
 
 interface OrderFormState {
@@ -122,6 +130,151 @@ interface AICall {
   timestamp: Date;
   type: 'BUY' | 'SELL' | 'INFO';
 }
+
+// Add new function for transaction history
+async function fetchTransactionHistory(address: string) {
+  const baseUrl = 'https://devnet-api.multiversx.com';
+  const endpoint = `${baseUrl}/accounts/${address}/transactions`;
+
+  try {
+    const response = await fetch(endpoint);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const history = await response.json();
+    return history;
+  } catch (error) {
+    console.error("❌ Error fetching transaction history:", error);
+    return null;
+  }
+}
+
+// Add new components for Transfer and Swap
+const TransferComponent = ({ onSubmit }: { onSubmit: (address: string, amount: number) => void }) => {
+  const [address, setAddress] = useState('');
+  const [amount, setAmount] = useState('');
+
+  return (
+    <Card p={6} bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="blue.800" borderRadius="xl">
+      <VStack spacing={4}>
+        <Text fontSize="lg" fontWeight="bold" color="white">Transfer Tokens</Text>
+        <FormControl>
+          <FormLabel color="gray.300">Recipient Address</FormLabel>
+          <Input
+            placeholder="Enter recipient address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            bg="whiteAlpha.100"
+            border="1px solid"
+            borderColor="blue.600"
+            _hover={{ borderColor: 'blue.500' }}
+            _focus={{ borderColor: 'blue.400', boxShadow: '0 0 0 1px var(--chakra-colors-blue-400)' }}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel color="gray.300">Amount</FormLabel>
+          <InputGroup>
+            <NumberInput
+              w="full"
+              value={amount}
+              onChange={(value) => setAmount(value)}
+              min={0}
+            >
+              <NumberInputField
+                placeholder="Enter amount"
+                bg="whiteAlpha.100"
+                border="1px solid"
+                borderColor="blue.600"
+                _hover={{ borderColor: 'blue.500' }}
+                _focus={{ borderColor: 'blue.400', boxShadow: '0 0 0 1px var(--chakra-colors-blue-400)' }}
+              />
+            </NumberInput>
+            <InputRightAddon children="SOL" bg="blue.800" borderColor="blue.600" />
+          </InputGroup>
+        </FormControl>
+        <Button
+          colorScheme="blue"
+          width="full"
+          onClick={() => onSubmit(address, parseFloat(amount))}
+          isDisabled={!address || !amount || parseFloat(amount) <= 0}
+        >
+          Confirm Transfer
+        </Button>
+      </VStack>
+    </Card>
+  );
+};
+
+const SwapComponent = ({ onSubmit }: { onSubmit: (fromToken: string, toToken: string, amount: number) => void }) => {
+  const [fromToken, setFromToken] = useState('SOL');
+  const [toToken, setToToken] = useState('USDC');
+  const [amount, setAmount] = useState('');
+
+  const tokens = ['SOL', 'USDC', 'EGLD', 'ETH'];
+
+  return (
+    <Card p={6} bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="purple.800" borderRadius="xl">
+      <VStack spacing={4}>
+        <Text fontSize="lg" fontWeight="bold" color="white">Swap Tokens</Text>
+        <FormControl>
+          <FormLabel color="gray.300">From</FormLabel>
+          <HStack>
+            <Select
+              value={fromToken}
+              onChange={(e) => setFromToken(e.target.value)}
+              bg="whiteAlpha.100"
+              border="1px solid"
+              borderColor="purple.600"
+              _hover={{ borderColor: 'purple.500' }}
+              flex="1"
+            >
+              {tokens.map(token => (
+                <option key={token} value={token}>{token}</option>
+              ))}
+            </Select>
+            <NumberInput
+              flex="2"
+              value={amount}
+              onChange={(value) => setAmount(value)}
+              min={0}
+            >
+              <NumberInputField
+                placeholder="Amount"
+                bg="whiteAlpha.100"
+                border="1px solid"
+                borderColor="purple.600"
+                _hover={{ borderColor: 'purple.500' }}
+              />
+            </NumberInput>
+          </HStack>
+        </FormControl>
+        <FormControl>
+          <FormLabel color="gray.300">To</FormLabel>
+          <Select
+            value={toToken}
+            onChange={(e) => setToToken(e.target.value)}
+            bg="whiteAlpha.100"
+            border="1px solid"
+            borderColor="purple.600"
+            _hover={{ borderColor: 'purple.500' }}
+          >
+            {tokens.filter(t => t !== fromToken).map(token => (
+              <option key={token} value={token}>{token}</option>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          colorScheme="purple"
+          width="full"
+          onClick={() => onSubmit(fromToken, toToken, parseFloat(amount))}
+          isDisabled={!amount || parseFloat(amount) <= 0 || fromToken === toToken}
+        >
+          Confirm Swap
+        </Button>
+      </VStack>
+    </Card>
+  );
+};
 
 export default function AgentInterface() {
   const params = useParams();
@@ -176,6 +329,13 @@ export default function AgentInterface() {
   const [isClosing, setIsClosing] = useState(false);
 
   const [orders, setOrders] = useState<Order[]>([]);
+
+  const [chatView, setChatView] = useState<'chat' | 'transactions' | 'wallet'>('chat');
+  const [walletAddress, setWalletAddress] = useState('');
+  const [transactionHistory, setTransactionHistory] = useState<any[]>([]);
+
+  const [showTransfer, setShowTransfer] = useState(false);
+  const [showSwap, setShowSwap] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -267,6 +427,59 @@ export default function AgentInterface() {
     setOrderForm((prev) => ({ ...prev, total: price * amount }));
   };
 
+  // Function to handle transaction history request
+  const handleTransactionCheck = async (address: string) => {
+    const history = await fetchTransactionHistory(address);
+    if (history) {
+      setTransactionHistory(history);
+      const aiMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: `✅ Found transaction history for ${address.slice(0, 6)}...${address.slice(-4)}`,
+        timestamp: new Date(),
+        type: 'transaction',
+        metadata: { address }
+      };
+      setMessages(prev => [...prev, aiMessage]);
+    } else {
+      const aiMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: '❌ No transaction history found or error occurred.',
+        timestamp: new Date(),
+        type: 'transaction'
+      };
+      setMessages(prev => [...prev, aiMessage]);
+    }
+  };
+
+  const handleTransfer = (address: string, amount: number) => {
+    const message: Message = {
+      id: Date.now().toString(),
+      role: 'assistant',
+      content: `Initiating transfer of ${amount} SOL to ${address.slice(0, 6)}...${address.slice(-4)}`,
+      timestamp: new Date(),
+      type: 'transfer',
+      metadata: { address, amount }
+    };
+    setMessages(prev => [...prev, message]);
+    setShowTransfer(false);
+  };
+
+  const handleSwap = (fromToken: string, toToken: string, amount: number) => {
+    const message: Message = {
+      id: Date.now().toString(),
+      role: 'assistant',
+      content: `Initiating swap of ${amount} ${fromToken} to ${toToken}`,
+      timestamp: new Date(),
+      type: 'swap',
+      metadata: { fromToken, toToken, amount }
+    };
+    setMessages(prev => [...prev, message]);
+    setShowSwap(false);
+  };
+
+  // Enhanced message handling
   const handleSend = async () => {
     if (!newMessage.trim()) return;
 
@@ -280,6 +493,32 @@ export default function AgentInterface() {
     setMessages((prev) => [...prev, userMessage]);
     setNewMessage('');
     setIsLoading(true);
+
+    // Check for transfer command
+    if (newMessage.toLowerCase().includes('transfer')) {
+      setShowTransfer(true);
+      setShowSwap(false);
+      setIsLoading(false);
+      return;
+    }
+
+    // Check for swap command
+    if (newMessage.toLowerCase().includes('swap')) {
+      setShowSwap(true);
+      setShowTransfer(false);
+      setIsLoading(false);
+      return;
+    }
+
+    // Check for transaction history command
+    if (newMessage.toLowerCase().includes('check transactions')) {
+      const addressMatch = newMessage.match(/erd[a-zA-Z0-9]{59}/);
+      if (addressMatch) {
+        await handleTransactionCheck(addressMatch[0]);
+        setIsLoading(false);
+        return;
+      }
+    }
 
     try {
       const response = await fetch('/api/chat', {
@@ -905,12 +1144,60 @@ export default function AgentInterface() {
 
           {sidebarView === 'chat' ? (
             <Flex direction="column" h="full">
+              {/* Menu Bar */}
+              <Flex
+                px={4}
+                py={2}
+                bg="rgba(26, 32, 44, 0.95)"
+                borderBottom="1px"
+                borderColor="gray.700"
+                position="absolute"
+                top="70px"
+                left={0}
+                right={0}
+                zIndex={19}
+                backdropFilter="blur(10px)"
+              >
+                <HStack spacing={4}>
+                  <Button
+                    size="sm"
+                    variant={chatView === 'chat' ? 'solid' : 'ghost'}
+                    colorScheme="blue"
+                    leftIcon={<FaComments />}
+                    onClick={() => setChatView('chat')}
+                    borderRadius="full"
+                  >
+                    Chat
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={chatView === 'transactions' ? 'solid' : 'ghost'}
+                    colorScheme="purple"
+                    leftIcon={<FaExchangeAlt />}
+                    onClick={() => setChatView('transactions')}
+                    borderRadius="full"
+                  >
+                    Transactions
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={chatView === 'wallet' ? 'solid' : 'ghost'}
+                    colorScheme="green"
+                    leftIcon={<FaWallet />}
+                    onClick={() => setChatView('wallet')}
+                    borderRadius="full"
+                  >
+                    Wallet
+                  </Button>
+                </HStack>
+              </Flex>
+
               {/* Messages Area */}
               <Box
                 flex="1"
                 overflowY="auto"
-                pt="70px" // Height of the header
-                pb="80px" // Height of the input area
+                pt="120px" // Increased to accommodate menu bar
+                pb="80px"
                 css={{
                   '&::-webkit-scrollbar': { width: '4px' },
                   '&::-webkit-scrollbar-track': { background: 'transparent' },
@@ -920,13 +1207,35 @@ export default function AgentInterface() {
                 <VStack spacing={4} align="stretch" p={4}>
                   {/* Welcome Message */}
                   {messages.length === 0 && (
-                    <Box bg="blue.900" p={4} rounded="xl" fontSize="sm" borderLeft="4px solid" borderLeftColor="blue.400">
-                      <Text color="white" fontWeight="medium">
-                        👋 Welcome! I'm your AI trading assistant
-                      </Text>
-                      <Text color="blue.100" fontSize="xs" mt={2}>
-                        Ask me about market analysis, trading strategies, or help with placing trades.
-                      </Text>
+                    <Box bg="rgba(45, 55, 72, 0.5)" p={6} rounded="2xl" backdropFilter="blur(10px)" border="1px solid" borderColor="blue.800">
+                      <VStack spacing={4} align="stretch">
+                        <HStack>
+                          <Icon as={FaRobot} boxSize={6} color="blue.400" />
+                          <Text fontSize="lg" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.400)" bgClip="text">
+                            Web3 Assistant
+                          </Text>
+                        </HStack>
+                        <Text color="white" fontWeight="medium">
+                          👋 Welcome! I can help you with:
+                        </Text>
+                        <VStack align="start" spacing={2} pl={4}>
+                          <HStack>
+                            <Icon as={FaWallet} color="green.400" />
+                            <Text color="gray.300">Check wallet balances and transactions</Text>
+                          </HStack>
+                          <HStack>
+                            <Icon as={FaExchangeAlt} color="purple.400" />
+                            <Text color="gray.300">View transaction history</Text>
+                          </HStack>
+                          <HStack>
+                            <Icon as={FaChartLine} color="blue.400" />
+                            <Text color="gray.300">Market analysis and trading signals</Text>
+                          </HStack>
+                        </VStack>
+                        <Text color="blue.300" fontSize="sm">
+                          Try: "Check transactions for erd1..."
+                        </Text>
+                      </VStack>
                     </Box>
                   )}
 
@@ -934,20 +1243,63 @@ export default function AgentInterface() {
                     <Flex key={msg.id} justify={msg.role === 'user' ? 'flex-end' : 'flex-start'}>
                       <Box
                         maxW="85%"
-                        bg={msg.role === 'user' ? 'blue.500' : 'whiteAlpha.100'}
+                        bg={msg.role === 'user' ? 'blue.500' : 'rgba(45, 55, 72, 0.5)'}
                         p={4}
-                        rounded="xl"
+                        rounded="2xl"
                         fontSize="sm"
                         borderLeft="4px solid"
-                        borderLeftColor={msg.role === 'user' ? 'blue.300' : 'gray.600'}
+                        borderLeftColor={msg.role === 'user' ? 'blue.300' : 
+                          msg.type === 'transaction' ? 'purple.400' :
+                          msg.type === 'wallet' ? 'green.400' :
+                          msg.type === 'transfer' ? 'blue.400' :
+                          msg.type === 'swap' ? 'purple.400' :
+                          'gray.600'}
+                        backdropFilter="blur(10px)"
                       >
+                        {msg.role === 'assistant' && msg.type && (
+                          <HStack mb={2}>
+                            <Icon 
+                              as={
+                                msg.type === 'transaction' ? FaExchangeAlt :
+                                msg.type === 'wallet' ? FaWallet :
+                                msg.type === 'transfer' ? FaWallet :
+                                msg.type === 'swap' ? FaWallet :
+                                FaRobot
+                              }
+                              color={
+                                msg.type === 'transaction' ? 'purple.400' :
+                                msg.type === 'wallet' ? 'green.400' :
+                                msg.type === 'transfer' ? 'green.400' :
+                                msg.type === 'swap' ? 'green.400' :
+                                'blue.400'
+                              }
+                            />
+                            <Text color="gray.400" fontSize="xs">
+                              {msg.type.toUpperCase()}
+                            </Text>
+                          </HStack>
+                        )}
                         <Text color="white">{msg.content}</Text>
+                        {msg.metadata?.address && (
+                          <Text fontSize="xs" color="gray.400" mt={2}>
+                            Address: {msg.metadata.address.slice(0, 6)}...{msg.metadata.address.slice(-4)}
+                          </Text>
+                        )}
                         <Text fontSize="xs" color="whiteAlpha.600" mt={2}>
                           {msg.timestamp.toLocaleTimeString()}
                         </Text>
                       </Box>
                     </Flex>
                   ))}
+
+                  {showTransfer && (
+                    <TransferComponent onSubmit={handleTransfer} />
+                  )}
+
+                  {showSwap && (
+                    <SwapComponent onSubmit={handleSwap} />
+                  )}
+
                   <div ref={messagesEndRef} />
                 </VStack>
               </Box>
@@ -968,10 +1320,14 @@ export default function AgentInterface() {
                   <Input
                     bg="whiteAlpha.100"
                     border="none"
-                    rounded="xl"
+                    rounded="2xl"
                     pl={6}
                     pr="4.5rem"
-                    placeholder="Message BigBull AI..."
+                    placeholder={
+                      chatView === 'transactions' ? "Enter address to check transactions..." :
+                      chatView === 'wallet' ? "Enter wallet address..." :
+                      "Message Web3 Assistant..."
+                    }
                     _focus={{ bg: "whiteAlpha.200" }}
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
@@ -982,7 +1338,7 @@ export default function AgentInterface() {
                       h="2rem"
                       size="sm"
                       colorScheme="blue"
-                      rounded="lg"
+                      rounded="xl"
                       onClick={handleSend}
                       isLoading={isLoading}
                       isDisabled={!newMessage.trim() || isLoading}
