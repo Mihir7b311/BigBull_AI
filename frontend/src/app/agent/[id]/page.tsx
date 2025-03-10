@@ -37,8 +37,15 @@ import {
   SliderFilledTrack,
   SliderThumb,
 } from '@chakra-ui/react';
-import { FaChartLine, FaWallet, FaChartPie, FaTrophy, FaComments, FaRobot, FaPlay, FaStop, FaList, FaCog, FaArrowUp, FaArrowDown, FaExchangeAlt } from 'react-icons/fa';
+import { FaChartLine, FaWallet, FaChartPie, FaTrophy, FaComments, FaRobot, FaPlay, FaStop, FaList, FaCog, FaArrowUp, FaArrowDown, FaExchangeAlt, FaTimes } from 'react-icons/fa';
 import { Card } from '@/components/ui/Card';
+
+// Add TradingView type declaration
+declare global {
+  interface Window {
+    TradingView: any;
+  }
+}
 
 // TradingView component
 const TradingViewComponent = () => {
@@ -51,8 +58,8 @@ const TradingViewComponent = () => {
     script.async = true;
 
     script.onload = () => {
-      if (typeof TradingView !== 'undefined' && container.current) {
-        new TradingView.widget({
+      if (window.TradingView && container.current) {
+        new window.TradingView.widget({
           container_id: 'tradingview_chart',
           symbol: 'BINANCE:EGLDUSDT',
           interval: '1',
@@ -65,9 +72,10 @@ const TradingViewComponent = () => {
           allow_symbol_change: false,
           hide_side_toolbar: false,
           studies: [
-            'Volume@tv-basicstudies',
+            'MASimple@tv-basicstudies',
+            'RSI@tv-basicstudies',
             'MACD@tv-basicstudies',
-            'RSI@tv-basicstudies'
+            'VolumeProfite@tv-basicstudies'
           ],
           width: '100%',
           height: '600px',
@@ -149,6 +157,13 @@ interface AICall {
   message: string;
   timestamp: Date;
   type: 'BUY' | 'SELL' | 'INFO';
+}
+
+// Add new interface for chat state
+interface ChatState {
+  showTransfer: boolean;
+  showSwap: boolean;
+  isProcessing: boolean;
 }
 
 // Add new function for transaction history
@@ -302,17 +317,23 @@ export default function AgentInterface() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [aiCalls, setAiCalls] = useState<AICall[]>([]);
   const [mounted, setMounted] = useState(false);
-  const [currentPrice, setCurrentPrice] = useState(65450.00);
-
-  // Investment parameters
-  const [investAmount, setInvestAmount] = useState(1000);
-  const [profitTarget, setProfitTarget] = useState(currentPrice * 1.01); // 1% profit target
-  const [stopLoss, setStopLoss] = useState(currentPrice * 0.99); // 1% stop loss
-
+  const [currentPrice, setCurrentPrice] = useState(45.32); // Real EGLD price
   const [priceChange, setPriceChange] = useState(2.5);
-  const [volume24h, setVolume24h] = useState('1.2B');
-  const [high24h, setHigh24h] = useState(65800.00);
-  const [low24h, setLow24h] = useState(64200.00);
+  const [volume24h, setVolume24h] = useState('24.5M');
+  const [high24h, setHigh24h] = useState(46.18);
+  const [low24h, setLow24h] = useState(44.85);
+
+  // Investment parameters with realistic values
+  const [investAmount, setInvestAmount] = useState(1000);
+  const [profitTarget, setProfitTarget] = useState(currentPrice * 1.02); // 2% profit target
+  const [stopLoss, setStopLoss] = useState(currentPrice * 0.98); // 2% stop loss
+
+  // Mock trading data with realistic values
+  const [balance, setBalance] = useState(5432.50);
+  const [profitLoss, setProfitLoss] = useState(234.50);
+  const [profitLossPercentage, setProfitLossPercentage] = useState(4.32);
+  const [winRate, setWinRate] = useState(68.5);
+  const [totalTrades, setTotalTrades] = useState(124);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -340,7 +361,7 @@ export default function AgentInterface() {
     ],
   });
 
-  const [sidebarView, setSidebarView] = useState<'chat' | 'transactions'>('chat');
+  const [sidebarView, setSidebarView] = useState<'actions' | 'chat' | 'transactions'>('actions');
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   // WebSocket state
@@ -354,27 +375,31 @@ export default function AgentInterface() {
   const [walletAddress, setWalletAddress] = useState('');
   const [transactionHistory, setTransactionHistory] = useState<any[]>([]);
 
-  const [showTransfer, setShowTransfer] = useState(false);
-  const [showSwap, setShowSwap] = useState(false);
+  // Update chat-related state
+  const [chatState, setChatState] = useState<ChatState>({
+    showTransfer: false,
+    showSwap: false,
+    isProcessing: false,
+  });
 
   useEffect(() => {
     setMounted(true);
 
-    // Simulate some initial data
+    // Simulate initial transactions with realistic EGLD values
     const initialTransactions: Transaction[] = [
       {
         id: '1',
         type: 'BUY',
-        amount: 0.5,
-        price: 19.00,
+        amount: 2.5,
+        price: 18.85,
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
         status: 'completed',
       },
       {
         id: '2',
         type: 'SELL',
-        amount: 0.2,
-        price: 18.7,
+        amount: 1.8,
+        price: 19.12,
         timestamp: new Date(Date.now() - 1000 * 60 * 30),
         status: 'completed',
       },
@@ -382,25 +407,50 @@ export default function AgentInterface() {
 
     setTransactions(initialTransactions);
 
-    // Simulate price updates
+    // Simulate price updates with realistic EGLD movements
     const interval = setInterval(() => {
-      const change = (Math.random() - 0.5) * 100;
+      const change = (Math.random() - 0.5) * 0.05; // Smaller price movements
       setCurrentPrice((prev) => {
-        const newPrice = prev + change;
-        // Update profit target and stop loss when price changes
-        setProfitTarget(newPrice * 1.01);
-        setStopLoss(newPrice * 0.99);
+        const newPrice = parseFloat((prev + change).toFixed(2));
+        setProfitTarget(newPrice * 1.02);
+        setStopLoss(newPrice * 0.98);
         return newPrice;
       });
       setPriceChange((prev) => {
-        const newChange = prev + (Math.random() - 0.5) * 0.5;
+        const newChange = prev + (Math.random() - 0.5) * 0.2;
         return parseFloat(newChange.toFixed(2));
       });
-    }, 5000);
+
+      // Randomly update volume
+      if (Math.random() > 0.8) {
+        const volumeChange = (Math.random() - 0.5) * 0.5;
+        setVolume24h(prev => {
+          const current = parseFloat(prev.replace('M', ''));
+          return `${(current + volumeChange).toFixed(1)}M`;
+        });
+      }
+
+      // Update high/low
+      setHigh24h(prev => Math.max(prev, currentPrice));
+      setLow24h(prev => Math.min(prev, currentPrice));
+
+      // Simulate trading activity
+      if (Math.random() > 0.9) {
+        const tradeType = Math.random() > 0.5 ? 'BUY' : 'SELL';
+        const tradeAmount = parseFloat((Math.random() * 5 + 1).toFixed(2));
+        const aiCall: AICall = {
+          message: `${tradeType} ${tradeAmount} EGLD at $${currentPrice.toFixed(2)} - ${
+            tradeType === 'BUY' ? 'Support level reached' : 'Resistance breakout'
+          }`,
+          timestamp: new Date(),
+          type: tradeType as 'BUY' | 'SELL',
+        };
+        setAiCalls(prev => [aiCall, ...prev].slice(0, 20));
+      }
+    }, 2000);
 
     return () => {
       clearInterval(interval);
-      // Close WebSocket if open
       if (socket) {
         socket.close();
       }
@@ -425,22 +475,41 @@ export default function AgentInterface() {
       amount: orderForm.amount,
       timestamp: new Date(),
       source: 'MANUAL',
-      status: 'EXECUTED',
+      status: 'PENDING',
     };
 
     setOrders((prev) => [newOrder, ...prev]);
 
-    // Also add to transactions
-    const newTransaction: Transaction = {
-      id: newOrder.id,
-      type: newOrder.type,
-      amount: newOrder.amount,
-      price: newOrder.price,
-      timestamp: newOrder.timestamp,
-      status: 'completed',
-    };
+    // Simulate order execution after 2-5 seconds
+    setTimeout(() => {
+      setOrders((prev) => 
+        prev.map((order) => 
+          order.id === newOrder.id 
+            ? { ...order, status: Math.random() > 0.1 ? 'EXECUTED' : 'FAILED' }
+            : order
+        )
+      );
 
-    setTransactions((prev) => [newTransaction, ...prev]);
+      // If executed, add to transactions
+      if (Math.random() > 0.1) {
+        const newTransaction: Transaction = {
+          id: newOrder.id,
+          type: newOrder.type,
+          amount: newOrder.amount,
+          price: newOrder.price,
+          timestamp: new Date(),
+          status: 'completed',
+        };
+        setTransactions((prev) => [newTransaction, ...prev]);
+      }
+    }, Math.random() * 3000 + 2000);
+
+    // Reset form
+    setOrderForm((prev) => ({
+      ...prev,
+      amount: 0,
+      total: 0,
+    }));
   };
 
   const updateOrderTotal = (price: number, amount: number) => {
@@ -477,13 +546,13 @@ export default function AgentInterface() {
     const message: Message = {
       id: Date.now().toString(),
       role: 'assistant',
-      content: `Initiating transfer of ${amount} SOL to ${address.slice(0, 6)}...${address.slice(-4)}`,
+      content: `Initiating transfer of ${amount} SGLD to ${address.slice(0, 6)}...${address.slice(-4)}`,
       timestamp: new Date(),
       type: 'transfer',
       metadata: { address, amount }
     };
     setMessages(prev => [...prev, message]);
-    setShowTransfer(false);
+    setChatState(prev => ({ ...prev, showTransfer: false }));
   };
 
   const handleSwap = (fromToken: string, toToken: string, amount: number) => {
@@ -496,10 +565,44 @@ export default function AgentInterface() {
       metadata: { fromToken, toToken, amount }
     };
     setMessages(prev => [...prev, message]);
-    setShowSwap(false);
+    setChatState(prev => ({ ...prev, showSwap: false }));
   };
 
-  // Enhanced message handling
+  // Update processMessageWithAI function to use API route
+  const processMessageWithAI = async (message: string) => {
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get AI response');
+      }
+
+      const data = await response.json();
+      const aiResponse = data.content;
+
+      // Handle special commands
+      if (aiResponse.toLowerCase().includes('transfer')) {
+        setChatState(prev => ({ ...prev, showTransfer: true, showSwap: false }));
+        return "I'll help you with the transfer. Please use the transfer form that appeared.";
+      } else if (aiResponse.toLowerCase().includes('swap')) {
+        setChatState(prev => ({ ...prev, showTransfer: false, showSwap: true }));
+        return "I'll help you with the swap. Please use the swap form that appeared.";
+      }
+
+      return aiResponse;
+    } catch (error) {
+      console.error('Error processing message with AI:', error);
+      return "I apologize, but I encountered an error. Please try again.";
+    }
+  };
+
+  // Update handleSend function
   const handleSend = async () => {
     if (!newMessage.trim()) return;
 
@@ -510,68 +613,32 @@ export default function AgentInterface() {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages(prev => [...prev, userMessage]);
     setNewMessage('');
-    setIsLoading(true);
-
-    // Check for transfer command
-    if (newMessage.toLowerCase().includes('transfer')) {
-      setShowTransfer(true);
-      setShowSwap(false);
-      setIsLoading(false);
-      return;
-    }
-
-    // Check for swap command
-    if (newMessage.toLowerCase().includes('swap')) {
-      setShowSwap(true);
-      setShowTransfer(false);
-      setIsLoading(false);
-      return;
-    }
-
-    // Check for transaction history command
-    if (newMessage.toLowerCase().includes('check transactions')) {
-      const addressMatch = newMessage.match(/erd[a-zA-Z0-9]{59}/);
-      if (addressMatch) {
-        await handleTransactionCheck(addressMatch[0]);
-        setIsLoading(false);
-        return;
-      }
-    }
+    setChatState(prev => ({ ...prev, isProcessing: true }));
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: newMessage, agentId }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to get AI response');
-      }
-
-      const data = await response.json();
-
-      const aiMessage: Message = {
+      const aiResponse = await processMessageWithAI(newMessage);
+      
+      const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.content,
+        content: aiResponse,
         timestamp: new Date(),
       };
 
-      setMessages((prev) => [...prev, aiMessage]);
+      setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Failed to get AI response:', error);
+      console.error('Error in handleSend:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: 'Sorry, I encountered an error. Please try again.',
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages(prev => [...prev, errorMessage]);
     } finally {
-      setIsLoading(false);
+      setChatState(prev => ({ ...prev, isProcessing: false }));
     }
   };
 
@@ -808,18 +875,24 @@ export default function AgentInterface() {
                   <Icon as={FaWallet} boxSize={6} color="blue.400" />
                   <VStack align="start" spacing={1}>
                     <Text fontSize="sm" color="gray.400">Balance</Text>
-                    <Text fontSize="2xl" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.400)" bgClip="text">$25,450</Text>
+                    <Text fontSize="2xl" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.400)" bgClip="text">
+                      ${balance.toLocaleString()}
+                    </Text>
                   </VStack>
                 </HStack>
               </Card>
-              <Card bg="rgba(26, 32, 44, 0.7)" p={6} borderRadius="xl" boxShadow="xl" backdropFilter="blur(10px)" border="1px solid" borderColor="green.800">
+              <Card bg="rgba(26, 32, 44, 0.7)" p={6} borderRadius="xl" boxShadow="xl" backdropFilter="blur(10px)" border="1px solid" borderColor={profitLoss >= 0 ? "green.800" : "red.800"}>
                 <HStack spacing={4}>
-                  <Icon as={FaChartPie} boxSize={6} color="green.400" />
+                  <Icon as={FaChartPie} boxSize={6} color={profitLoss >= 0 ? "green.400" : "red.400"} />
                   <VStack align="start" spacing={1}>
                     <Text fontSize="sm" color="gray.400">P/L</Text>
                     <HStack>
-                      <Text fontSize="2xl" fontWeight="bold" color="green.400">+$3,450</Text>
-                      <Badge colorScheme="green" borderRadius="full">+12.5%</Badge>
+                      <Text fontSize="2xl" fontWeight="bold" color={profitLoss >= 0 ? "green.400" : "red.400"}>
+                        {profitLoss >= 0 ? '+' : ''}{profitLoss.toLocaleString()}
+                      </Text>
+                      <Badge colorScheme={profitLoss >= 0 ? "green" : "red"} borderRadius="full">
+                        {profitLoss >= 0 ? '+' : ''}{profitLossPercentage}%
+                      </Badge>
                     </HStack>
                   </VStack>
                 </HStack>
@@ -830,8 +903,8 @@ export default function AgentInterface() {
                   <VStack align="start" spacing={1}>
                     <Text fontSize="sm" color="gray.400">Win Rate</Text>
                     <HStack>
-                      <Text fontSize="2xl" fontWeight="bold" color="purple.400">78.5%</Text>
-                      <Badge colorScheme="purple" borderRadius="full">124</Badge>
+                      <Text fontSize="2xl" fontWeight="bold" color="purple.400">{winRate}%</Text>
+                      <Badge colorScheme="purple" borderRadius="full">{totalTrades}</Badge>
                     </HStack>
                   </VStack>
                 </HStack>
@@ -841,7 +914,9 @@ export default function AgentInterface() {
                   <Icon as={FaRobot} boxSize={6} color="blue.400" />
                   <VStack align="start" spacing={1}>
                     <Text fontSize="sm" color="gray.400">Grid Strategy</Text>
-                    <Badge colorScheme="green" fontSize="md" variant="subtle" borderRadius="full" px={3}>Active</Badge>
+                    <Badge colorScheme={isConnected ? "green" : "gray"} fontSize="md" variant="subtle" borderRadius="full" px={3}>
+                      {isConnected ? 'Active' : 'Inactive'}
+                    </Badge>
                   </VStack>
                 </HStack>
               </Card>
@@ -858,7 +933,7 @@ export default function AgentInterface() {
               <Card p={6} borderRadius="xl" boxShadow="xl" bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="green.800">
                 <VStack align="stretch" spacing={4}>
                   <HStack justify="space-between">
-                    <Text fontSize="lg" fontWeight="bold" color="green.400">buy EGLD</Text>
+                    <Text fontSize="lg" fontWeight="bold" color="green.400">Buy EGLD</Text>
                     <Select
                       size="sm"
                       w="120px"
@@ -880,6 +955,8 @@ export default function AgentInterface() {
                         value={orderForm.price}
                         onChange={(value) => updateOrderTotal(parseFloat(value), orderForm.amount)}
                         min={0}
+                        precision={2}
+                        step={0.01}
                       >
                         <NumberInputField 
                           placeholder="Price" 
@@ -898,6 +975,8 @@ export default function AgentInterface() {
                       value={orderForm.amount}
                       onChange={(value) => updateOrderTotal(orderForm.price, parseFloat(value))}
                       min={0}
+                      precision={2}
+                      step={0.1}
                     >
                       <NumberInputField 
                         placeholder="Amount" 
@@ -909,13 +988,16 @@ export default function AgentInterface() {
                     </NumberInput>
                     <InputRightAddon children="EGLD" bg="green.800" borderColor="green.600" />
                   </InputGroup>
+                  <Text fontSize="sm" color="gray.400">
+                    Total: {(orderForm.price * orderForm.amount).toFixed(2)} USDC
+                  </Text>
                   <Button 
                     colorScheme="green" 
                     size="lg"
                     onClick={handleOrderSubmit}
                     borderRadius="lg"
                   >
-                    buy EGLD
+                    Buy EGLD
                   </Button>
                 </VStack>
               </Card>
@@ -924,7 +1006,7 @@ export default function AgentInterface() {
               <Card p={6} borderRadius="xl" boxShadow="xl" bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="red.800">
                 <VStack align="stretch" spacing={4}>
                   <HStack justify="space-between">
-                    <Text fontSize="lg" fontWeight="bold" color="red.400">buy EGLD</Text>
+                    <Text fontSize="lg" fontWeight="bold" color="red.400">Sell EGLD</Text>
                     <Select
                       size="sm"
                       w="120px"
@@ -946,6 +1028,8 @@ export default function AgentInterface() {
                         value={orderForm.price}
                         onChange={(value) => updateOrderTotal(parseFloat(value), orderForm.amount)}
                         min={0}
+                        precision={2}
+                        step={0.01}
                       >
                         <NumberInputField 
                           placeholder="Price" 
@@ -964,6 +1048,8 @@ export default function AgentInterface() {
                       value={orderForm.amount}
                       onChange={(value) => updateOrderTotal(orderForm.price, parseFloat(value))}
                       min={0}
+                      precision={2}
+                      step={0.1}
                     >
                       <NumberInputField 
                         placeholder="Amount" 
@@ -975,6 +1061,9 @@ export default function AgentInterface() {
                     </NumberInput>
                     <InputRightAddon children="EGLD" bg="red.800" borderColor="red.600" />
                   </InputGroup>
+                  <Text fontSize="sm" color="gray.400">
+                    Total: {(orderForm.price * orderForm.amount).toFixed(2)} USDC
+                  </Text>
                   <Button 
                     colorScheme="red" 
                     size="lg"
@@ -987,130 +1076,188 @@ export default function AgentInterface() {
               </Card>
             </Grid>
 
-            {/* AI Calls Card */}
+            {/* Orders Section */}
             <Box mt={8}>
-              <HStack mb={4} justify="space-between">
-                <HStack spacing={3}>
-                  <Icon as={FaRobot} color="blue.400" boxSize={5} />
-                  <Text fontSize="xl" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.400)" bgClip="text">AI Calls</Text>
-                </HStack>
-                {/* Bot Settings */}
-                <Popover placement="bottom-end">
-                  <PopoverTrigger>
-                    <IconButton
-                      aria-label="Bot settings"
-                      icon={<FaCog />}
-                      size="md"
-                      variant="ghost"
-                      color="blue.400"
-                      _hover={{ bg: 'whiteAlpha.100' }}
-                    />
-                  </PopoverTrigger>
-                  <PopoverContent bg="gray.800" borderColor="gray.700" p={4} width="300px" borderRadius="xl" boxShadow="xl">
-                    <PopoverArrow bg="gray.800" />
-                    <PopoverCloseButton />
-                    <PopoverHeader borderColor="gray.700" fontSize="lg" fontWeight="bold">Bot Settings</PopoverHeader>
-                    <PopoverBody>
-                      <VStack spacing={6} align="stretch">
-                        <FormControl>
-                          <FormLabel fontSize="sm">Investment Amount</FormLabel>
-                          <NumberInput
-                            value={investAmount}
-                            onChange={(_, val) => setInvestAmount(val)}
-                            min={10}
-                            max={100000}
-                          >
-                            <NumberInputField bg="whiteAlpha.50" borderRadius="lg" />
-                            <NumberInputStepper>
-                              <NumberIncrementStepper />
-                              <NumberDecrementStepper />
-                            </NumberInputStepper>
-                          </NumberInput>
-                        </FormControl>
-
-                        <FormControl>
-                          <FormLabel fontSize="sm">Profit Target (${profitTarget.toFixed(2)})</FormLabel>
-                          <Slider
-                            value={(profitTarget / currentPrice - 1) * 100}
-                            onChange={(val) => setProfitTarget(currentPrice * (1 + val / 100))}
-                            min={0.1}
-                            max={5}
-                            step={0.1}
-                          >
-                            <SliderTrack bg="whiteAlpha.100">
-                              <SliderFilledTrack bg="green.500" />
-                            </SliderTrack>
-                            <SliderThumb boxSize={6} bg="green.500">
-                              <Box color="white" as={FaArrowUp} />
-                            </SliderThumb>
-                          </Slider>
-                          <Text fontSize="xs" color="gray.400" textAlign="right">
-                            {((profitTarget / currentPrice - 1) * 100).toFixed(1)}% above current price
-                          </Text>
-                        </FormControl>
-
-                        <FormControl>
-                          <FormLabel fontSize="sm">Stop Loss (${stopLoss.toFixed(2)})</FormLabel>
-                          <Slider
-                            value={(1 - stopLoss / currentPrice) * 100}
-                            onChange={(val) => setStopLoss(currentPrice * (1 - val / 100))}
-                            min={0.1}
-                            max={5}
-                            step={0.1}
-                          >
-                            <SliderTrack bg="whiteAlpha.100">
-                              <SliderFilledTrack bg="red.500" />
-                            </SliderTrack>
-                            <SliderThumb boxSize={6} bg="red.500">
-                              <Box color="white" as={FaArrowDown} />
-                            </SliderThumb>
-                          </Slider>
-                          <Text fontSize="xs" color="gray.400" textAlign="right">
-                            {((1 - stopLoss / currentPrice) * 100).toFixed(1)}% below current price
-                          </Text>
-                        </FormControl>
-                      </VStack>
-                    </PopoverBody>
-                  </PopoverContent>
-                </Popover>
-              </HStack>
-              <Card maxH="300px" overflowY="auto" borderRadius="xl" boxShadow="xl" bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="gray.700">
-                <VStack spacing={3} align="stretch" divider={<Divider borderColor="gray.700" />} p={4}>
-                  {aiCalls.map((call, index) => (
-                    <Flex key={index} justify="space-between" p={3} bg="whiteAlpha.50" rounded="xl" borderLeft="4px solid" borderLeftColor={
-                      call.type === 'BUY' ? 'green.500' : 
-                      call.type === 'SELL' ? 'red.500' : 
-                      'blue.500'
-                    }>
-                      <HStack spacing={3}>
-                        <Badge
-                          colorScheme={
-                            call.type === 'BUY' ? 'green' : 
-                            call.type === 'SELL' ? 'red' : 
-                            'blue'
-                          }
-                          variant="solid"
-                          borderRadius="full"
-                          px={3}
+              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+                {/* Open Orders */}
+                <Box>
+                  <HStack mb={4} justify="space-between">
+                    <HStack spacing={3}>
+                      <Icon as={FaList} color="blue.400" boxSize={5} />
+                      <Text fontSize="xl" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.400)" bgClip="text">Open Orders</Text>
+                    </HStack>
+                    <HStack>
+                      <Badge colorScheme="purple" variant="subtle" borderRadius="full" px={3}>
+                        {orders.filter(o => o.status === 'PENDING').length} Active
+                      </Badge>
+                    </HStack>
+                  </HStack>
+                  <Card maxH="300px" overflowY="auto" borderRadius="xl" boxShadow="xl" bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="gray.700">
+                    <VStack spacing={3} align="stretch" p={4}>
+                      {orders.filter(order => order.status === 'PENDING').map((order) => (
+                        <Flex
+                          key={order.id}
+                          p={4}
+                          bg="rgba(17, 25, 40, 0.7)"
+                          rounded="xl"
+                          borderLeft="4px solid"
+                          borderLeftColor={order.type === 'BUY' ? 'green.500' : 'red.500'}
+                          transition="all 0.2s"
+                          _hover={{ transform: 'translateY(-2px)', shadow: 'lg' }}
                         >
-                          {call.type}
-                        </Badge>
-                        <Text fontSize="sm" color="white">
-                          {call.message}
-                        </Text>
-                      </HStack>
-                      <Text fontSize="xs" color="gray.400">
-                        {call.timestamp.toLocaleTimeString()}
-                      </Text>
-                    </Flex>
-                  ))}
-                  {aiCalls.length === 0 && (
-                    <Box p={6} textAlign="center">
-                      <Text color="gray.500">No AI calls yet. Start the bot to see trading signals.</Text>
-                    </Box>
-                  )}
-                </VStack>
-              </Card>
+                          <Grid templateColumns="1fr 1fr 1fr auto" gap={4} width="full" alignItems="center">
+                            <VStack align="start" spacing={1}>
+                              <HStack>
+                                <Badge
+                                  colorScheme={order.type === 'BUY' ? 'green' : 'red'}
+                                  variant="solid"
+                                  borderRadius="full"
+                                  px={3}
+                                >
+                                  {order.type}
+                                </Badge>
+                                <Badge
+                                  colorScheme="yellow"
+                                  variant="subtle"
+                                  borderRadius="full"
+                                >
+                                  {order.status}
+                                </Badge>
+                              </HStack>
+                              <Text fontSize="xs" color="gray.400">
+                                {order.timestamp.toLocaleTimeString()}
+                              </Text>
+                            </VStack>
+                            <VStack align="start" spacing={1}>
+                              <Text fontSize="sm" color="white" fontWeight="medium">
+                                {order.amount} EGLD
+                              </Text>
+                              <Text fontSize="xs" color="gray.400">
+                                Amount
+                              </Text>
+                            </VStack>
+                            <VStack align="start" spacing={1}>
+                              <Text fontSize="sm" color="white" fontWeight="medium">
+                                ${order.price.toFixed(2)}
+                              </Text>
+                              <Text fontSize="xs" color="gray.400">
+                                Price
+                              </Text>
+                            </VStack>
+                            <IconButton
+                              aria-label="Cancel order"
+                              icon={<Icon as={FaTimes} boxSize={3} />}
+                              size="sm"
+                              variant="ghost"
+                              colorScheme="red"
+                              onClick={() => {
+                                setOrders(prev => prev.filter(o => o.id !== order.id));
+                              }}
+                            />
+                          </Grid>
+                        </Flex>
+                      ))}
+                      {orders.filter(o => o.status === 'PENDING').length === 0 && (
+                        <Box p={6} textAlign="center">
+                          <VStack spacing={4}>
+                            <Icon as={FaList} color="blue.400" boxSize={8} />
+                            <Text color="gray.400">No open orders. Create an order to get started.</Text>
+                          </VStack>
+                        </Box>
+                      )}
+                    </VStack>
+                  </Card>
+                </Box>
+
+                {/* Closed Orders */}
+                <Box>
+                  <HStack mb={4} justify="space-between">
+                    <HStack spacing={3}>
+                      <Icon as={FaList} color="purple.400" boxSize={5} />
+                      <Text fontSize="xl" fontWeight="bold" bgGradient="linear(to-r, purple.400, pink.400)" bgClip="text">Closed Orders</Text>
+                    </HStack>
+                    <HStack>
+                      <Badge colorScheme="purple" variant="subtle" borderRadius="full" px={3}>
+                        {orders.filter(o => o.status !== 'PENDING').length} Total
+                      </Badge>
+                    </HStack>
+                  </HStack>
+                  <Card maxH="300px" overflowY="auto" borderRadius="xl" boxShadow="xl" bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="gray.700">
+                    <VStack spacing={3} align="stretch" p={4}>
+                      {orders.filter(order => order.status !== 'PENDING')
+                        .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+                        .map((order) => (
+                        <Flex
+                          key={order.id}
+                          p={4}
+                          bg="rgba(17, 25, 40, 0.7)"
+                          rounded="xl"
+                          borderLeft="4px solid"
+                          borderLeftColor={
+                            order.status === 'EXECUTED' 
+                              ? (order.type === 'BUY' ? 'green.500' : 'red.500')
+                              : 'gray.500'
+                          }
+                          opacity={order.status === 'FAILED' ? 0.7 : 1}
+                          transition="all 0.2s"
+                          _hover={{ transform: 'translateY(-2px)', shadow: 'lg' }}
+                        >
+                          <Grid templateColumns="1fr 1fr 1fr" gap={4} width="full" alignItems="center">
+                            <VStack align="start" spacing={1}>
+                              <HStack>
+                                <Badge
+                                  colorScheme={order.type === 'BUY' ? 'green' : 'red'}
+                                  variant="solid"
+                                  borderRadius="full"
+                                  px={3}
+                                >
+                                  {order.type}
+                                </Badge>
+                                <Badge
+                                  colorScheme={
+                                    order.status === 'EXECUTED' ? 'green' : 'red'
+                                  }
+                                  variant="subtle"
+                                  borderRadius="full"
+                                >
+                                  {order.status}
+                                </Badge>
+                              </HStack>
+                              <Text fontSize="xs" color="gray.400">
+                                {order.timestamp.toLocaleTimeString()}
+                              </Text>
+                            </VStack>
+                            <VStack align="start" spacing={1}>
+                              <Text fontSize="sm" color="white" fontWeight="medium">
+                                {order.amount} EGLD
+                              </Text>
+                              <Text fontSize="xs" color="gray.400">
+                                Amount
+                              </Text>
+                            </VStack>
+                            <VStack align="start" spacing={1}>
+                              <Text fontSize="sm" color="white" fontWeight="medium">
+                                ${order.price.toFixed(2)}
+                              </Text>
+                              <Text fontSize="xs" color="gray.400">
+                                Total: ${(order.price * order.amount).toFixed(2)}
+                              </Text>
+                            </VStack>
+                          </Grid>
+                        </Flex>
+                      ))}
+                      {orders.filter(o => o.status !== 'PENDING').length === 0 && (
+                        <Box p={6} textAlign="center">
+                          <VStack spacing={4}>
+                            <Icon as={FaList} color="purple.400" boxSize={8} />
+                            <Text color="gray.400">No closed orders yet. Orders will appear here once executed or cancelled.</Text>
+                          </VStack>
+                        </Box>
+                      )}
+                    </VStack>
+                  </Card>
+                </Box>
+              </Grid>
             </Box>
           </Box>
         </Box>
@@ -1146,293 +1293,302 @@ export default function AgentInterface() {
             zIndex={20}
           >
             <HStack spacing={4}>
-              <IconButton
-                aria-label="Toggle view"
-                icon={sidebarView === 'chat' ? <FaComments /> : <FaList />}
-                size="sm"
-                colorScheme="blue"
-                variant="ghost"
-                onClick={() => setSidebarView((prev) => (prev === 'chat' ? 'transactions' : 'chat'))}
-                borderRadius="lg"
-              />
+              <Icon as={FaRobot} color="blue.400" boxSize={5} />
               <Text fontSize="md" fontWeight="bold" color="gray.100">
-                {sidebarView === 'chat' ? 'AI Chat' : 'Transactions'}
+                Trading Assistant
               </Text>
             </HStack>
-            <Badge variant="subtle" colorScheme="blue" borderRadius="full" px={3}>GPT-4</Badge>
+            <Badge variant="subtle" colorScheme="blue" borderRadius="full" px={3}>Active</Badge>
           </Flex>
 
-          {sidebarView === 'chat' ? (
-            <Flex direction="column" h="full">
-              {/* Menu Bar */}
-              <Flex
-                px={4}
-                py={2}
-                bg="rgba(26, 32, 44, 0.95)"
-                borderBottom="1px"
-                borderColor="gray.700"
-                position="absolute"
-                top="70px"
-                left={0}
-                right={0}
-                zIndex={19}
-                backdropFilter="blur(10px)"
+          {/* Navigation Menu */}
+          <Flex
+            px={4}
+            py={2}
+            bg="rgba(26, 32, 44, 0.95)"
+            borderBottom="1px"
+            borderColor="gray.700"
+            position="absolute"
+            top="70px"
+            left={0}
+            right={0}
+            zIndex={19}
+            backdropFilter="blur(10px)"
+          >
+            <HStack spacing={2} width="full" justify="space-between">
+              <Button
+                size="sm"
+                variant={sidebarView === 'actions' ? 'solid' : 'ghost'}
+                colorScheme="blue"
+                leftIcon={<FaRobot />}
+                onClick={() => setSidebarView('actions')}
+                flex={1}
+                borderRadius="full"
               >
-                <HStack spacing={4}>
-                  <Button
-                    size="sm"
-                    variant={chatView === 'chat' ? 'solid' : 'ghost'}
-                    colorScheme="blue"
-                    leftIcon={<FaComments />}
-                    onClick={() => setChatView('chat')}
-                    borderRadius="full"
-                  >
-                    Chat
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant={chatView === 'transactions' ? 'solid' : 'ghost'}
-                    colorScheme="purple"
-                    leftIcon={<FaExchangeAlt />}
-                    onClick={() => setChatView('transactions')}
-                    borderRadius="full"
-                  >
-                    Transactions
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant={chatView === 'wallet' ? 'solid' : 'ghost'}
-                    colorScheme="green"
-                    leftIcon={<FaWallet />}
-                    onClick={() => setChatView('wallet')}
-                    borderRadius="full"
-                  >
-                    Wallet
-                  </Button>
-                </HStack>
-              </Flex>
+                Actions
+              </Button>
+              <Button
+                size="sm"
+                variant={sidebarView === 'chat' ? 'solid' : 'ghost'}
+                colorScheme="purple"
+                leftIcon={<FaComments />}
+                onClick={() => setSidebarView('chat')}
+                flex={1}
+                borderRadius="full"
+              >
+                Chat
+              </Button>
+              <Button
+                size="sm"
+                variant={sidebarView === 'transactions' ? 'solid' : 'ghost'}
+                colorScheme="green"
+                leftIcon={<FaExchangeAlt />}
+                onClick={() => setSidebarView('transactions')}
+                flex={1}
+                borderRadius="full"
+              >
+                Trades
+              </Button>
+            </HStack>
+          </Flex>
 
-              {/* Messages Area */}
-              <Box
-                flex="1"
-                overflowY="auto"
-                pt="120px" // Increased to accommodate menu bar
-                pb="80px"
-                css={{
-                  '&::-webkit-scrollbar': { width: '4px' },
-                  '&::-webkit-scrollbar-track': { background: 'transparent' },
-                  '&::-webkit-scrollbar-thumb': { background: 'rgba(255,255,255,0.1)', borderRadius: '2px' },
-                }}
-              >
-                <VStack spacing={4} align="stretch" p={4}>
-                  {/* Welcome Message */}
-                  {messages.length === 0 && (
-                    <Box bg="rgba(45, 55, 72, 0.5)" p={6} rounded="2xl" backdropFilter="blur(10px)" border="1px solid" borderColor="blue.800">
-                      <VStack spacing={4} align="stretch">
+          {/* Content Area */}
+          <Box
+            flex="1"
+            overflowY="auto"
+            pt="120px"
+            pb="80px"
+            css={{
+              '&::-webkit-scrollbar': { width: '4px' },
+              '&::-webkit-scrollbar-track': { background: 'transparent' },
+              '&::-webkit-scrollbar-thumb': { background: 'rgba(255,255,255,0.1)', borderRadius: '2px' },
+            }}
+          >
+            {sidebarView === 'actions' && (
+              <VStack spacing={3} align="stretch" p={4}>
+                {aiCalls.map((call, index) => (
+                  <Flex
+                    key={index}
+                    p={4}
+                    bg="rgba(26, 32, 44, 0.7)"
+                    rounded="xl"
+                    borderLeft="4px solid"
+                    borderLeftColor={
+                      call.type === 'BUY' ? 'green.500' :
+                      call.type === 'SELL' ? 'red.500' : 
+                      'blue.500'
+                    }
+                    backdropFilter="blur(10px)"
+                    transition="all 0.2s"
+                    _hover={{ transform: 'translateY(-2px)', shadow: 'lg' }}
+                  >
+                    <VStack align="stretch" spacing={2} width="full">
+                      <Flex justify="space-between" align="center">
                         <HStack>
-                          <Icon as={FaRobot} boxSize={6} color="blue.400" />
-                          <Text fontSize="lg" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.400)" bgClip="text">
-                            Web3 Assistant
+                          <Badge
+                            colorScheme={
+                              call.type === 'BUY' ? 'green' :
+                              call.type === 'SELL' ? 'red' :
+                              'blue'
+                            }
+                            variant="solid"
+                            borderRadius="full"
+                            px={3}
+                          >
+                            {call.type}
+                          </Badge>
+                          <Text fontSize="xs" color="gray.400">
+                            {call.timestamp.toLocaleTimeString()}
                           </Text>
                         </HStack>
-                        <Text color="white" fontWeight="medium">
-                          👋 Welcome! I can help you with:
-                        </Text>
-                        <VStack align="start" spacing={2} pl={4}>
-                          <HStack>
-                            <Icon as={FaWallet} color="green.400" />
-                            <Text color="gray.300">Check wallet balances and transactions</Text>
-                          </HStack>
-                          <HStack>
-                            <Icon as={FaExchangeAlt} color="purple.400" />
-                            <Text color="gray.300">View transaction history</Text>
-                          </HStack>
-                          <HStack>
-                            <Icon as={FaChartLine} color="blue.400" />
-                            <Text color="gray.300">Market analysis and trading signals</Text>
-                          </HStack>
-                        </VStack>
-                        <Text color="blue.300" fontSize="sm">
-                          Try: "Check transactions for erd1..."
-                        </Text>
-                      </VStack>
-                    </Box>
-                  )}
+                        <Icon
+                          as={
+                            call.type === 'BUY' ? FaArrowUp :
+                            call.type === 'SELL' ? FaArrowDown :
+                            FaRobot
+                          }
+                          color={
+                            call.type === 'BUY' ? 'green.400' :
+                            call.type === 'SELL' ? 'red.400' :
+                            'blue.400'
+                          }
+                          boxSize={4}
+                        />
+                      </Flex>
+                      <Text fontSize="sm" color="white">
+                        {call.message}
+                      </Text>
+                    </VStack>
+                  </Flex>
+                ))}
+                {aiCalls.length === 0 && (
+                  <Box p={6} textAlign="center">
+                    <VStack spacing={4}>
+                      <Icon as={FaRobot} color="blue.400" boxSize={8} />
+                      <Text color="gray.400">No agent actions yet. Start the bot to see trading signals.</Text>
+                    </VStack>
+                  </Box>
+                )}
+              </VStack>
+            )}
 
-                  {messages.map((msg) => (
-                    <Flex key={msg.id} justify={msg.role === 'user' ? 'flex-end' : 'flex-start'}>
-                      <Box
-                        maxW="85%"
-                        bg={msg.role === 'user' ? 'blue.500' : 'rgba(45, 55, 72, 0.5)'}
-                        p={4}
-                        rounded="2xl"
-                        fontSize="sm"
-                        borderLeft="4px solid"
-                        borderLeftColor={msg.role === 'user' ? 'blue.300' : 
-                          msg.type === 'transaction' ? 'purple.400' :
-                          msg.type === 'wallet' ? 'green.400' :
-                          msg.type === 'transfer' ? 'blue.400' :
-                          msg.type === 'swap' ? 'purple.400' :
-                          'gray.600'}
-                        backdropFilter="blur(10px)"
-                      >
-                        {msg.role === 'assistant' && msg.type && (
-                          <HStack mb={2}>
-                            <Icon 
-                              as={
-                                msg.type === 'transaction' ? FaExchangeAlt :
-                                msg.type === 'wallet' ? FaWallet :
-                                msg.type === 'transfer' ? FaWallet :
-                                msg.type === 'swap' ? FaWallet :
-                                FaRobot
-                              }
-                              color={
-                                msg.type === 'transaction' ? 'purple.400' :
-                                msg.type === 'wallet' ? 'green.400' :
-                                msg.type === 'transfer' ? 'green.400' :
-                                msg.type === 'swap' ? 'green.400' :
-                                'blue.400'
-                              }
-                            />
-                            <Text color="gray.400" fontSize="xs">
-                              {msg.type.toUpperCase()}
-                            </Text>
-                          </HStack>
-                        )}
-                        <Text color="white">{msg.content}</Text>
-                        {msg.metadata?.address && (
-                          <Text fontSize="xs" color="gray.400" mt={2}>
-                            Address: {msg.metadata.address.slice(0, 6)}...{msg.metadata.address.slice(-4)}
-                          </Text>
-                        )}
-                        <Text fontSize="xs" color="whiteAlpha.600" mt={2}>
-                          {msg.timestamp.toLocaleTimeString()}
-                        </Text>
-                      </Box>
-                    </Flex>
-                  ))}
-
-                  {showTransfer && (
-                    <TransferComponent onSubmit={handleTransfer} />
-                  )}
-
-                  {showSwap && (
-                    <SwapComponent onSubmit={handleSwap} />
-                  )}
-
-                  <div ref={messagesEndRef} />
-                </VStack>
-              </Box>
-
-              {/* Input Area - Fixed at bottom */}
-              <Box
-                p={4}
-                bg="rgba(26, 32, 44, 0.95)"
-                borderTop="1px"
-                borderColor="gray.700"
-                position="absolute"
-                bottom={0}
-                left={0}
-                right={0}
-                backdropFilter="blur(10px)"
-              >
-                <InputGroup size="lg">
-                  <Input
-                    bg="whiteAlpha.100"
-                    border="none"
-                    rounded="2xl"
-                    pl={6}
-                    pr="4.5rem"
-                    placeholder={
-                      chatView === 'transactions' ? "Enter address to check transactions..." :
-                      chatView === 'wallet' ? "Enter wallet address..." :
-                      "Message Web3 Assistant..."
-                    }
-                    _focus={{ bg: "whiteAlpha.200" }}
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button
-                      h="2rem"
-                      size="sm"
-                      colorScheme="blue"
-                      rounded="xl"
-                      onClick={handleSend}
-                      isLoading={isLoading}
-                      isDisabled={!newMessage.trim() || isLoading}
+            {sidebarView === 'chat' && (
+              <VStack spacing={4} align="stretch" p={4}>
+                {messages.map((msg) => (
+                  <Flex key={msg.id} justify={msg.role === 'user' ? 'flex-end' : 'flex-start'}>
+                    <Box
+                      maxW="85%"
+                      bg={msg.role === 'user' ? 'blue.500' : 'rgba(45, 55, 72, 0.5)'}
+                      p={4}
+                      rounded="2xl"
+                      fontSize="sm"
+                      borderLeft="4px solid"
+                      borderLeftColor={msg.role === 'user' ? 'blue.300' : 'gray.600'}
+                      backdropFilter="blur(10px)"
                     >
-                      Send
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </Box>
-            </Flex>
-          ) : (
-            /* Transactions View */
-            <Box
-              flex={1}
-              overflowY="auto"
-              pt="70px" // Height of the header
-              pb={4}
-              css={{
-                '&::-webkit-scrollbar': { width: '4px' },
-                '&::-webkit-scrollbar-track': { background: 'transparent' },
-                '&::-webkit-scrollbar-thumb': { background: 'rgba(255,255,255,0.1)', borderRadius: '2px' },
-              }}
-            >
-              <VStack spacing={3} align="stretch" px={4}>
+                      <Text color="white">{msg.content}</Text>
+                      <Text fontSize="xs" color="whiteAlpha.600" mt={2}>
+                        {msg.timestamp.toLocaleTimeString()}
+                      </Text>
+                    </Box>
+                  </Flex>
+                ))}
+                
+                {chatState.showTransfer && (
+                  <TransferComponent
+                    onSubmit={(address, amount) => {
+                      handleTransfer(address, amount);
+                      setChatState(prev => ({ ...prev, showTransfer: false }));
+                    }}
+                  />
+                )}
+                
+                {chatState.showSwap && (
+                  <SwapComponent
+                    onSubmit={(fromToken, toToken, amount) => {
+                      handleSwap(fromToken, toToken, amount);
+                      setChatState(prev => ({ ...prev, showSwap: false }));
+                    }}
+                  />
+                )}
+
+                {messages.length === 0 && (
+                  <Box p={6} textAlign="center">
+                    <VStack spacing={4}>
+                      <Icon as={FaComments} color="purple.400" boxSize={8} />
+                      <Text color="gray.400">No messages yet. Start a conversation with your trading assistant.</Text>
+                    </VStack>
+                  </Box>
+                )}
+              </VStack>
+            )}
+
+            {sidebarView === 'transactions' && (
+              <VStack spacing={3} align="stretch" p={4}>
                 {transactions.map((tx) => (
                   <Box
                     key={tx.id}
                     p={4}
-                    bg="whiteAlpha.50"
+                    bg="rgba(26, 32, 44, 0.7)"
                     rounded="xl"
                     borderLeft="4px solid"
                     borderColor={tx.type === 'BUY' ? 'green.500' : 'red.500'}
+                    backdropFilter="blur(10px)"
+                    transition="all 0.2s"
+                    _hover={{ transform: 'translateY(-2px)', shadow: 'lg' }}
                   >
-                    <Flex justify="space-between" align="center">
-                      <HStack>
-                        <Badge 
-                          colorScheme={tx.type === 'BUY' ? 'green' : 'red'} 
-                          variant="solid"
-                          borderRadius="full"
-                          px={3}
-                        >
-                          {tx.type}
-                        </Badge>
-                        <Text fontSize="sm" color="white" fontWeight="medium">
-                          {tx.amount} SOL
+                    <VStack align="stretch" spacing={2}>
+                      <Flex justify="space-between" align="center">
+                        <HStack>
+                          <Badge
+                            colorScheme={tx.type === 'BUY' ? 'green' : 'red'}
+                            variant="solid"
+                            borderRadius="full"
+                            px={3}
+                          >
+                            {tx.type}
+                          </Badge>
+                          <Text fontSize="sm" color="white" fontWeight="medium">
+                            {tx.amount} EGLD
+                          </Text>
+                        </HStack>
+                        <Text fontSize="sm" color="white" fontWeight="bold">
+                          ${tx.price}
                         </Text>
-                      </HStack>
-                      <Text fontSize="sm" color="white" fontWeight="bold">
-                        ${tx.price}
-                      </Text>
-                    </Flex>
-                    <Flex justify="space-between" mt={3}>
-                      <Text fontSize="xs" color="gray.400">
-                        {tx.timestamp.toLocaleString()}
-                      </Text>
-                      <Badge
-                        colorScheme={
-                          tx.status === 'completed'
-                            ? 'green'
-                            : tx.status === 'pending'
-                            ? 'yellow'
-                            : 'red'
-                        }
-                        variant="subtle"
-                        fontSize="xs"
-                        borderRadius="full"
-                        px={2}
-                      >
-                        {tx.status.toUpperCase()}
-                      </Badge>
-                    </Flex>
+                      </Flex>
+                      <Flex justify="space-between" align="center">
+                        <Text fontSize="xs" color="gray.400">
+                          {tx.timestamp.toLocaleString()}
+                        </Text>
+                        <Badge
+                          colorScheme={
+                            tx.status === 'completed' ? 'green' :
+                            tx.status === 'pending' ? 'yellow' :
+                            'red'
+                          }
+                          variant="subtle"
+                          fontSize="xs"
+                          borderRadius="full"
+                          px={2}
+                        >
+                          {tx.status.toUpperCase()}
+                        </Badge>
+                      </Flex>
+                    </VStack>
                   </Box>
                 ))}
+                {transactions.length === 0 && (
+                  <Box p={6} textAlign="center">
+                    <VStack spacing={4}>
+                      <Icon as={FaExchangeAlt} color="green.400" boxSize={8} />
+                      <Text color="gray.400">No transactions yet. Start trading to see your history.</Text>
+                    </VStack>
+                  </Box>
+                )}
               </VStack>
+            )}
+          </Box>
+
+          {/* Input Area - Only show for chat view */}
+          {sidebarView === 'chat' && (
+            <Box
+              p={4}
+              bg="rgba(26, 32, 44, 0.95)"
+              borderTop="1px"
+              borderColor="gray.700"
+              position="absolute"
+              bottom={0}
+              left={0}
+              right={0}
+              backdropFilter="blur(10px)"
+            >
+              <InputGroup size="lg">
+                <Input
+                  bg="whiteAlpha.100"
+                  border="none"
+                  rounded="2xl"
+                  pl={6}
+                  pr="4.5rem"
+                  placeholder="Message your trading assistant..."
+                  _focus={{ bg: "whiteAlpha.200" }}
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && !chatState.isProcessing && handleSend()}
+                />
+                <InputRightElement width="4.5rem">
+                  <Button
+                    h="2rem"
+                    size="sm"
+                    colorScheme="blue"
+                    rounded="xl"
+                    onClick={handleSend}
+                    isLoading={chatState.isProcessing}
+                    isDisabled={!newMessage.trim() || chatState.isProcessing}
+                  >
+                    Send
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </Box>
           )}
         </Box>

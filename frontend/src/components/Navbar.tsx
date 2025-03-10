@@ -46,7 +46,7 @@ export default function Nav() {
               bgClip="text"
               cursor="pointer"
             >
-              BigBulls
+              BigBull.ai
             </Text>
           </Link>
 
