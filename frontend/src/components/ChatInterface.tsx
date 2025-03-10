@@ -81,7 +81,7 @@ interface TradePerformance {
   roi: number;
 }
 
-const MARP_TRADES_KNOWLEDGE = {
+const BigBull_TRADES_KNOWLEDGE = {
   tradingStrategies: {
     'DCA': {
       name: 'Dollar Cost Averaging (DCA)',
@@ -132,10 +132,10 @@ const MARP_TRADES_KNOWLEDGE = {
   ]
 };
 
-// Add knowledge base about Marp Trades
-const MARP_KNOWLEDGE = {
+// Add knowledge base about BigBulls
+const BigBull_KNOWLEDGE = {
   platform: {
-    name: 'Marp Trades',
+    name: 'BigBulls',
     description: 'Advanced trading platform on Starknet with AI-powered analysis',
     features: [
       'Low-cost trading on Starknet',
@@ -183,7 +183,7 @@ const MARP_KNOWLEDGE = {
       description: 'Co-founder of Tribeviz (2022). Previously led development at Ordex.io, Ajna.capital, and toradle.com. Creator of Angrypets.io. Experienced blockchain entrepreneur with multiple successful projects.',
       expertise: ['DeFi Architecture', 'NFTs', 'Smart Contracts', 'Project Leadership'],
       social: {
-        twitter: '@harshalmarp',
+        twitter: '@harshalBigBull',
         github: 'buddyharshal'
       }
     },
@@ -212,7 +212,7 @@ const MARP_KNOWLEDGE = {
   ]
 };
 
-const TeamView = ({ owners }: { owners: typeof MARP_KNOWLEDGE.owners }) => (
+const TeamView = ({ owners }: { owners: typeof BigBull_KNOWLEDGE.owners }) => (
   <Grid templateColumns="repeat(3, 1fr)" gap={6} p={4} bg="whiteAlpha.50" rounded="xl">
     {owners.map((owner, index) => (
       <GridItem key={index}>
@@ -291,7 +291,7 @@ const ChatInterface = () => {
     setMessages([
       {
         id: 1,
-        content: "Hello! I'm your Marp Trades assistant. I can help you with:\n\n" +
+        content: "Hello! I'm your BigBulls assistant. I can help you with:\n\n" +
                 "• Trading on Starknet (type 'trade' to start)\n" +
                 "• Token swaps (e.g., 'swap 0.1 ETH to USDC')\n" +
                 "• Information about our platform and features\n" +
@@ -310,7 +310,7 @@ const ChatInterface = () => {
   const handleTradeCommand = () => {
     const botResponse: Message = {
       id: messages.length + 2,
-      content: `Welcome to Marp Trades! Let's set up your trading bot.
+      content: `Welcome to BigBulls! Let's set up your trading bot.
 
 First, how much STRK would you like to deposit to start trading? (minimum 0.01 STRK)
 
@@ -539,7 +539,7 @@ Error details: ${error?.message || 'Unknown error'}`,
                           query.toLowerCase().includes('founder');
 
       if (isOwnerQuery) {
-        const teamViewResponse = `<team-view>\n\nMeet the founders of Marp Trades - a team of blockchain veterans, DeFi experts, and trading specialists who are revolutionizing decentralized trading on Starknet.`;
+        const teamViewResponse = `<team-view>\n\nMeet the founders of BigBulls - a team of blockchain veterans, DeFi experts, and trading specialists who are revolutionizing decentralized trading on Starknet.`;
         
         const botResponse: Message = {
           id: messages.length + 2,
@@ -559,7 +559,7 @@ Error details: ${error?.message || 'Unknown error'}`,
         },
         body: JSON.stringify({
           message: query,
-          context: MARP_KNOWLEDGE
+          context: BigBull_KNOWLEDGE
         }),
       });
 
@@ -664,7 +664,7 @@ Error details: ${error?.message || 'Unknown error'}`,
             <Icon as={Bot} color="white" boxSize={4} />
           </Circle>
           <Box>
-            <Heading size="sm">Marp Trades</Heading>
+            <Heading size="sm">BigBulls</Heading>
             <Text fontSize="xs" color="gray.400">Powered by advanced market analysis</Text>
           </Box>
         </Flex>
@@ -782,7 +782,7 @@ Error details: ${error?.message || 'Unknown error'}`,
                       <Text whiteSpace="pre-line" mb={4}>
                         {message.content.split('<team-view>')[1]}
                       </Text>
-                      <TeamView owners={MARP_KNOWLEDGE.owners} />
+                      <TeamView owners={BigBull_KNOWLEDGE.owners} />
                     </>
                   ) : (
                     <Text whiteSpace="pre-line">{message.content}</Text>

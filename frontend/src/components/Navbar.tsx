@@ -46,7 +46,7 @@ export default function Nav() {
               bgClip="text"
               cursor="pointer"
             >
-              Marp Trades
+              BigBulls
             </Text>
           </Link>
 
@@ -60,16 +60,6 @@ export default function Nav() {
             </Button>
 
             <Stack direction="row" spacing={4}>
-              <Button
-                onClick={() => {
-                  // Dummy function for demo
-                  alert('This is a demo button. In production, this would connect to your wallet.');
-                }}
-                colorScheme="green"
-                size="sm"
-              >
-                Demo Wallet
-              </Button>
               <IconButton
                 aria-label="Toggle theme"
                 icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />}

@@ -43,8 +43,8 @@ const LIBRARY_SECTIONS = {
     title: 'Getting Started',
     items: [
       {
-        title: 'Introduction to Marp Trades',
-        description: 'Learn about Marp Trades and its key features for automated trading on Starknet.',
+        title: 'Introduction to BigBulls',
+        description: 'Learn about BigBulls and its key features for automated trading on Starknet.',
         icon: Rocket,
         difficulty: 'Beginner',
         link: '/docs/intro',
@@ -57,11 +57,11 @@ const LIBRARY_SECTIONS = {
         link: '/docs/setup',
       },
       {
-        title: 'Understanding Starknet',
-        description: 'Overview of Starknet and its advantages for decentralized trading.',
+        title: 'Understanding MutliverseX',
+        description: 'Overview of MutliverseX and its advantages for decentralized trading.',
         icon: Network,
         difficulty: 'Intermediate',
-        link: '/docs/starknet',
+        link: '/docs/MutliverseX',
       },
     ],
   },
@@ -103,14 +103,14 @@ const LIBRARY_SECTIONS = {
     items: [
       {
         title: 'API Reference',
-        description: 'Complete API documentation for integrating with Marp Trades.',
+        description: 'Complete API documentation for integrating with BigBulls.',
         icon: Code,
         difficulty: 'Advanced',
         link: '/docs/api',
       },
       {
         title: 'Smart Contracts',
-        description: 'Understanding the smart contracts powering Marp Trades on Starknet.',
+        description: 'Understanding the smart contracts powering BigBulls on Starknet.',
         icon: Shield,
         difficulty: 'Advanced',
         link: '/docs/contracts',
@@ -197,7 +197,7 @@ export default function Library() {
         <Box>
           <Heading mb={2}>Documentation Library</Heading>
           <Text color="gray.400">
-            Comprehensive guides and documentation for Marp Trades on Starknet
+            Comprehensive guides and documentation for BigBulls on Starknet
           </Text>
         </Box>
 

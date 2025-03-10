@@ -26,13 +26,13 @@ interface Message {
   timestamp: Date;
 }
 
-// Knowledge base about Marp Trades
-const MARP_KNOWLEDGE = {
+// Knowledge base about BigBulls
+const BigBull_KNOWLEDGE = {
   platform: {
-    name: 'Marp Trades',
-    description: 'Advanced trading platform on Starknet with AI-powered analysis',
+    name: 'BigBulls',
+    description: 'Advanced trading platform on MutliverseX with AI-powered analysis',
     features: [
-      'Low-cost trading on Starknet',
+      'Low-cost trading on MutliverseX',
       'AI-powered market analysis',
       'Multiple trading strategies',
       'Real-time market data',
@@ -85,7 +85,7 @@ const KnowledgePage = () => {
     setMessages([
       {
         id: 1,
-        content: "Hello! I'm your Marp Trades knowledge assistant. I can help you understand our platform, trading strategies, and answer any questions about trading on Starknet. What would you like to know?",
+        content: "Hello! I'm your BigBulls knowledge assistant. I can help you understand our platform, trading strategies, and answer any questions about trading on MutliverseX. What would you like to know?",
         sender: 'assistant',
         timestamp: new Date()
       }
@@ -114,7 +114,7 @@ const KnowledgePage = () => {
         },
         body: JSON.stringify({
           message: input,
-          context: MARP_KNOWLEDGE
+          context: BigBull_KNOWLEDGE
         }),
       });
 
@@ -163,7 +163,7 @@ const KnowledgePage = () => {
             </Circle>
             <Box>
               <Heading size="lg">Knowledge Base</Heading>
-              <Text color="gray.400">Ask anything about Marp Trades and trading on Starknet</Text>
+              <Text color="gray.400">Ask anything about BigBulls and trading on Starknet</Text>
             </Box>
           </Flex>
         </Box>
@@ -237,7 +237,7 @@ const KnowledgePage = () => {
         <Box>
           <InputGroup size="lg">
             <Input
-              placeholder="Ask about Marp Trades, trading strategies, or technical details..."
+              placeholder="Ask about BigBulls, trading strategies, or technical details..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}

@@ -27,14 +27,14 @@ export async function POST(request: Request) {
     // Get or create a default user
     let defaultUser = await prisma.user.findFirst({
       where: {
-        email: 'default@marpai.com'
+        email: 'default@BigBullai.com'
       }
     })
 
     if (!defaultUser) {
       defaultUser = await prisma.user.create({
         data: {
-          email: 'default@marpai.com',
+          email: 'default@BigBullai.com',
           name: 'Default User'
         }
       })

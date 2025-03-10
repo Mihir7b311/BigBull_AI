@@ -1,7 +1,5 @@
 {
-  "/api/agents/route": "app/api/agents/route.js",
   "/agent/[id]/page": "app/agent/[id]/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }
