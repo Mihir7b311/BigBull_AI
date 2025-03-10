@@ -60,12 +60,14 @@ const TradingViewComponent = () => {
           theme: 'dark',
           style: '1',
           locale: 'en',
-          toolbar_bg: '#1f2937',
+          toolbar_bg: '#f1f3f6',
           enable_publishing: false,
           allow_symbol_change: false,
           hide_side_toolbar: false,
           studies: [
-            'Volume@tv-basicstudies'
+            'Volume@tv-basicstudies',
+            'MACD@tv-basicstudies',
+            'RSI@tv-basicstudies'
           ],
           width: '100%',
           height: '100%',
@@ -91,12 +93,11 @@ const TradingViewComponent = () => {
       id="tradingview_chart" 
       ref={container} 
       style={{ 
-        height: '600px', 
+        height: '100%', 
         width: '100%',
-        backgroundColor: 'rgba(17, 24, 39, 0.8)',
+        backgroundColor: 'rgba(17, 24, 39, 0.5)',
         borderRadius: '12px',
-        overflow: 'hidden',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+        overflow: 'hidden'
       }} 
     />
   );

@@ -223,7 +223,7 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
     script.innerHTML = `
       {
         "width": "100%",
-        "height": "100%",
+        "height": "800px",
         "symbol": "BINANCE:EGLDUSDT",
         "interval": "1",
         "timezone": "Etc/UTC",
@@ -522,7 +522,7 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
   }
 
   return (
-    <Box h="80vh" p={4}>
+    <Box h="90vh" p={4}>
       <Grid templateColumns="1fr 300px" gap={4} h="100%">
         <GridItem>
           <VStack h="100%" spacing={4}>
