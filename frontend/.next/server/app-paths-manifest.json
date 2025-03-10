@@ -1,5 +1,6 @@
 {
-  "/agent/[id]/page": "app/agent/[id]/page.js",
+  "/api/chat/route": "app/api/chat/route.js",
   "/page": "app/page.js",
-  "/dashboard/page": "app/dashboard/page.js"
+  "/agent/[id]/page": "app/agent/[id]/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }

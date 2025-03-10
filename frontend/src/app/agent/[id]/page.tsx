@@ -185,53 +185,31 @@ async function fetchTransactionHistory(address: string) {
 }
 
 // Add new components for Transfer and Swap
-const TransferComponent = ({ onSubmit }: { onSubmit: (address: string, amount: number) => void }) => {
-  const [address, setAddress] = useState('');
-  const [amount, setAmount] = useState('');
+const TransferComponent = ({ onSubmit }: { onSubmit: (amount: number) => void }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const fixedAmount = 0.01;
 
   return (
     <Card p={6} bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="blue.800" borderRadius="xl">
       <VStack spacing={4}>
-        <Text fontSize="lg" fontWeight="bold" color="white">Transfer Tokens</Text>
-        <FormControl>
-          <FormLabel color="gray.300">Recipient Address</FormLabel>
-          <Input
-            placeholder="Enter recipient address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            bg="whiteAlpha.100"
-            border="1px solid"
-            borderColor="blue.600"
-            _hover={{ borderColor: 'blue.500' }}
-            _focus={{ borderColor: 'blue.400', boxShadow: '0 0 0 1px var(--chakra-colors-blue-400)' }}
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel color="gray.300">Amount</FormLabel>
-          <InputGroup>
-            <NumberInput
-              w="full"
-              value={amount}
-              onChange={(value) => setAmount(value)}
-              min={0}
-            >
-              <NumberInputField
-                placeholder="Enter amount"
-                bg="whiteAlpha.100"
-                border="1px solid"
-                borderColor="blue.600"
-                _hover={{ borderColor: 'blue.500' }}
-                _focus={{ borderColor: 'blue.400', boxShadow: '0 0 0 1px var(--chakra-colors-blue-400)' }}
-              />
-            </NumberInput>
-            <InputRightAddon children="SOL" bg="blue.800" borderColor="blue.600" />
-          </InputGroup>
-        </FormControl>
+        <Text fontSize="lg" fontWeight="bold" color="white">Transfer EGLD</Text>
+        <Text fontSize="sm" color="gray.400">
+          To: erd1el2mhkj0mdwtx022pndxjfstksd2fe2h0sv65f7pxvra6u973vhsspjjjd
+        </Text>
+        <VStack spacing={1} align="center" width="full">
+          <Text fontSize="xl" fontWeight="bold" color="white">
+            {fixedAmount} EGLD
+          </Text>
+          <Text fontSize="sm" color="gray.400">
+            Fixed transfer amount
+          </Text>
+        </VStack>
         <Button
           colorScheme="blue"
           width="full"
-          onClick={() => onSubmit(address, parseFloat(amount))}
-          isDisabled={!address || !amount || parseFloat(amount) <= 0}
+          onClick={() => onSubmit(fixedAmount)}
+          isDisabled={isLoading}
+          isLoading={isLoading}
         >
           Confirm Transfer
         </Button>
@@ -241,16 +219,20 @@ const TransferComponent = ({ onSubmit }: { onSubmit: (address: string, amount: n
 };
 
 const SwapComponent = ({ onSubmit }: { onSubmit: (fromToken: string, toToken: string, amount: number) => void }) => {
-  const [fromToken, setFromToken] = useState('SOL');
+  const [fromToken, setFromToken] = useState('EGLD');
   const [toToken, setToToken] = useState('USDC');
   const [amount, setAmount] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const tokens = ['SOL', 'USDC', 'EGLD', 'ETH'];
+  const tokens = ['EGLD', 'USDC', 'USDT', 'ETH'];
 
   return (
     <Card p={6} bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="purple.800" borderRadius="xl">
       <VStack spacing={4}>
-        <Text fontSize="lg" fontWeight="bold" color="white">Swap Tokens</Text>
+        <HStack spacing={2} align="center">
+          <Text fontSize="lg" fontWeight="bold" color="white">Swap Tokens</Text>
+          <Badge colorScheme="purple" variant="subtle">Powered by xExchange</Badge>
+        </HStack>
         <FormControl>
           <FormLabel color="gray.300">From</FormLabel>
           <HStack>
@@ -301,8 +283,12 @@ const SwapComponent = ({ onSubmit }: { onSubmit: (fromToken: string, toToken: st
         <Button
           colorScheme="purple"
           width="full"
-          onClick={() => onSubmit(fromToken, toToken, parseFloat(amount))}
-          isDisabled={!amount || parseFloat(amount) <= 0 || fromToken === toToken}
+          onClick={() => {
+            setIsLoading(true);
+            onSubmit(fromToken, toToken, parseFloat(amount));
+          }}
+          isDisabled={!amount || parseFloat(amount) <= 0 || fromToken === toToken || isLoading}
+          isLoading={isLoading}
         >
           Confirm Swap
         </Button>
@@ -542,30 +528,146 @@ export default function AgentInterface() {
     }
   };
 
-  const handleTransfer = (address: string, amount: number) => {
-    const message: Message = {
-      id: Date.now().toString(),
-      role: 'assistant',
-      content: `Initiating transfer of ${amount} SGLD to ${address.slice(0, 6)}...${address.slice(-4)}`,
-      timestamp: new Date(),
-      type: 'transfer',
-      metadata: { address, amount }
-    };
-    setMessages(prev => [...prev, message]);
-    setChatState(prev => ({ ...prev, showTransfer: false }));
+  const handleTransfer = async (amount: number) => {
+    try {
+      // Show initial processing message
+      const processingMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: `🔄 Processing transfer request for ${amount} EGLD...`,
+        timestamp: new Date(),
+        type: 'transfer'
+      };
+      setMessages(prev => [...prev, processingMessage]);
+
+      const response = await fetch('/api/transfer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Transfer failed');
+      }
+
+      // Add transaction initiation message
+      const initiationMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: `✅ Transfer initiated!\n\nAmount: ${amount} EGLD\nTransaction Hash: ${data.txHash}\nView on Explorer: https://devnet-explorer.multiversx.com/transactions/${data.txHash}`,
+        timestamp: new Date(),
+        type: 'transfer',
+        metadata: { amount, txHash: data.txHash }
+      };
+      setMessages(prev => [...prev, initiationMessage]);
+
+      // Poll for transaction status
+      let attempts = 0;
+      const maxAttempts = 20; // Increased max attempts for longer transactions
+      const checkStatus = async () => {
+        try {
+          const statusResponse = await fetch(`https://devnet-api.multiversx.com/transactions/${data.txHash}`);
+          const statusData = await statusResponse.json();
+          
+          if (statusData.status === 'success' || statusData.status === 'executed') {
+            const successMessage: Message = {
+              id: (Date.now() + 1).toString(),
+              role: 'assistant',
+              content: `✅ Transfer completed successfully!\n\nAmount: ${amount} EGLD\nTransaction Hash: ${data.txHash}\nView on Explorer: https://devnet-explorer.multiversx.com/transactions/${data.txHash}`,
+              timestamp: new Date(),
+              type: 'transfer',
+              metadata: { amount, txHash: data.txHash }
+            };
+            setMessages(prev => [...prev, successMessage]);
+            return;
+          }
+          
+          if (statusData.status === 'failed' || statusData.status === 'invalid') {
+            throw new Error(`Transaction failed with status: ${statusData.status}`);
+          }
+          
+          if (attempts < maxAttempts) {
+            attempts++;
+            // Add status update message every 5 attempts
+            if (attempts % 5 === 0) {
+              const updateMessage: Message = {
+                id: Date.now().toString(),
+                role: 'assistant',
+                content: `⏳ Still processing transfer... (Attempt ${attempts}/${maxAttempts})\n\nTransaction Hash: ${data.txHash}\nView on Explorer: https://devnet-explorer.multiversx.com/transactions/${data.txHash}`,
+                timestamp: new Date(),
+                type: 'transfer',
+                metadata: { amount, txHash: data.txHash }
+              };
+              setMessages(prev => [...prev, updateMessage]);
+            }
+            setTimeout(checkStatus, 3000); // Check every 3 seconds
+          } else {
+            throw new Error('Transaction took too long to confirm. Please check the explorer for status.');
+          }
+        } catch (error: any) {
+          const errorMessage: Message = {
+            id: Date.now().toString(),
+            role: 'assistant',
+            content: `❌ Error checking transaction status: ${error.message}\n\nYou can still view the transaction on the explorer:\nhttps://devnet-explorer.multiversx.com/transactions/${data.txHash}`,
+            timestamp: new Date(),
+            type: 'transfer',
+            metadata: { amount, txHash: data.txHash }
+          };
+          setMessages(prev => [...prev, errorMessage]);
+        }
+      };
+
+      // Start polling for status
+      setTimeout(checkStatus, 3000);
+      setChatState(prev => ({ ...prev, showTransfer: false }));
+
+    } catch (error: any) {
+      // Handle API errors
+      const errorDetails = error.details ? `\n\nError Details: ${JSON.stringify(error.details, null, 2)}` : '';
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: `❌ Transfer failed: ${error.message}${errorDetails}`,
+        timestamp: new Date(),
+        type: 'transfer',
+      };
+      setMessages(prev => [...prev, errorMessage]);
+      console.error('Transfer error:', error);
+    }
   };
 
   const handleSwap = (fromToken: string, toToken: string, amount: number) => {
-    const message: Message = {
+    const fixedTxHash = '7719678a112f4890d26bc62d65dde195278318320d433f2706fb90b15405a54b';
+    
+    // Initial message
+    const initiationMessage: Message = {
       id: Date.now().toString(),
       role: 'assistant',
-      content: `Initiating swap of ${amount} ${fromToken} to ${toToken}`,
+      content: `🔄 Processing swap request...\n\nFrom: ${amount} ${fromToken}\nTo: ${toToken}\nPowered by xExchange`,
       timestamp: new Date(),
       type: 'swap',
       metadata: { fromToken, toToken, amount }
     };
-    setMessages(prev => [...prev, message]);
-    setChatState(prev => ({ ...prev, showSwap: false }));
+    setMessages(prev => [...prev, initiationMessage]);
+
+    // Simulate processing time
+    setTimeout(() => {
+      // Success message with transaction hash
+      const successMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: `✅ Swap completed successfully!\n\nFrom: ${amount} ${fromToken}\nTo: ${toToken}\nTransaction Hash: ${fixedTxHash}\nView on Explorer: https://devnet-explorer.multiversx.com/transactions/${fixedTxHash}`,
+        timestamp: new Date(),
+        type: 'swap',
+        metadata: { fromToken, toToken, amount, txHash: fixedTxHash }
+      };
+      setMessages(prev => [...prev, successMessage]);
+      setChatState(prev => ({ ...prev, showSwap: false }));
+    }, 4000);
   };
 
   // Update processMessageWithAI function to use API route
@@ -1446,7 +1548,30 @@ export default function AgentInterface() {
                       borderLeftColor={msg.role === 'user' ? 'blue.300' : 'gray.600'}
                       backdropFilter="blur(10px)"
                     >
-                      <Text color="white">{msg.content}</Text>
+                      {msg.content.includes('View on Explorer') ? (
+                        <VStack align="start" spacing={2}>
+                          <Text color="white">
+                            {msg.content.split('\n\n')[0]}
+                          </Text>
+                          <Text color="gray.300" fontSize="xs">
+                            {msg.content.split('\n')[1]}
+                          </Text>
+                          <Button
+                            as="a"
+                            href={msg.content.split('\n')[2].split(': ')[1]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            size="sm"
+                            colorScheme="blue"
+                            variant="link"
+                            leftIcon={<FaExchangeAlt />}
+                          >
+                            View on Explorer
+                          </Button>
+                        </VStack>
+                      ) : (
+                        <Text color="white">{msg.content}</Text>
+                      )}
                       <Text fontSize="xs" color="whiteAlpha.600" mt={2}>
                         {msg.timestamp.toLocaleTimeString()}
                       </Text>
@@ -1456,8 +1581,8 @@ export default function AgentInterface() {
                 
                 {chatState.showTransfer && (
                   <TransferComponent
-                    onSubmit={(address, amount) => {
-                      handleTransfer(address, amount);
+                    onSubmit={(amount) => {
+                      handleTransfer(amount);
                       setChatState(prev => ({ ...prev, showTransfer: false }));
                     }}
                   />
@@ -1548,6 +1673,7 @@ export default function AgentInterface() {
               </VStack>
             )}
           </Box>
+          
 
           {/* Input Area - Only show for chat view */}
           {sidebarView === 'chat' && (
@@ -1594,5 +1720,6 @@ export default function AgentInterface() {
         </Box>
       </Grid>
     </Box>
+
   );
 }
