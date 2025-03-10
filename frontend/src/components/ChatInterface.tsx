@@ -47,6 +47,13 @@ import {
   Link,
 } from '@chakra-ui/react'
 import TradingView from './TradingView'
+import Papa from 'papaparse'
+
+interface TradeData {
+  timestamp: string;
+  price: number;
+  volume: number;
+}
 
 function formatTime(date: Date): string {
   return date.toLocaleTimeString('en-US', {
@@ -286,6 +293,64 @@ const ChatInterface = () => {
   const bgGradient = 'linear(to-b, gray.900, gray.800)'
   const borderColor = 'whiteAlpha.100'
   const inputBg = 'whiteAlpha.50'
+
+  const [tradeData, setTradeData] = useState<TradeData[]>([]);
+  const [currentTradeIndex, setCurrentTradeIndex] = useState<number>(0);
+  const [isSimulating, setIsSimulating] = useState<boolean>(false);
+  const [currentTrade, setCurrentTrade] = useState<TradeData | null>(null);
+
+  useEffect(() => {
+    // Load the CSV file
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data/egld.csv');
+        const csvText = await response.text();
+        
+        Papa.parse(csvText, {
+          header: true,
+          complete: (results) => {
+            const parsedData = results.data.map((row: any) => ({
+              timestamp: row.timestamp || '',
+              price: parseFloat(row.price) || 0,
+              volume: parseFloat(row.volume) || 0
+            })).filter((row: TradeData) => row.price > 0);
+            
+            setTradeData(parsedData);
+          }
+        });
+      } catch (error) {
+        console.error('Error loading trade data:', error);
+      }
+    };
+    
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (isSimulating && tradeData.length > 0) {
+      interval = setInterval(() => {
+        if (currentTradeIndex < tradeData.length - 1) {
+          setCurrentTradeIndex(prev => prev + 1);
+          setCurrentTrade(tradeData[currentTradeIndex]);
+        } else {
+          setIsSimulating(false);
+        }
+      }, 1000); // Simulate a trade every second
+    }
+    
+    return () => clearInterval(interval);
+  }, [isSimulating, currentTradeIndex, tradeData]);
+
+  const startSimulation = () => {
+    setCurrentTradeIndex(0);
+    setIsSimulating(true);
+  };
+
+  const stopSimulation = () => {
+    setIsSimulating(false);
+  };
 
   useEffect(() => {
     setMessages([
