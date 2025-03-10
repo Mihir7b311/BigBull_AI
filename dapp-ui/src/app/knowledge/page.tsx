@@ -30,9 +30,9 @@ interface Message {
 const MARP_KNOWLEDGE = {
   platform: {
     name: 'Marp Trades',
-    description: 'Advanced trading platform on Starknet with AI-powered analysis',
+    description: 'Advanced trading platform on EGLD with AI-powered analysis',
     features: [
-      'Low-cost trading on Starknet',
+      'Low-cost trading on EGLD',
       'AI-powered market analysis',
       'Multiple trading strategies',
       'Real-time market data',
@@ -85,7 +85,7 @@ const KnowledgePage = () => {
     setMessages([
       {
         id: 1,
-        content: "Hello! I'm your Marp Trades knowledge assistant. I can help you understand our platform, trading strategies, and answer any questions about trading on Starknet. What would you like to know?",
+        content: "Hello! I'm your Marp Trades knowledge assistant. I can help you understand our platform, trading strategies, and answer any questions about trading on EGLD. What would you like to know?",
         sender: 'assistant',
         timestamp: new Date()
       }
@@ -163,7 +163,7 @@ const KnowledgePage = () => {
             </Circle>
             <Box>
               <Heading size="lg">Knowledge Base</Heading>
-              <Text color="gray.400">Ask anything about Marp Trades and trading on Starknet</Text>
+              <Text color="gray.400">Ask anything about Marp Trades and trading on EGLD</Text>
             </Box>
           </Flex>
         </Box>

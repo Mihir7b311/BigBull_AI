@@ -15,22 +15,22 @@ import {
   Badge,
   Skeleton,
 } from '@chakra-ui/react'
-import { useAccount, useBalance } from '@starknet-react/core'
+import { useAccount, useBalance } from '@EGLD-react/core'
 import { useState, useEffect } from 'react'
 
 const RightSidebar = () => {
   const { address } = useAccount()
   const { data: ethBalance, isLoading: isLoadingEth } = useBalance({
     address,
-    token: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7' // ETH contract on Starknet
+    token: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7' // ETH contract on EGLD
   })
-  const { data: strkBalance, isLoading: isLoadingStrk } = useBalance({
+  const { data: EGLDBalance, isLoading: isLoadingEGLD } = useBalance({
     address,
-    token: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d' // STRK contract on Starknet
+    token: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d' // EGLD contract on EGLD
   })
   const { data: usdcBalance, isLoading: isLoadingUsdc } = useBalance({
     address,
-    token: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8' // USDC contract on Starknet
+    token: '0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8' // USDC contract on EGLD
   })
 
   const [mounted, setMounted] = useState(false)
@@ -126,12 +126,12 @@ const RightSidebar = () => {
                 borderWidth="1px"
                 borderColor={borderColor}
               >
-                <Text fontSize="sm" color="gray.400">STRK Balance</Text>
-                {isLoadingStrk ? (
+                <Text fontSize="sm" color="gray.400">EGLD Balance</Text>
+                {isLoadingEGLD ? (
                   <Skeleton height="24px" mt={1} />
                 ) : (
                   <Text fontWeight="bold" fontSize="lg">
-                    {formatBalance(strkBalance)} STRK
+                    {formatBalance(EGLDBalance)} EGLD
                   </Text>
                 )}
               </Box>

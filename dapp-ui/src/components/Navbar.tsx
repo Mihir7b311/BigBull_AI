@@ -15,9 +15,9 @@ import {
   MenuItem,
   Icon,
 } from '@chakra-ui/react';
-import { useAccount, useConnect, useDisconnect } from '@starknet-react/core';
+import { useAccount, useConnect, useDisconnect } from '@EGLD-react/core';
 import { Wallet, ChevronDown, LogOut } from 'lucide-react';
-import type { Connector } from '@starknet-react/core';
+import type { Connector } from '@EGLD-react/core';
 import { useEffect, useState } from 'react';
 
 const Navbar = () => {

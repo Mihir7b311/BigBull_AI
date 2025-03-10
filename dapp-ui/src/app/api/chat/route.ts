@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const { message, context } = await request.json();
 
     // Create a system message with the context
-    const systemMessage = `You are a knowledgeable assistant for Marp Trades, a trading platform on Starknet. 
+    const systemMessage = `You are a knowledgeable assistant for Marp Trades, a trading platform on EGLD. 
     Use this context to answer questions:
     ${JSON.stringify(context, null, 2)}
     

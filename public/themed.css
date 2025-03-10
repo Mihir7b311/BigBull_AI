@@ -1,0 +1,35 @@
+/* TradingView Chart Theme */
+:root {
+  --tv-color-platform-background: rgba(17, 24, 39, 0);
+  --tv-color-pane-background: rgba(17, 24, 39, 0);
+  --tv-color-toolbar-button-background-hover: rgba(255, 255, 255, 0.1);
+  --tv-color-toolbar-button-background-expanded: rgba(255, 255, 255, 0.1);
+  --tv-color-toolbar-button-background-active: rgba(255, 255, 255, 0.1);
+  --tv-color-toolbar-button-text: rgb(156, 163, 175);
+  --tv-color-toolbar-button-text-hover: rgb(255, 255, 255);
+  --tv-color-toolbar-button-text-active: rgb(255, 255, 255);
+  --tv-color-toolbar-button-text-active-hover: rgb(255, 255, 255);
+}
+
+/* Chart background */
+.chart-page {
+  background: transparent !important;
+}
+
+/* Buy/Sell markers */
+.buy-marker {
+  fill: #22c55e;
+  stroke: #22c55e;
+}
+
+.sell-marker {
+  fill: #ef4444;
+  stroke: #ef4444;
+}
+
+/* Marker text */
+.marker-text {
+  font-weight: bold;
+  font-size: 12px;
+  fill: white;
+} 

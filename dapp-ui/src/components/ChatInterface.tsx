@@ -47,8 +47,8 @@ import {
   Link,
 } from '@chakra-ui/react'
 import TradingView from './TradingView'
-import { useAccount, useContract } from '@starknet-react/core'
-import { Contract, uint256, Account } from 'starknet'
+import { useAccount, useContract } from '@EGLD-react/core'
+import { Contract, uint256, Account } from 'EGLD'
 
 function formatTime(date: Date): string {
   return date.toLocaleTimeString('en-US', {
@@ -87,31 +87,31 @@ const MARP_TRADES_KNOWLEDGE = {
   tradingStrategies: {
     'DCA': {
       name: 'Dollar Cost Averaging (DCA)',
-      description: 'Automated strategy that buys a fixed amount at regular intervals on Starknet, reducing impact of volatility.',
+      description: 'Automated strategy that buys a fixed amount at regular intervals on EGLD, reducing impact of volatility.',
       riskLevel: 'LOW',
       features: ['Regular interval purchases', 'Reduced emotional trading', 'Long-term accumulation']
     },
     'GRID': {
       name: 'Grid Trading',
-      description: 'Places multiple buy and sell orders at regular intervals above and below the current market price on Starknet DEXes.',
+      description: 'Places multiple buy and sell orders at regular intervals above and below the current market price on EGLD DEXes.',
       riskLevel: 'MEDIUM',
       features: ['Profit from sideways markets', 'Automated rebalancing', 'Works best in ranging markets']
     },
     'TWAP': {
       name: 'Time Weighted Average Price',
-      description: 'Executes trades over specified time periods on Starknet to achieve the average market price.',
+      description: 'Executes trades over specified time periods on EGLD to achieve the average market price.',
       riskLevel: 'LOW',
       features: ['Reduced slippage', 'Minimized market impact', 'Best for large orders']
     },
     'MOMENTUM': {
       name: 'Momentum Trading',
-      description: 'Uses technical indicators and AI predictions to identify trends on Starknet markets.',
+      description: 'Uses technical indicators and AI predictions to identify trends on EGLD markets.',
       riskLevel: 'HIGH',
       features: ['Trend following', 'AI-powered signals', 'Dynamic position sizing']
     }
   },
   features: {
-    'StarknetIntegration': 'Direct integration with Starknet for low-cost, secure trading',
+    'EGLDIntegration': 'Direct integration with EGLD for low-cost, secure trading',
     'AIAnalysis': 'Advanced market analysis using machine learning models',
     'RiskManagement': 'Automated position sizing and risk control based on account size',
     'AutomatedTrading': 'Fully automated trade execution with customizable parameters'
@@ -130,7 +130,7 @@ const MARP_TRADES_KNOWLEDGE = {
     { symbol: 'USDC', name: 'USD Coin' },
     { symbol: 'DAI', name: 'Dai' },
     { symbol: 'LORDS', name: 'Lords' },
-    { symbol: 'STRK', name: 'Starknet Token' }
+    { symbol: 'EGLD', name: 'EGLD Token' }
   ]
 };
 
@@ -138,9 +138,9 @@ const MARP_TRADES_KNOWLEDGE = {
 const MARP_KNOWLEDGE = {
   platform: {
     name: 'Marp Trades',
-    description: 'Advanced trading platform on Starknet with AI-powered analysis',
+    description: 'Advanced trading platform on EGLD with AI-powered analysis',
     features: [
-      'Low-cost trading on Starknet',
+      'Low-cost trading on EGLD',
       'AI-powered market analysis',
       'Multiple trading strategies',
       'Real-time market data',
@@ -314,7 +314,7 @@ const ChatInterface = () => {
       {
         id: 1,
         content: "Hello! I'm your Marp Trades assistant. I can help you with:\n\n" +
-                "• Trading on Starknet (type 'trade' to start)\n" +
+                "• Trading on EGLD (type 'trade' to start)\n" +
                 "• Token swaps (e.g., 'swap 0.1 ETH to USDC')\n" +
                 "• Information about our platform and features\n" +
                 "• Trading strategies and market analysis\n\n" +
@@ -334,9 +334,9 @@ const ChatInterface = () => {
       id: messages.length + 2,
       content: `Welcome to Marp Trades! Let's set up your trading bot.
 
-First, how much STRK would you like to deposit to start trading? (minimum 0.01 STRK)
+First, how much EGLD would you like to deposit to start trading? (minimum 0.01 EGLD)
 
-Example: Type "0.05" to deposit 0.05 STRK`,
+Example: Type "0.05" to deposit 0.05 EGLD`,
       sender: 'bot',
       timestamp: new Date(),
     };
@@ -347,7 +347,7 @@ Example: Type "0.05" to deposit 0.05 STRK`,
     if (amount < 0.01) {
       const errorMessage: Message = {
         id: messages.length + 2,
-        content: `The minimum deposit amount is 0.01 STRK. Please enter a larger amount.`,
+        content: `The minimum deposit amount is 0.01 EGLD. Please enter a larger amount.`,
         sender: 'bot',
         timestamp: new Date(),
       };
@@ -359,7 +359,7 @@ Example: Type "0.05" to deposit 0.05 STRK`,
     
     const successMessage: Message = {
       id: messages.length + 4,
-      content: `🎉 ${amount} STRK ready for trading!
+      content: `🎉 ${amount} EGLD ready for trading!
 
 Select a trading pair:
 
@@ -368,7 +368,7 @@ Select a trading pair:
    📊 24h Volume: $1.2B
    📈 24h Change: +2.5%
    
-2. STRK-USDC
+2. EGLD-USDC
    💰 Price: $4.32
    📊 24h Volume: $50M
    📈 24h Change: +5.2%
@@ -443,12 +443,12 @@ Type 1, 2, or 3 to select your strategy.`,
       id: messages.length + 2,
       content: `🚀 Trading bot initialized!
 
-✅ Deposit: ${tradeState.amount} STRK
+✅ Deposit: ${tradeState.amount} EGLD
 ✅ Pair: ${tradeState.selectedToken}-USDC
 ✅ Strategy: ${strategy}
 ✅ Risk Level: ${riskLevel}
 
-🔄 Connecting to Starknet...
+🔄 Connecting to EGLD...
 ⚡ Setting up ${strategy}...
 📊 Loading market data...
 
@@ -467,7 +467,7 @@ Trading dashboard is now open! You can monitor your trades and performance in re
 
     const botResponse: Message = {
       id: messages.length + 2,
-      content: `Risk level set to ${risk}. How much would you like to invest in USDC? This will be used to calculate position sizes on Starknet.`,
+      content: `Risk level set to ${risk}. How much would you like to invest in USDC? This will be used to calculate position sizes on EGLD.`,
       sender: 'bot',
       timestamp: new Date(),
     }
@@ -478,9 +478,9 @@ Trading dashboard is now open! You can monitor your trades and performance in re
     try {
       const depositingMessage: Message = {
         id: messages.length + 2,
-        content: `🔄 Initiating deposit to Starknet trading contract...
+        content: `🔄 Initiating deposit to EGLD trading contract...
 
-1. Approving STRK spend...
+1. Approving EGLD spend...
 2. Waiting for confirmation...`,
         sender: 'bot',
         timestamp: new Date(),
@@ -496,7 +496,7 @@ Trading dashboard is now open! You can monitor your trades and performance in re
 ✅ Funds received
 
 Your trading bot is now being initialized with:
-• Deposit: ${amount} STRK
+• Deposit: ${amount} EGLD
 • Trading Pair: ${tradeState.selectedToken}-USDC
 • Strategy: ${tradeState.strategy}
 
@@ -561,7 +561,7 @@ Error details: ${error?.message || 'Unknown error'}`,
                           query.toLowerCase().includes('founder');
 
       if (isOwnerQuery) {
-        const teamViewResponse = `<team-view>\n\nMeet the founders of Marp Trades - a team of blockchain veterans, DeFi experts, and trading specialists who are revolutionizing decentralized trading on Starknet.`;
+        const teamViewResponse = `<team-view>\n\nMeet the founders of Marp Trades - a team of blockchain veterans, DeFi experts, and trading specialists who are revolutionizing decentralized trading on EGLD.`;
         
         const botResponse: Message = {
           id: messages.length + 2,
@@ -655,7 +655,7 @@ Error details: ${error?.message || 'Unknown error'}`,
       
       if (tradeState.amount && !tradeState.selectedToken) {
         // Handle token selection
-        const tokenPairs = ['BTC', 'STRK', 'ETH'];
+        const tokenPairs = ['BTC', 'EGLD', 'ETH'];
         handleTokenSelection(tokenPairs[selection - 1]);
         return;
       } else if (tradeState.amount && tradeState.selectedToken && !tradeState.strategy) {

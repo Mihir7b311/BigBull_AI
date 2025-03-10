@@ -574,7 +574,7 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
                 ${currentPrice.toFixed(4)}
               </Heading>
               <Text fontSize="sm" color="gray.400" mt={1}>
-                STRK/USDC
+                EGLD/USDC
               </Text>
             </Box>
 

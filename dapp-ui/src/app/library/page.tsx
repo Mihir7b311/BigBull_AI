@@ -44,7 +44,7 @@ const LIBRARY_SECTIONS = {
     items: [
       {
         title: 'Introduction to Marp Trades',
-        description: 'Learn about Marp Trades and its key features for automated trading on Starknet.',
+        description: 'Learn about Marp Trades and its key features for automated trading on EGLD.',
         icon: Rocket,
         difficulty: 'Beginner',
         link: '/docs/intro',
@@ -57,11 +57,11 @@ const LIBRARY_SECTIONS = {
         link: '/docs/setup',
       },
       {
-        title: 'Understanding Starknet',
-        description: 'Overview of Starknet and its advantages for decentralized trading.',
+        title: 'Understanding EGLD',
+        description: 'Overview of EGLD and its advantages for decentralized trading.',
         icon: Network,
         difficulty: 'Intermediate',
-        link: '/docs/starknet',
+        link: '/docs/EGLD',
       },
     ],
   },
@@ -110,7 +110,7 @@ const LIBRARY_SECTIONS = {
       },
       {
         title: 'Smart Contracts',
-        description: 'Understanding the smart contracts powering Marp Trades on Starknet.',
+        description: 'Understanding the smart contracts powering Marp Trades on EGLD.',
         icon: Shield,
         difficulty: 'Advanced',
         link: '/docs/contracts',
@@ -197,7 +197,7 @@ export default function Library() {
         <Box>
           <Heading mb={2}>Documentation Library</Heading>
           <Text color="gray.400">
-            Comprehensive guides and documentation for Marp Trades on Starknet
+            Comprehensive guides and documentation for Marp Trades on EGLD
           </Text>
         </Box>
 

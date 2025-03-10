@@ -139,7 +139,7 @@ export default function Transactions() {
         <Box>
           <Heading mb={2}>History</Heading>
           <Text color="gray.400">
-            View your trading activity and chat history on Starknet
+            View your trading activity and chat history on EGLD
           </Text>
         </Box>
 
@@ -198,14 +198,14 @@ export default function Transactions() {
                     <Stat size="sm">
                       <StatLabel>Total Volume</StatLabel>
                       <StatNumber>${PERFORMANCE_METRICS.totalVolume}</StatNumber>
-                      <StatHelpText>On Starknet</StatHelpText>
+                      <StatHelpText>On EGLD</StatHelpText>
                     </Stat>
                     <Stat size="sm">
                       <StatLabel>Total Fees</StatLabel>
                       <StatNumber>${PERFORMANCE_METRICS.totalFees}</StatNumber>
                       <StatHelpText>
                         <StatArrow type="decrease" />
-                        Low Starknet fees
+                        Low EGLD fees
                       </StatHelpText>
                     </Stat>
                   </Grid>
