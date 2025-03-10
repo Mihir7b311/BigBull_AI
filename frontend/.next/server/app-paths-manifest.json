@@ -1,7 +1,6 @@
 {
-  "/not-found": "app/not-found.js",
-  "/agent/[id]/page": "app/agent/[id]/page.js",
-  "/api/chat/route": "app/api/chat/route.js",
   "/page": "app/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/dashboard/page": "app/dashboard/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/agents/route": "app/api/agents/route.js"
 }

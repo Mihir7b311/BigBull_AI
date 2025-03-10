@@ -56,7 +56,7 @@ export default function Nav() {
               colorScheme="blue"
               size="sm"
             >
-              Launch App
+              Wallet connected
             </Button>
 
             <Stack direction="row" spacing={4}>
