@@ -1,8 +1,17 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { createChart, ColorType, CrosshairMode, Time } from 'lightweight-charts'
-import type { IChartApi, DeepPartial, ChartOptions, SeriesOptionsCommon, ISeriesApi, LineData, CandlestickData } from 'lightweight-charts'
+import { createChart, ColorType, CrosshairMode, Time, SeriesMarkerShape } from 'lightweight-charts'
+import type { 
+  IChartApi, 
+  DeepPartial, 
+  ChartOptions, 
+  SeriesOptionsCommon, 
+  ISeriesApi, 
+  LineData, 
+  SeriesMarker,
+  SeriesMarkerPosition 
+} from 'lightweight-charts'
 import {
   Box,
   Flex,
@@ -83,21 +92,21 @@ interface PriceData {
 }
 
 const historicalPrices: PriceData[] = [
-  { open: 3.668, high: 3.82, low: 3.085, close: 3.097, volume: 115899, datetime: '2020-01-01 00:00:00' },
-  { open: 3.096, high: 3.195, low: 2.813, close: 3.023, volume: 109646, datetime: '2020-01-01 00:15:00' },
-  { open: 3.026, high: 3.135, low: 2.926, close: 3.007, volume: 63352, datetime: '2020-01-01 00:30:00' },
-  { open: 3.003, high: 3.193, low: 2.95, close: 3.067, volume: 52323, datetime: '2020-01-01 00:45:00' },
-  { open: 3.067, high: 3.141, low: 2.854, close: 2.872, volume: 40957, datetime: '2020-01-01 01:00:00' },
-  { open: 2.873, high: 2.909, low: 2.715, close: 2.746, volume: 44614, datetime: '2020-01-01 01:15:00' },
-  { open: 2.746, high: 2.885, low: 2.58, close: 2.621, volume: 40742, datetime: '2020-01-01 01:30:00' },
-  { open: 2.621, high: 2.678, low: 2.38, close: 2.527, volume: 49874, datetime: '2020-01-01 01:45:00' },
-  { open: 2.526, high: 2.61, low: 2.405, close: 2.405, volume: 40233, datetime: '2020-01-01 02:00:00' },
-  { open: 2.406, high: 2.488, low: 2.27, close: 2.395, volume: 43572, datetime: '2020-01-01 02:15:00' },
-  { open: 2.395, high: 2.42, low: 2.26, close: 2.342, volume: 33555, datetime: '2020-01-01 02:30:00' },
-  { open: 2.342, high: 2.4, low: 2.251, close: 2.299, volume: 31793, datetime: '2020-01-01 02:45:00' },
-  { open: 2.301, high: 2.35, low: 2.118, close: 2.177, volume: 34392, datetime: '2020-01-01 03:00:00' },
-  { open: 2.177, high: 2.235, low: 2.126, close: 2.162, volume: 24986, datetime: '2020-01-01 03:15:00' },
-  { open: 2.162, high: 2.214, low: 2.131, close: 2.145, volume: 20377, datetime: '2020-01-01 03:30:00' }
+  { open: 82.15, high: 83.20, low: 81.85, close: 82.95, volume: 15899, datetime: '2024-03-20 00:00:00' },
+  { open: 82.95, high: 83.50, low: 82.75, close: 83.25, volume: 12646, datetime: '2024-03-20 00:15:00' },
+  { open: 83.25, high: 83.85, low: 83.10, close: 83.65, volume: 13352, datetime: '2024-03-20 00:30:00' },
+  { open: 83.65, high: 84.10, low: 83.45, close: 83.90, volume: 14323, datetime: '2024-03-20 00:45:00' },
+  { open: 83.90, high: 84.25, low: 83.70, close: 84.15, volume: 11957, datetime: '2024-03-20 01:00:00' },
+  { open: 84.15, high: 84.50, low: 83.95, close: 84.30, volume: 10614, datetime: '2024-03-20 01:15:00' },
+  { open: 84.30, high: 84.75, low: 84.10, close: 84.55, volume: 12742, datetime: '2024-03-20 01:30:00' },
+  { open: 84.55, high: 85.00, low: 84.35, close: 84.80, volume: 13874, datetime: '2024-03-20 01:45:00' },
+  { open: 84.80, high: 85.25, low: 84.60, close: 85.05, volume: 14233, datetime: '2024-03-20 02:00:00' },
+  { open: 85.05, high: 85.50, low: 84.85, close: 85.30, volume: 15572, datetime: '2024-03-20 02:15:00' },
+  { open: 85.30, high: 85.75, low: 85.10, close: 85.55, volume: 16555, datetime: '2024-03-20 02:30:00' },
+  { open: 85.55, high: 86.00, low: 85.35, close: 85.80, volume: 17793, datetime: '2024-03-20 02:45:00' },
+  { open: 85.80, high: 86.25, low: 85.60, close: 86.05, volume: 18392, datetime: '2024-03-20 03:00:00' },
+  { open: 86.05, high: 86.50, low: 85.85, close: 86.30, volume: 19986, datetime: '2024-03-20 03:15:00' },
+  { open: 86.30, high: 86.75, low: 86.10, close: 86.55, volume: 20377, datetime: '2024-03-20 03:30:00' }
 ];
 
 const getRandomPricePoint = () => {
@@ -109,12 +118,12 @@ const calculatePriceChange = (currentData: PriceData, nextData: PriceData) => {
   // Calculate base change from historical data
   const baseChange = (nextData.close - currentData.close) / currentData.close;
   
-  // Add volume-weighted volatility
-  const volumeFactor = Math.min(nextData.volume / currentData.volume, 2);
+  // Add volume-weighted volatility with reduced randomness for more stability
+  const volumeFactor = Math.min(nextData.volume / currentData.volume, 1.5);
   const volatilityRange = Math.abs(nextData.high - nextData.low) / nextData.low;
   
-  // Random factor influenced by volume and volatility
-  const randomFactor = (Math.random() * 0.002 - 0.001) * volumeFactor * volatilityRange;
+  // Smaller random factor for more stable price movement
+  const randomFactor = (Math.random() * 0.001 - 0.0005) * volumeFactor * volatilityRange;
   
   return baseChange + randomFactor;
 };
@@ -138,6 +147,7 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
   const [priceHistory, setPriceHistory] = useState<number[]>([historicalPrices[0].close])
   const [currentPriceIndex, setCurrentPriceIndex] = useState(0)
   const toast = useToast()
+  const [realPrice, setRealPrice] = useState<number | null>(null)
 
   // Strategy parameters
   const [strategyParams, setStrategyParams] = useState({
@@ -183,6 +193,76 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
     return () => clearInterval(timer)
   }, [isActive, totalProfitLoss, tradeState.amount, currentPrice])
 
+  // Fetch real EGLD price from Binance
+  useEffect(() => {
+    const fetchRealPrice = async () => {
+      try {
+        const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=EGLDUSDT')
+        const data = await response.json()
+        setRealPrice(parseFloat(data.price))
+        setCurrentPrice(parseFloat(data.price))
+      } catch (error) {
+        console.error('Error fetching EGLD price:', error)
+      }
+    }
+
+    fetchRealPrice()
+    const priceInterval = setInterval(fetchRealPrice, 10000) // Update every 10 seconds
+
+    return () => clearInterval(priceInterval)
+  }, [])
+
+  // Initialize TradingView widget
+  useEffect(() => {
+    if (!chartContainerRef.current) return
+
+    const script = document.createElement('script')
+    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js'
+    script.type = 'text/javascript'
+    script.async = true
+    script.innerHTML = `
+      {
+        "width": "100%",
+        "height": "100%",
+        "symbol": "BINANCE:EGLDUSDT",
+        "interval": "1",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "toolbar_bg": "#f1f3f6",
+        "enable_publishing": false,
+        "allow_symbol_change": false,
+        "container_id": "tradingview_chart",
+        "hide_top_toolbar": false,
+        "hide_legend": false,
+        "save_image": false,
+        "studies": [
+          "Volume@tv-basicstudies"
+        ],
+        "show_popup_button": true,
+        "popup_width": "1000",
+        "popup_height": "650",
+        "support_host": "https://www.tradingview.com"
+      }`
+
+    chartContainerRef.current.innerHTML = ''
+    const container = document.createElement('div')
+    container.id = 'tradingview_chart'
+    container.className = 'tradingview-widget-container'
+    container.style.height = '100%'
+    container.style.width = '100%'
+    
+    chartContainerRef.current.appendChild(container)
+    container.appendChild(script)
+
+    return () => {
+      if (chartContainerRef.current) {
+        chartContainerRef.current.innerHTML = ''
+      }
+    }
+  }, [])
+
   // Format time as HH:MM:SS
   const formatTime = (seconds: number) => {
     const hrs = Math.floor(seconds / 3600)
@@ -191,63 +271,139 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
     return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
   }
 
-  // Simulate price movement and trading using historical data
+  // Initialize and update chart
+  useEffect(() => {
+    if (!chartContainerRef.current) return
+
+    const chartOptions: DeepPartial<ChartOptions> = {
+      layout: {
+        background: { color: 'rgba(17, 24, 39, 0.5)' },
+        textColor: '#d1d5db',
+      },
+      grid: {
+        vertLines: { color: 'rgba(255, 255, 255, 0.1)' },
+        horzLines: { color: 'rgba(255, 255, 255, 0.1)' },
+      },
+      crosshair: {
+        mode: CrosshairMode.Normal,
+      },
+      rightPriceScale: {
+        borderColor: 'rgba(255, 255, 255, 0.1)',
+        autoScale: true,
+        scaleMargins: {
+          top: 0.2,
+          bottom: 0.2,
+        },
+      },
+      timeScale: {
+        borderColor: 'rgba(255, 255, 255, 0.1)',
+        timeVisible: true,
+        secondsVisible: true,
+      },
+    }
+
+    chart.current = createChart(chartContainerRef.current, chartOptions)
+
+    // Add main EGLD price line
+    const mainSeries = chart.current.addLineSeries({
+      color: '#3b82f6',
+      lineWidth: 2,
+      title: 'EGLD Price',
+      priceLineVisible: true,
+      lastValueVisible: true,
+      crosshairMarkerVisible: true,
+      priceFormat: {
+        type: 'price',
+        precision: 2,
+        minMove: 0.01,
+      },
+    })
+
+    // Add price data
+    const baseTime = Math.floor(new Date().getTime() / 1000)
+    const priceData = historicalPrices.map((price, index) => ({
+      time: (baseTime - (historicalPrices.length - index)) as Time,
+      value: price.close,
+    }))
+    mainSeries.setData(priceData)
+
+    // Add larger and more visible buy/sell markers
+    if (tradeSignals.length > 0) {
+      const markers = tradeSignals.map((signal: TradeSignal) => ({
+        time: signal.timestamp.getTime() / 1000 as Time,
+        position: signal.type === 'BUY' ? 'belowBar' : 'aboveBar' as SeriesMarkerPosition,
+        color: signal.type === 'BUY' ? '#22c55e' : '#ef4444',
+        shape: 'circle' as SeriesMarkerShape,
+        text: signal.type === 'BUY' ? 'BUY' : 'SELL',
+        size: 3,
+      }))
+      mainSeries.setMarkers(markers)
+    }
+
+    // Resize handler
+    const handleResize = () => {
+      if (chart.current && chartContainerRef.current) {
+        chart.current.applyOptions({
+          width: chartContainerRef.current.clientWidth,
+          height: chartContainerRef.current.clientHeight,
+        })
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    handleResize()
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      if (chart.current) {
+        chart.current.remove()
+      }
+    }
+  }, [tradeSignals, priceHistory])
+
+  // Modify the price simulation to show clear signals
   useEffect(() => {
     if (!isActive) return
 
     const priceInterval = setInterval(() => {
-      // Get current and next price points
-      const currentData = historicalPrices[currentPriceIndex];
-      const nextData = getRandomPricePoint(); // Get random next point for more variation
-      
-      // Calculate price change with volume and volatility factors
-      const priceChange = calculatePriceChange(currentData, nextData);
-      const newPrice = currentPrice * (1 + priceChange);
+      // Get next price point from historical data
+      const nextPrice = historicalPrices[currentPriceIndex].close
       
       // Update price and related states
-      setCurrentPrice(newPrice);
-      setPriceHistory(prev => [...prev.slice(-100), newPrice]);
-      setCurrentPriceIndex((currentPriceIndex + 1) % historicalPrices.length);
-      
-      // Calculate volatility based on historical data and volume
-      const volatilityFactor = Math.abs((nextData.high - nextData.low) / nextData.low) * 
-                              (Math.log(nextData.volume) / Math.log(currentData.volume));
-      setVolatility(volatilityFactor);
-      
-      // Update market condition based on historical trend and volume
-      const recentPrices = priceHistory.slice(-10);
-      const avgPrice = recentPrices.reduce((a, b) => a + b, 0) / recentPrices.length;
-      const volumeStrength = nextData.volume / currentData.volume;
-      
-      if (newPrice > avgPrice * (1 + 0.02 * volumeStrength)) {
-        setMarketCondition('BULLISH');
-      } else if (newPrice < avgPrice * (1 - 0.02 * volumeStrength)) {
-        setMarketCondition('BEARISH');
-      } else {
-        setMarketCondition('NEUTRAL');
-      }
+      setCurrentPrice(nextPrice)
+      setPriceHistory(prev => [...prev.slice(-100), nextPrice])
+      setCurrentPriceIndex((prevIndex) => (prevIndex + 1) % historicalPrices.length)
 
-      // Execute trades based on strategy, market conditions, and volume
-      if (Math.random() < 0.3 * volumeStrength) { // Trade probability affected by volume
-        const shouldBuy = (marketCondition === 'BULLISH' && volumeStrength > 1) || 
-                         (marketCondition === 'NEUTRAL' && Math.random() > 0.5);
-        
-        // Calculate trade amount based on volume and volatility
-        const baseAmount = tradeState.amount * (Math.random() * 0.2 + 0.1);
-        const adjustedAmount = baseAmount * Math.min(volumeStrength, 2);
-        
-        // Execute the trade with volume-adjusted amount
+      // Generate trading signals based on price movement
+      const prevPrice = currentPrice
+      if (nextPrice > prevPrice * 1.005) { // 0.5% increase - Buy signal
         executeOrder(
-          shouldBuy ? 'BUY' : 'SELL',
-          adjustedAmount,
-          newPrice,
-          `${currentStrategy} ${shouldBuy ? 'buy' : 'sell'} signal (Volume: ${volumeStrength.toFixed(2)}x)`
-        );
+          'BUY',
+          tradeState.amount * 0.1,
+          nextPrice,
+          '🟢 Buy Signal Executed'
+        )
+        toast({
+          title: 'Buy Order Executed',
+          description: `Bought EGLD at $${nextPrice.toFixed(2)}`,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+          position: 'top-right'
+        })
+        setMarketCondition('BULLISH')
+      } else if (nextPrice < prevPrice * 0.995) { // 0.5% decrease - Sell signal
+        executeOrder(
+          'SELL',
+          tradeState.amount * 0.1,
+          nextPrice,
+          '🔴 Sell Signal Executed'
+        )
       }
-    }, 1000);
+    }, 1000)
 
-    return () => clearInterval(priceInterval);
-  }, [isActive, currentPrice, currentPriceIndex, priceHistory, tradeState, marketCondition]);
+    return () => clearInterval(priceInterval)
+  }, [isActive, currentPrice, currentPriceIndex, tradeState.amount])
 
   // Execute trading strategies
   useInterval(() => {
@@ -365,124 +521,6 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
     })
   }
 
-  // Initialize and update chart
-  useEffect(() => {
-    if (!chartContainerRef.current) return
-
-    const chartOptions: DeepPartial<ChartOptions> = {
-      layout: {
-        background: { color: 'rgba(17, 24, 39, 0.5)' },
-        textColor: '#d1d5db',
-      },
-      grid: {
-        vertLines: { color: 'rgba(255, 255, 255, 0.1)' },
-        horzLines: { color: 'rgba(255, 255, 255, 0.1)' },
-      },
-      crosshair: {
-        mode: CrosshairMode.Normal,
-      },
-      rightPriceScale: {
-        borderColor: 'rgba(255, 255, 255, 0.1)',
-      },
-      timeScale: {
-        borderColor: 'rgba(255, 255, 255, 0.1)',
-        timeVisible: true,
-        secondsVisible: true,
-      },
-    }
-
-    chart.current = createChart(chartContainerRef.current, chartOptions)
-    const candleSeries = chart.current.addCandlestickSeries({
-      upColor: '#22c55e',
-      downColor: '#ef4444',
-      borderVisible: false,
-      wickUpColor: '#22c55e',
-      wickDownColor: '#ef4444',
-    })
-
-    // Add strategy markers
-    const markers: any[] = []
-    if (tradeSignals.length > 0) {
-      tradeSignals.forEach((signal) => {
-        markers.push({
-          time: signal.timestamp.getTime() / 1000 as Time,
-          position: signal.type === 'BUY' ? 'belowBar' : 'aboveBar',
-          color: signal.type === 'BUY' ? '#22c55e' : '#ef4444',
-          shape: signal.type === 'BUY' ? 'arrowUp' : 'arrowDown',
-          text: `${signal.type} - ${currentStrategy}`,
-        })
-      })
-      candleSeries.setMarkers(markers)
-    }
-
-    // Add price data
-    const baseTime = Math.floor(new Date().getTime() / 1000)
-    const priceData: CandlestickData[] = priceHistory.map((price, index) => ({
-      time: (baseTime - (priceHistory.length - index)) as Time,
-      open: price * 0.998,
-      high: price * 1.002,
-      low: price * 0.997,
-      close: price,
-    }))
-    candleSeries.setData(priceData)
-
-    // Add strategy-specific indicators
-    if (currentStrategy === 'DCA') {
-      const dcaLine = chart.current.addLineSeries({
-        color: '#3b82f6',
-        lineWidth: 2,
-        title: 'DCA Level',
-      })
-      dcaLine.setData(priceHistory.map((_, index) => ({
-        time: (baseTime - (priceHistory.length - index)) as Time,
-        value: strategyParams.dca.lastBuy,
-      })))
-    } else if (currentStrategy === 'Grid Trading') {
-      const { upperBound, lowerBound, gridSpacing } = strategyParams.grid
-      for (let price = lowerBound; price <= upperBound; price += gridSpacing) {
-        const gridLine = chart.current.addLineSeries({
-          color: 'rgba(59, 130, 246, 0.5)',
-          lineWidth: 1,
-          lineStyle: 2,
-          title: `Grid ${price.toFixed(4)}`,
-        })
-        gridLine.setData(priceHistory.map((_, index) => ({
-          time: (baseTime - (priceHistory.length - index)) as Time,
-          value: price,
-        })))
-      }
-    } else if (currentStrategy === 'Momentum') {
-      const momentumLine = chart.current.addLineSeries({
-        color: '#8b5cf6',
-        lineWidth: 2,
-        title: 'Momentum',
-      })
-      momentumLine.setData(priceHistory.map((price, index) => ({
-        time: (baseTime - (priceHistory.length - index)) as Time,
-        value: price * (1 + strategyParams.momentum.trendStrength),
-      })))
-    }
-
-    // Resize handler
-    const handleResize = () => {
-      if (chart.current && chartContainerRef.current) {
-        chart.current.applyOptions({
-          width: chartContainerRef.current.clientWidth,
-          height: chartContainerRef.current.clientHeight,
-        })
-      }
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      if (chart.current) {
-        chart.current.remove()
-      }
-    }
-  }, [tradeSignals, currentStrategy, priceHistory, strategyParams])
-
   return (
     <Box h="80vh" p={4}>
       <Grid templateColumns="1fr 300px" gap={4} h="100%">
@@ -492,13 +530,13 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
             <HStack w="100%" justify="space-between" bg="whiteAlpha.100" p={3} rounded="lg">
               <HStack>
                 <Icon as={Clock} />
-                <Text>Time Remaining: </Text>
+                <Text>Real EGLD Price: </Text>
                 <Text 
-                  color={sessionTime < 30 ? 'red.400' : sessionTime < 60 ? 'yellow.400' : 'green.400'}
+                  color="blue.400"
                   fontWeight="bold"
                   fontSize="lg"
                 >
-                  {formatTime(sessionTime)}
+                  ${realPrice ? realPrice.toFixed(4) : 'Loading...'}
                 </Text>
               </HStack>
               <Badge
@@ -516,7 +554,7 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
               </Badge>
             </HStack>
 
-            {/* Chart */}
+            {/* TradingView Chart */}
             <Box w="100%" h="calc(100% - 100px)" ref={chartContainerRef} />
           </VStack>
         </GridItem>
@@ -524,7 +562,7 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
         {/* Trading Info */}
         <GridItem>
           <VStack spacing={4} h="100%" bg="whiteAlpha.50" p={4} rounded="lg" overflowY="auto">
-            <Heading size="md">Trading Dashboard</Heading>
+            <Heading size="md">EGLD Trading Dashboard</Heading>
             
             {/* Session Status */}
             <Alert 
@@ -574,7 +612,7 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
                 ${currentPrice.toFixed(4)}
               </Heading>
               <Text fontSize="sm" color="gray.400" mt={1}>
-                STRK/USDC
+                EGLD/USDC
               </Text>
             </Box>
 
@@ -647,6 +685,56 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
               </HStack>
             </VStack>
 
+            {/* Orders Tab */}
+            <VStack align="stretch" w="100%" spacing={3}>
+              <Heading size="sm">Recent Orders</Heading>
+              <Box 
+                bg="whiteAlpha.100" 
+                rounded="lg" 
+                p={2}
+                maxH="300px"
+                overflowY="auto"
+                css={{
+                  '&::-webkit-scrollbar': {
+                    width: '4px',
+                  },
+                  '&::-webkit-scrollbar-track': {
+                    width: '6px',
+                  },
+                  '&::-webkit-scrollbar-thumb': {
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    borderRadius: '24px',
+                  },
+                }}
+              >
+                <Table size="sm" variant="unstyled">
+                  <Thead>
+                    <Tr>
+                      <Th color="gray.400">Type</Th>
+                      <Th color="gray.400">Amount</Th>
+                      <Th color="gray.400" isNumeric>Price</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {tradeSignals.slice().reverse().map((trade, index) => (
+                      <Tr key={index} bg={index % 2 === 0 ? 'whiteAlpha.50' : 'transparent'}>
+                        <Td>
+                          <Badge
+                            colorScheme={trade.type === 'BUY' ? 'green' : 'red'}
+                            variant="solid"
+                          >
+                            {trade.type}
+                          </Badge>
+                        </Td>
+                        <Td>{trade.amount.toFixed(4)}</Td>
+                        <Td isNumeric>${trade.price.toFixed(4)}</Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </Box>
+            </VStack>
+
             {/* Manual Trading Controls */}
             <VStack align="stretch" w="100%" spacing={3}>
               <Heading size="sm">Manual Trading</Heading>
@@ -666,93 +754,6 @@ const TradingView = ({ tradeState }: TradingViewProps) => {
                   Sell
                 </Button>
               </Grid>
-            </VStack>
-
-            {/* Recent Trades */}
-            <VStack align="stretch" w="100%" spacing={3}>
-              <Heading size="sm">Recent Trades</Heading>
-              <VStack 
-                align="stretch" 
-                spacing={2} 
-                maxH="300px" 
-                overflowY="auto"
-                css={{
-                  '&::-webkit-scrollbar': {
-                    width: '4px',
-                  },
-                  '&::-webkit-scrollbar-track': {
-                    width: '6px',
-                  },
-                  '&::-webkit-scrollbar-thumb': {
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    borderRadius: '24px',
-                  },
-                }}
-              >
-                {tradeSignals.slice().reverse().map((trade, index) => (
-                  <Box
-                    key={index}
-                    p={3}
-                    bg="whiteAlpha.100"
-                    rounded="lg"
-                    borderLeft="4px solid"
-                    borderColor={trade.type === 'BUY' ? 'green.400' : 'red.400'}
-                  >
-                    <Flex justify="space-between" align="start">
-                      <VStack align="start" spacing={1}>
-                        <Badge colorScheme={trade.type === 'BUY' ? 'green' : 'red'}>
-                          {trade.type}
-                        </Badge>
-                        <Text fontSize="sm" color="gray.300">{trade.reason}</Text>
-                      </VStack>
-                      <VStack align="end" spacing={1}>
-                        <Text fontWeight="bold">
-                          {trade.amount.toFixed(4)} {tradeState.selectedToken}
-                        </Text>
-                        <Text fontSize="sm" color="gray.300">
-                          @ ${trade.price.toFixed(4)}
-                        </Text>
-                      </VStack>
-                    </Flex>
-                    <Flex justify="space-between" mt={2}>
-                      <Text fontSize="xs" color="gray.400">
-                        Fee: ${trade.fees.toFixed(2)}
-                      </Text>
-                      <Text fontSize="xs" color="gray.400">
-                        {trade.timestamp.toLocaleTimeString()}
-                      </Text>
-                    </Flex>
-                  </Box>
-                ))}
-              </VStack>
-            </VStack>
-
-            {/* Strategy Parameters */}
-            <VStack align="stretch" w="100%" spacing={3}>
-              <Heading size="sm">Strategy Parameters</Heading>
-              <Box bg="whiteAlpha.100" p={3} rounded="lg">
-                {currentStrategy === 'DCA' && (
-                  <VStack align="stretch" spacing={2}>
-                    <Text fontSize="sm">Interval: {strategyParams.dca.interval}s</Text>
-                    <Text fontSize="sm">Next Buy: {strategyParams.dca.interval - (sessionTime - strategyParams.dca.lastBuy)}s</Text>
-                    <Text fontSize="sm">Amount: {strategyParams.dca.amount.toFixed(4)} {tradeState.selectedToken}</Text>
-                  </VStack>
-                )}
-                {currentStrategy === 'Grid Trading' && (
-                  <VStack align="stretch" spacing={2}>
-                    <Text fontSize="sm">Upper: ${strategyParams.grid.upperBound.toFixed(4)}</Text>
-                    <Text fontSize="sm">Lower: ${strategyParams.grid.lowerBound.toFixed(4)}</Text>
-                    <Text fontSize="sm">Grid Size: ${strategyParams.grid.gridSpacing.toFixed(4)}</Text>
-                  </VStack>
-                )}
-                {currentStrategy === 'Momentum' && (
-                  <VStack align="stretch" spacing={2}>
-                    <Text fontSize="sm">Lookback: {strategyParams.momentum.lookbackPeriod}s</Text>
-                    <Text fontSize="sm">Strength: {(strategyParams.momentum.trendStrength * 100).toFixed(2)}%</Text>
-                    <Text fontSize="sm">Threshold: {(strategyParams.momentum.threshold * 100).toFixed(2)}%</Text>
-                  </VStack>
-                )}
-              </Box>
             </VStack>
           </VStack>
         </GridItem>

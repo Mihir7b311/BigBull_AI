@@ -40,38 +40,44 @@ import {
 import { FaChartLine, FaWallet, FaChartPie, FaTrophy, FaComments, FaRobot, FaPlay, FaStop, FaList, FaCog, FaArrowUp, FaArrowDown, FaExchangeAlt } from 'react-icons/fa';
 import { Card } from '@/components/ui/Card';
 
-// TradingView widget component
-const TradingViewWidget = () => {
+// TradingView component
+const TradingViewComponent = () => {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!container.current) return;
-
     const script = document.createElement('script');
-    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
     script.type = 'text/javascript';
+    script.src = 'https://s3.tradingview.com/tv.js';
     script.async = true;
-    script.innerHTML = `
-      {
-        "autosize": true,
-        "symbol": "BINANCE:SOLUSDC",
-        "interval": "15",
-        "timezone": "exchange",
-        "theme": "dark",
-        "style": "1",
-        "locale": "en",
-        "enable_publishing": false,
-        "hide_top_toolbar": true,
-        "hide_legend": true,
-        "save_image": false,
-        "backgroundColor": "rgba(17, 24, 39, 0)",
-        "gridColor": "rgba(255, 255, 255, 0.1)",
-        "hide_volume": true,
-        "support_host": "https://www.tradingview.com"
-      }
-    `;
 
-    container.current.appendChild(script);
+    script.onload = () => {
+      if (typeof TradingView !== 'undefined' && container.current) {
+        new TradingView.widget({
+          container_id: 'tradingview_chart',
+          symbol: 'BINANCE:EGLDUSDT',
+          interval: '1',
+          timezone: 'Etc/UTC',
+          theme: 'dark',
+          style: '1',
+          locale: 'en',
+          toolbar_bg: '#1f2937',
+          enable_publishing: false,
+          allow_symbol_change: false,
+          hide_side_toolbar: false,
+          studies: [
+            'Volume@tv-basicstudies'
+          ],
+          width: '100%',
+          height: '100%',
+          save_image: false,
+          show_popup_button: true,
+          popup_width: '1000',
+          popup_height: '650'
+        });
+      }
+    };
+
+    container.current?.appendChild(script);
 
     return () => {
       if (container.current) {
@@ -80,7 +86,20 @@ const TradingViewWidget = () => {
     };
   }, []);
 
-  return <div ref={container} style={{ height: '100%', width: '100%' }} />;
+  return (
+    <div 
+      id="tradingview_chart" 
+      ref={container} 
+      style={{ 
+        height: '600px', 
+        width: '100%',
+        backgroundColor: 'rgba(17, 24, 39, 0.8)',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+      }} 
+    />
+  );
 };
 
 interface Message {
@@ -616,7 +635,7 @@ export default function AgentInterface() {
         // Attempt to reconnect if not intentionally closed
         console.log('Attempting to reconnect...');
         const aiCall: AICall = {
-          message: 'Connection lost. Attempting to reconnect...',
+          message: 'waiting now.',
           timestamp: new Date(),
           type: 'INFO',
         };
@@ -829,7 +848,7 @@ export default function AgentInterface() {
 
             {/* Chart */}
             <Card mb={8} h="500px" overflow="hidden" borderRadius="xl" boxShadow="2xl" bg="rgba(26, 32, 44, 0.7)" backdropFilter="blur(10px)" border="1px solid" borderColor="gray.700">
-              <TradingViewWidget />
+              <TradingViewComponent />
             </Card>
 
             {/* Trading Interface with Orders */}
