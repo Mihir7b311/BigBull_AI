@@ -654,9 +654,21 @@ export default function AgentInterface() {
     };
     setMessages(prev => [...prev, initiationMessage]);
 
-    // Simulate processing time
+    // Add a processing update message after 4 seconds
     setTimeout(() => {
-      // Success message with transaction hash
+      const processingMessage: Message = {
+        id: Date.now().toString(),
+        role: 'assistant',
+        content: `⏳ Finalizing swap on xExchange...\n\nFrom: ${amount} ${fromToken}\nTo: ${toToken}`,
+        timestamp: new Date(),
+        type: 'swap',
+        metadata: { fromToken, toToken, amount }
+      };
+      setMessages(prev => [...prev, processingMessage]);
+    }, 4000);
+
+    // Show success message after 8 seconds
+    setTimeout(() => {
       const successMessage: Message = {
         id: Date.now().toString(),
         role: 'assistant',
@@ -667,7 +679,7 @@ export default function AgentInterface() {
       };
       setMessages(prev => [...prev, successMessage]);
       setChatState(prev => ({ ...prev, showSwap: false }));
-    }, 4000);
+    }, 8000);
   };
 
   // Update processMessageWithAI function to use API route

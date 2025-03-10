@@ -23,6 +23,7 @@
     "@prisma/client": "^6.4.1",
     "@tanstack/react-query": "^5.66.0",
     "@types/papaparse": "^5.3.15",
+    "@vleap/warps": "^0.14.4",
     "@walletconnect/qrcode-modal": "^1.8.0",
     "@walletconnect/web3-provider": "^1.8.0",
     "busboy": "^1.6.0",
