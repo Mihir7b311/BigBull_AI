@@ -1,0 +1,20 @@
+Simulation log initialized.
+Simulation started.
+Tokens Bought. No profit.
+Tokens Sold. Profit: 0.03189080588073919.
+Liquidity Held. No profit.
+Tokens Bought. No profit.
+Tokens Held. Profit: 0.04553837810242945.
+Tokens Sold. Profit: 0.06830756715374772.
+Tokens Bought. No profit.
+Tokens Sold. Profit: 0.004552987857917257.
+Liquidity Held. No profit.
+Liquidity Held. No profit.
+Liquidity Held. No profit.
+Liquidity Held. No profit.
+Liquidity Held. No profit.
+Liquidity Held. No profit.
+Liquidity Held. No profit.
+Liquidity Held. No profit.
+Liquidity Held. No profit.
+Liquidity Held. No profit.

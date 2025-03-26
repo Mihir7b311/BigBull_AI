@@ -1,0 +1,122 @@
+{
+    "system_name": "",
+    "version": "1.0",
+    "creators": "",
+    "description": "An advanced multi-agent system designed to optimize user interaction, investment management, web data retrieval, and crypto transactions with a high level of automation and efficiency.",
+    "agents_incorporated": {
+      "Context_Analyzer": {
+        "function": "Understands multiple contexts within a single conversation, eliminating the need for multiple specialized agents.",
+        "capabilities": [
+          "Context switching",
+          "Multi-topic understanding",
+          "Query optimization"
+        ]
+      },
+      "Memory_Agent": {
+        "function": "Maintains and updates contextual memory across conversations for a seamless chat experience.",
+        "capabilities": [
+          "Contextual recall",
+          "Session continuity",
+          "Dynamic query response optimization"
+        ]
+      },
+      "Web_Scraper_Analyzer": {
+        "function": "Retrieves and processes web-based information through a structured sub-agent architecture.",
+        "sub_agents": {
+          "Web_Scrape_Query_Generator": {
+            "task": "Breaks down user queries into multiple single-tasked queries for optimized retrieval."
+          },
+          "Web_Scrape_Efficient_Threading_Agent": {
+            "task": "Manages concurrent query threads for rapid data collection."
+          },
+          "Web_Scrape_Query_Answerer": {
+            "task": "Synthesizes responses from multiple sources into a comprehensive final answer."
+          }
+        }
+      },
+      "Crypto_Transfer_Agent": {
+        "function": "Provides a seamless frontend interface for cryptocurrency and token transfers between wallets.",
+        "capabilities": [
+          "Secure wallet transactions",
+          "Multi-token support",
+          "Transaction optimization"
+        ]
+      },
+      "Investment_Handler_Agent": {
+        "function": "Manages smart investments in multiple tokens using real-time market analysis.",
+        "sub_agents": {
+          "Investment_Analyzer": {
+            "task": "Collects user preferences and generates an investment plan."
+          },
+          "Trading_Strategist": {
+            "sub_agents": {
+              "Low_Risk_Strategist": {
+                "task": "Optimized for stable, long-term investments with minimal volatility."
+              },
+              "Moderate_Risk_Strategist": {
+                "task": "Balances risk and reward by diversifying investments across mid-cap tokens."
+              },
+              "High_Risk_Strategist": {
+                "task": "Optimized for aggressive investors with high-frequency trading strategies."
+              }
+            }
+          },
+          "Risk_Switcher": {
+            "task": "Dynamically adjusts strategies based on market conditions."
+          },
+          "Global_News_Sentiment_Analyzer": {
+            "task": "Monitors global financial news to trigger strategic shifts."
+          },
+          "Optimal_Reinvesting_Strategist": {
+            "task": "Reallocates assets across different tokens to maximize returns."
+          },
+          "Self_Loop_Profit_Analyzer": {
+            "task": "Continuously evaluates profit/loss and adjusts strategies for improved performance."
+          },
+          "Arbitrage_Trader": {
+            "task": "Identifies market inefficiencies for arbitrage opportunities."
+          },
+          "Immediate_Client_Investor": {
+            "task": "Facilitates user-driven actions like additional investments or withdrawals."
+          }
+        }
+      },
+      "Long_Term_Memory_Agent": {
+        "function": "Provides historical and real-time insights into cryptocurrency markets, trends, and global financial events."
+      },
+      "Forum_Agent": {
+        "function": "Collects and processes user feedback for system improvement and user engagement."
+      },
+      "Quick_Personalized_Virtual_Assistant_Setup_Agent": {
+        "function": "Allows users to create custom AI agents tailored to specific market decisions or automated tasks."
+      }
+    },
+    "malicious_wallet_detector": {
+      "description": "Detects and prevents malicious transactions using GNN-based models.",
+      "model_architecture": [
+        "SAGEConv",
+        "GATConv",
+        "Self-Loops"
+      ],
+      "capabilities": [
+        "Anomaly detection in wallet transactions",
+        "Real-time threat prevention",
+        "Graph-based fraud analysis"
+      ]
+    },
+    "risk_management": {
+      "data_security": "End-to-end encryption and secure transaction protocols.",
+      "market_volatility_response": "Adaptive investment strategies through real-time risk assessment.",
+      "fraud_prevention": "Malicious wallet detection and anomaly-based risk alerts."
+    },
+    "user_experience": {
+      "interface_design": "Seamless, unified chat interface with multi-agent integration.",
+      "personalization": "Custom AI agent creation and investment strategy tailoring.",
+      "automation": "Minimized manual input through intelligent decision-making agents."
+    },
+    "rating": {
+      "score": 9.5,
+      "review": "Highly structured and efficient system with robust multi-agent collaboration. Future improvements could include additional general-use agents for broader user engagement."
+    }
+  }
+  

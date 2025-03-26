@@ -1,0 +1,1006 @@
+{
+    "tokens": [
+        {
+            "asset": "0x",
+            "network": "ERC-20",
+            "trading_pair": "ZRX/USDT",
+            "abbreviation": "ZRX"
+        },
+        {
+            "asset": "1inch Network",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "1INCH/USDT",
+            "abbreviation": "1INCH"
+        },
+        {
+            "asset": "Aave",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "AAVE/USD, AAVE/USDT",
+            "abbreviation": "AAVE"
+        },
+        {
+            "asset": "AdEx",
+            "network": "ERC-20",
+            "trading_pair": "ADX/USDT",
+            "abbreviation": "ADX"
+        },
+        {
+            "asset": "Alchemy Pay",
+            "network": "ERC-20",
+            "trading_pair": "ACH/USDT",
+            "abbreviation": "ACH"
+        },
+        {
+            "asset": "Algorand",
+            "network": "Algorand",
+            "trading_pair": "ALGO/USD, ALGO/USDT",
+            "abbreviation": "ALGO"
+        },
+        {
+            "asset": "Alien Worlds",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "TLM/USDT",
+            "abbreviation": "TLM"
+        },
+        {
+            "asset": "Alpine F1 Team Fan Token",
+            "network": "BEP-20",
+            "trading_pair": "ALPINE/USDT",
+            "abbreviation": "ALPINE"
+        },
+        {
+            "asset": "Ampleforth",
+            "network": "ERC-20",
+            "trading_pair": "FORTH/USDT",
+            "abbreviation": "FORTH"
+        },
+        {
+            "asset": "Ankr",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "ANKR/USDT",
+            "abbreviation": "ANKR"
+        },
+        {
+            "asset": "ApeCoin",
+            "network": "ERC-20",
+            "trading_pair": "APE/USDT",
+            "abbreviation": "APE"
+        },
+        {
+            "asset": "API3",
+            "network": "ERC-20",
+            "trading_pair": "API3/USDT",
+            "abbreviation": "API3"
+        },
+        {
+            "asset": "Aptos",
+            "network": "Aptos",
+            "trading_pair": "APT/USD, APT/USDT",
+            "abbreviation": "APT"
+        },
+        {
+            "asset": "Arbitrum",
+            "network": "Arbitrum/ERC-20",
+            "trading_pair": "ARB/USDT",
+            "abbreviation": "ARB"
+        },
+        {
+            "asset": "Astar",
+            "network": "Astar",
+            "trading_pair": "ASTR/USDT",
+            "abbreviation": "ASTR"
+        },
+        {
+            "asset": "Audius",
+            "network": "ERC-20",
+            "trading_pair": "AUDIO/USDT",
+            "abbreviation": "AUDIO"
+        },
+        {
+            "asset": "Avalanche",
+            "network": "Avalanche C-CHAIN",
+            "trading_pair": "AVAX/USD, AVAX/USDT,  AVAX/BTC",
+            "abbreviation": "AVAX"
+        },
+        {
+            "asset": "Axelar",
+            "network": "ERC-20",
+            "trading_pair": "AXL/USDT",
+            "abbreviation": "AXL"
+        },
+        {
+            "asset": "Axie Infinity",
+            "network": "ERC-20",
+            "trading_pair": "AXS/USDT",
+            "abbreviation": "AXS"
+        },
+        {
+            "asset": "Balancer",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "BAL/USDT",
+            "abbreviation": "BAL"
+        },
+        {
+            "asset": "Bancor",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "BNT/USDT",
+            "abbreviation": "BNT"
+        },
+        {
+            "asset": "Band Protocol",
+            "network": "Band Protocol (memo required)/BEP-20",
+            "trading_pair": "BAND/USDT",
+            "abbreviation": "BAND"
+        },
+        {
+            "asset": "Basic Attention Token",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "BAT/USDT",
+            "abbreviation": "BAT"
+        },
+        {
+            "asset": "Biconomy",
+            "network": "ERC-20",
+            "trading_pair": "BICO/USDT",
+            "abbreviation": "BICO"
+        },
+        {
+            "asset": "Bitcoin",
+            "network": "Bitcoin/BEP-20",
+            "trading_pair": "BTC/USD, BTC/USDT, BTC/USDC",
+            "abbreviation": "BTC"
+        },
+        {
+            "asset": "Bitcoin Cash",
+            "network": "Bitcoin Cash/BEP-20",
+            "trading_pair": "BCH/USD, BCH/USDT",
+            "abbreviation": "BCH"
+        },
+        {
+            "asset": "Blur",
+            "network": "ERC-20",
+            "trading_pair": "BLUR/USDT",
+            "abbreviation": "BLUR"
+        },
+        {
+            "asset": "BNB",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "BNB/USD, BNB/USDT, BNB/BTC",
+            "abbreviation": "BNB"
+        },
+        {
+            "asset": "BONK",
+            "network": "Solana",
+            "trading_pair": "BONK/USD, BONK/USDT",
+            "abbreviation": "Bonk"
+        },
+        {
+            "asset": "Boson Protocol",
+            "network": "ERC-20",
+            "trading_pair": "BOSON/USDT",
+            "abbreviation": "BOSON"
+        },
+        {
+            "asset": "Braintrust",
+            "network": "ERC20",
+            "trading_pair": "BTRST/USDT",
+            "abbreviation": "BTRST"
+        },
+        {
+            "asset": "Cardano",
+            "network": "Cardano/BEP-20",
+            "trading_pair": "ADA/USD, ADA/USDC, ADA/USDT, ADA/BTC, ADA/ETH",
+            "abbreviation": "ADA"
+        },
+        {
+            "asset": "Cartesi",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "CTSI/USDT",
+            "abbreviation": "CTSI"
+        },
+        {
+            "asset": "Celer Network",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "CELR/USDT",
+            "abbreviation": "CELR"
+        },
+        {
+            "asset": "Celo",
+            "network": "Celo",
+            "trading_pair": "CELO/USDT",
+            "abbreviation": "CELO"
+        },
+        {
+            "asset": "ChainLink",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "LINK/USD, LINK/USDT, LINK/BTC",
+            "abbreviation": "LINK"
+        },
+        {
+            "asset": "Chiliz",
+            "network": "ERC-20",
+            "trading_pair": "CHZ/USDT",
+            "abbreviation": "CHZ"
+        },
+        {
+            "asset": "Clover Finance",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "CLV/USDT",
+            "abbreviation": "CLV"
+        },
+        {
+            "asset": "Compound",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "COMP/USDT",
+            "abbreviation": "COMP"
+        },
+        {
+            "asset": "Cosmos",
+            "network": "Atom (memo required)/BEP-20",
+            "trading_pair": "ATOM/USD, ATOM/USDT",
+            "abbreviation": "ATOM"
+        },
+        {
+            "asset": "COTI",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "COTI/USDT",
+            "abbreviation": "COTI"
+        },
+        {
+            "asset": "CUDOS",
+            "network": "ERC-20",
+            "trading_pair": "CUDOS/USDT",
+            "abbreviation": "CUDOS"
+        },
+        {
+            "asset": "Curve",
+            "network": "ERC-20",
+            "trading_pair": "CRV/USD, CRV/USDT",
+            "abbreviation": "CRV"
+        },
+        {
+            "asset": "DAI",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "DAI/USDT",
+            "abbreviation": "DAI"
+        },
+        {
+            "asset": "DAR Open Network",
+            "network": "ERC-20",
+            "trading_pair": "D/USDT",
+            "abbreviation": "D"
+        },
+        {
+            "asset": "Dash",
+            "network": "Dash",
+            "trading_pair": "DASH/USDT",
+            "abbreviation": "DASH"
+        },
+        {
+            "asset": "Decentraland",
+            "network": "ERC-20",
+            "trading_pair": "MANA/USD, MANA/USDT",
+            "abbreviation": "MANA"
+        },
+        {
+            "asset": "DIA",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "DIA/USDT",
+            "abbreviation": "DIA"
+        },
+        {
+            "asset": "DigiByte",
+            "network": "DigiByte",
+            "trading_pair": "DGB/USD, DGB/USDT",
+            "abbreviation": "DGB"
+        },
+        {
+            "asset": "Dogecoin",
+            "network": "Dogecoin/BEP-20",
+            "trading_pair": "DOGE/USD, DOGE/USDT,  DOGE/BTC",
+            "abbreviation": "DOGE"
+        },
+        {
+            "asset": "dogwifhat",
+            "network": "Solana",
+            "trading_pair": "WIF/USDT",
+            "abbreviation": "WIF"
+        },
+        {
+            "asset": "eCash",
+            "network": "BEP-20",
+            "trading_pair": "XEC/USDT",
+            "abbreviation": "XEC"
+        },
+        {
+            "asset": "EigenLayer",
+            "network": "ERC-20",
+            "trading_pair": "EIGEN/USD, EIGEN/USDT",
+            "abbreviation": "EIGEN"
+        },
+        {
+            "asset": "Enjin Coin",
+            "network": "ERC-20",
+            "trading_pair": "ENJ/USDT",
+            "abbreviation": "ENJ"
+        },
+        {
+            "asset": "EOS",
+            "network": "EOS (memo required)/BEP-20",
+            "trading_pair": "EOS/USDT",
+            "abbreviation": "EOS"
+        },
+        {
+            "asset": "Ethereum",
+            "network": "ERC-20/BEP-20/Optimism/Arbitrum",
+            "trading_pair": "ETH/USD,ETH/USDT, ETH/USDC, ETH/BTC",
+            "abbreviation": "ETH"
+        },
+        {
+            "asset": "Ethereum Classic",
+            "network": "Ethereum Classic/BEP-20",
+            "trading_pair": "ETC/USD, ETC/USDT",
+            "abbreviation": "ETC"
+        },
+        {
+            "asset": "Ethereum Name Service",
+            "network": "ERC-20",
+            "trading_pair": "ENS/USD, ENS/USDT",
+            "abbreviation": "ENS"
+        },
+        {
+            "asset": "Fantom",
+            "network": "Fantom/ERC-20/BEP-20",
+            "trading_pair": "FTM/USDT",
+            "abbreviation": "FTM"
+        },
+        {
+            "asset": "FC Porto Fan Token",
+            "network": "BEP-20",
+            "trading_pair": "PORTO/USDT",
+            "abbreviation": "PORTO"
+        },
+        {
+            "asset": "Fetch.ai",
+            "network": "Fetch.ai (memo required)/ERC-20/BEP-20",
+            "trading_pair": "FET/USD, FET/USDT",
+            "abbreviation": "FET"
+        },
+        {
+            "asset": "Filecoin",
+            "network": "Filecoin",
+            "trading_pair": "FIL/USD, FIL/USDT",
+            "abbreviation": "FIL"
+        },
+        {
+            "asset": "First Neiro On Ethereum",
+            "network": "ERC-20",
+            "trading_pair": "NEIRO/USDT",
+            "abbreviation": "NEIRO"
+        },
+        {
+            "asset": "Floki Inu",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "FLOKI/USD, FLOKI/ USDT",
+            "abbreviation": "FLOKI"
+        },
+        {
+            "asset": "Flow Network",
+            "network": "BEP-20/FLOW",
+            "trading_pair": "FLOW/USDT",
+            "abbreviation": "FLOW"
+        },
+        {
+            "asset": "Flux",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "FLUX/USDT",
+            "abbreviation": "FLUX"
+        },
+        {
+            "asset": "Forta",
+            "network": "ERC-20",
+            "trading_pair": "FORT/USDT",
+            "abbreviation": "FORT"
+        },
+        {
+            "asset": "Gravity",
+            "network": "ERC-20",
+            "trading_pair": "G/USDT",
+            "abbreviation": "G"
+        },
+        {
+            "asset": "Gala Games",
+            "network": "ERC-20",
+            "trading_pair": "GALA/USD, GALA/USDT",
+            "abbreviation": "GALA[v2]"
+        },
+        {
+            "asset": "Geojam",
+            "network": "ERC-20",
+            "trading_pair": "JAM/USDT",
+            "abbreviation": "JAM"
+        },
+        {
+            "asset": "Gitcoin",
+            "network": "ERC-20",
+            "trading_pair": "GTC/USDT",
+            "abbreviation": "GTC"
+        },
+        {
+            "asset": "Golem",
+            "network": "ERC-20",
+            "trading_pair": "GLM/USDT",
+            "abbreviation": "GLM"
+        },
+        {
+            "asset": "Harmony",
+            "network": "Harmony (must use shard0)",
+            "trading_pair": "ONE/USD, ONE/USDT",
+            "abbreviation": "ONE"
+        },
+        {
+            "asset": "Hedera Hashgraph",
+            "network": "Hedera Hashgraph (memo required)",
+            "trading_pair": "HBAR/USD, HBAR/USDT",
+            "abbreviation": "HBAR"
+        },
+        {
+            "asset": "Horizen",
+            "network": "Horizen",
+            "trading_pair": "ZEN/USDT",
+            "abbreviation": "Zen"
+        },
+        {
+            "asset": "ICON",
+            "network": "ICON",
+            "trading_pair": "ICX/USDT",
+            "abbreviation": "ICX"
+        },
+        {
+            "asset": "iExec",
+            "network": "ERC-20",
+            "trading_pair": "RLC/USDT",
+            "abbreviation": "RLC"
+        },
+        {
+            "asset": "Illuvium",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "ILV/USDT",
+            "abbreviation": "ILV"
+        },
+        {
+            "asset": "Immutable X",
+            "network": "ERC-20",
+            "trading_pair": "IMX/USDT",
+            "abbreviation": "IMX"
+        },
+        {
+            "asset": "Internet Computer",
+            "network": "Internet Computer",
+            "trading_pair": "ICP/USD, ICP/USDT",
+            "abbreviation": "ICP"
+        },
+        {
+            "asset": "Internet of Services Token",
+            "network": "IOST (memo required)",
+            "trading_pair": "IOST/USDT",
+            "abbreviation": "IOST"
+        },
+        {
+            "asset": "IOTA",
+            "network": "IOTA/BEP-20",
+            "trading_pair": "IOTA/USD, IOTA/USDT",
+            "abbreviation": "MIOTA"
+        },
+        {
+            "asset": "IoTeX",
+            "network": "ERC-20",
+            "trading_pair": "IOTX/USDT",
+            "abbreviation": "IOTX"
+        },
+        {
+            "asset": "Kadena",
+            "network": "Kadena",
+            "trading_pair": "KDA/USD, KDA/USDT",
+            "abbreviation": "KDA"
+        },
+        {
+            "asset": "Kava",
+            "network": "Kava (memo required)",
+            "trading_pair": "KAVA/USDT",
+            "abbreviation": "KAVA"
+        },
+        {
+            "asset": "Kusama",
+            "network": "Kusama/BEP-20",
+            "trading_pair": "KSM/USDT",
+            "abbreviation": "KSM"
+        },
+        {
+            "asset": "Kyber Network Crystal v2",
+            "network": "ERC-20",
+            "trading_pair": "KNC/USDT",
+            "abbreviation": "KNC"
+        },
+        {
+            "asset": "Lazio Fan Token",
+            "network": "BEP-20",
+            "trading_pair": "LAZIO/USDT",
+            "abbreviation": "LAZIO"
+        },
+        {
+            "asset": "League of Kingdoms",
+            "network": "ERC-20",
+            "trading_pair": "LOKA/USDT",
+            "abbreviation": "LOKA"
+        },
+        {
+            "asset": "Lido DAO",
+            "network": "ERC-20",
+            "trading_pair": "LDO/USDT",
+            "abbreviation": "LDO"
+        },
+        {
+            "asset": "Lisk",
+            "network": "ERC-20",
+            "trading_pair": "LSK/USDT",
+            "abbreviation": "LSK"
+        },
+        {
+            "asset": "Litecoin",
+            "network": "Litecoin/BEP-20",
+            "trading_pair": "LTC/USD, LTC/USDT, LTC/BTC",
+            "abbreviation": "LTC"
+        },
+        {
+            "asset": "Livepeer",
+            "network": "ERC-20",
+            "trading_pair": "LPT/USD, LPT/USDT",
+            "abbreviation": "LPT"
+        },
+        {
+            "asset": "Loom Network",
+            "network": "ERC-20",
+            "trading_pair": "LOOM/USDT",
+            "abbreviation": "LOOM"
+        },
+        {
+            "asset": "Loopring",
+            "network": "ERC-20",
+            "trading_pair": "LRC/USDT",
+            "abbreviation": "LRC"
+        },
+        {
+            "asset": "LTO Network",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "LTO/USDT",
+            "abbreviation": "LTO"
+        },
+        {
+            "asset": "Maker",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "MKR/USDT",
+            "abbreviation": "MKR"
+        },
+        {
+            "asset": "Marlin",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "POND/USDT",
+            "abbreviation": "POND"
+        },
+        {
+            "asset": "Mask Network",
+            "network": "ERC-20",
+            "trading_pair": "MASK/USDT",
+            "abbreviation": "MASK"
+        },
+        {
+            "asset": "Magic Eden",
+            "network": "Solana",
+            "trading_pair": "ME/USD, ME/USDT",
+            "abbreviation": "ME"
+        },
+        {
+            "asset": "MultiversX",
+            "network": "EGLD/BEP-20",
+            "trading_pair": "EGLD/USDT",
+            "abbreviation": "EGLD"
+        },
+        {
+            "asset": "MXC",
+            "network": "ERC-20",
+            "trading_pair": "MXC/USDT",
+            "abbreviation": "MXC"
+        },
+        {
+            "asset": "My Neighbor Alice",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "ALICE/USDT",
+            "abbreviation": "ALICE"
+        },
+        {
+            "asset": "Nano",
+            "network": "Nano",
+            "trading_pair": "XNO/USDT",
+            "abbreviation": "XNO"
+        },
+        {
+            "asset": "NEAR Protocol",
+            "network": "BEP-20, NEAR Mainnet",
+            "trading_pair": "NEAR/USD, NEAR/USDT",
+            "abbreviation": "NEAR"
+        },
+        {
+            "asset": "NEO",
+            "network": "NEP-5",
+            "trading_pair": "NEO/USDT",
+            "abbreviation": "NEO"
+        },
+        {
+            "asset": "Numeraire",
+            "network": "ERC-20",
+            "trading_pair": "NMR/USDT",
+            "abbreviation": "NMR"
+        },
+        {
+            "asset": "Oasis Network",
+            "network": "Oasis",
+            "trading_pair": "ROSE/USDT",
+            "abbreviation": "ROSE"
+        },
+        {
+            "asset": "Ocean Protocol",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "OCEAN/USDT",
+            "abbreviation": "OCEAN"
+        },
+        {
+            "asset": "Ontology Gas",
+            "network": "Ontology",
+            "trading_pair": "ONG/USDT",
+            "abbreviation": "ONG"
+        },
+        {
+            "asset": "Ontology",
+            "network": "Ontology/BEP-20",
+            "trading_pair": "ONT/USDT",
+            "abbreviation": "ONT"
+        },
+        {
+            "asset": "Optimism",
+            "network": "Optimism",
+            "trading_pair": "OP/USD, OP/USDT",
+            "abbreviation": "OP"
+        },
+        {
+            "asset": "Orbs",
+            "network": "ERC-20",
+            "trading_pair": "ORBS/USDT",
+            "abbreviation": "ORBS"
+        },
+        {
+            "asset": "Orchid",
+            "network": "ERC-20",
+            "trading_pair": "OXT/USDT",
+            "abbreviation": "OXT"
+        },
+        {
+            "asset": "Origin Token",
+            "network": "ERC-20",
+            "trading_pair": "OGN/USDT",
+            "abbreviation": "OGN"
+        },
+        {
+            "asset": "OriginTrail",
+            "network": "ERC-20",
+            "trading_pair": "TRAC/USDT",
+            "abbreviation": "TRAC"
+        },
+        {
+            "asset": "Pax Gold",
+            "network": "ERC-20",
+            "trading_pair": "PAXG/USDT",
+            "abbreviation": "PAXG"
+        },
+        {
+            "asset": "Pepe",
+            "network": "ERC-20",
+            "trading_pair": "PEPE/USD, PEPE/USDT",
+            "abbreviation": "PEPE"
+        },
+        {
+            "asset": "Peanut the Squirrel",
+            "network": "Solana",
+            "trading_pair": "PNUT/USDT",
+            "abbreviation": "PNUT"
+        },
+        {
+            "asset": "Polkadot",
+            "network": "Polkadot",
+            "trading_pair": "DOT/USDT;DOT/USDT",
+            "abbreviation": "DOT"
+        },
+        {
+            "asset": "Polygon Ecosystem Token",
+            "network": "Polygon/ERC-20",
+            "trading_pair": "POL/BTC, POL/ETH, POL/USD, POL/USDT",
+            "abbreviation": "POL"
+        },
+        {
+            "asset": "Polymesh",
+            "network": "Polymesh (memo required)",
+            "trading_pair": "POLYX/USDT",
+            "abbreviation": "POLYX"
+        },
+        {
+            "asset": "Prom",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "PROM/USDT",
+            "abbreviation": "PROM"
+        },
+        {
+            "asset": "Pudgy Penguins",
+            "network": "Solana",
+            "trading_pair": "PENGU/USDT",
+            "abbreviation": "PENGU"
+        },
+        {
+            "asset": "Qtum",
+            "network": "Qtum",
+            "trading_pair": "QTUM/USDT",
+            "abbreviation": "QTUM"
+        },
+        {
+            "asset": "Quant Network",
+            "network": "ERC-20",
+            "trading_pair": "QNT/USDT",
+            "abbreviation": "QNT"
+        },
+        {
+            "asset": "Radicle",
+            "network": "ERC-20",
+            "trading_pair": "RAD/USDT",
+            "abbreviation": "RAD"
+        },
+        {
+            "asset": "Ravencoin",
+            "network": "Ravencoin",
+            "trading_pair": "RVN/USD, RVN/USDT",
+            "abbreviation": "RVN"
+        },
+        {
+            "asset": "Reef",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "REEF/USDT",
+            "abbreviation": "REEF"
+        },
+        {
+            "asset": "Ren",
+            "network": "ERC-20",
+            "trading_pair": "REN/USDT",
+            "abbreviation": "REN"
+        },
+        {
+            "asset": "Render Network",
+            "network": "ERC-20",
+            "trading_pair": "RENDER/USD, RENDER/USDT",
+            "abbreviation": "RENDER"
+        },
+        {
+            "asset": "Request",
+            "network": "ERC-20",
+            "trading_pair": "REQ/USDT",
+            "abbreviation": "REQ"
+        },
+        {
+            "asset": "Santos FC Fan Token",
+            "network": "BEP-20",
+            "trading_pair": "SANTOS/USDT",
+            "abbreviation": "SANTOS"
+        },
+        {
+            "asset": "Shiba Inu",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "SHIB/USD, SHIB/USDT",
+            "abbreviation": "SHIB"
+        },
+        {
+            "asset": "SKALE Network",
+            "network": "ERC-20",
+            "trading_pair": "SKL/USDT",
+            "abbreviation": "SKL"
+        },
+        {
+            "asset": "Smooth Love Potion",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "SLP/USDT",
+            "abbreviation": "SLP"
+        },
+        {
+            "asset": "Solana",
+            "network": "Solana",
+            "trading_pair": "SOL/USD, SOL/USDC,  SOL/USDT, SOL/BTC,  SOL/ETH",
+            "abbreviation": "SOL"
+        },
+        {
+            "asset": "Stargate Finance",
+            "network": "ERC-20",
+            "trading_pair": "STG/USDT",
+            "abbreviation": "STG"
+        },
+        {
+            "asset": "Stellar Lumens",
+            "network": "Stellar Lumens (memo required)",
+            "trading_pair": "XLM/USD, XLM/USDT",
+            "abbreviation": "XLM"
+        },
+        {
+            "asset": "StormX",
+            "network": "ERC-20",
+            "trading_pair": "STMX/USDT",
+            "abbreviation": "STMX"
+        },
+        {
+            "asset": "Storj",
+            "network": "ERC-20",
+            "trading_pair": "STORJ/USDT",
+            "abbreviation": "STORJ"
+        },
+        {
+            "asset": "Sui",
+            "network": "Sui",
+            "trading_pair": "SUI/USD, SUI/USDT",
+            "abbreviation": "SUI"
+        },
+        {
+            "asset": "SuperRare",
+            "network": "ERC-20",
+            "trading_pair": "RARE/USDT",
+            "abbreviation": "RARE"
+        },
+        {
+            "asset": "Sushi",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "SUSHI/USD, SUSHI/USDT",
+            "abbreviation": "SUSHI"
+        },
+        {
+            "asset": "Synthetix Network Token",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "SNX/USDT",
+            "abbreviation": "SNX"
+        },
+        {
+            "asset": "Syscoin",
+            "network": "Syscoin",
+            "trading_pair": "SYS/USDT",
+            "abbreviation": "SYS"
+        },
+        {
+            "asset": "Tether",
+            "network": "ERC-20/BEP-20/TRC-20/Solana/Polygon/AVAXC",
+            "trading_pair": "USDT/USD",
+            "abbreviation": "USDT"
+        },
+        {
+            "asset": "Tezos",
+            "network": "Tezos/BEP-20",
+            "trading_pair": "XTZ/USDT",
+            "abbreviation": "XTZ"
+        },
+        {
+            "asset": "The Graph",
+            "network": "ERC-20",
+            "trading_pair": "GRT/USD, GRT/USDT",
+            "abbreviation": "GRT"
+        },
+        {
+            "asset": "The Sandbox",
+            "network": "ERC-20",
+            "trading_pair": "SAND/USD, SAND/USDT",
+            "abbreviation": "SAND"
+        },
+        {
+            "asset": "Theta Fuel",
+            "network": "Theta",
+            "trading_pair": "TFUEL/USDT",
+            "abbreviation": "TFUEL"
+        },
+        {
+            "asset": "Theta Network",
+            "network": "Theta",
+            "trading_pair": "THETA/USD, THETA/USDT",
+            "abbreviation": "THETA"
+        },
+        {
+            "asset": "Threshold Network",
+            "network": "ERC-20",
+            "trading_pair": "T/USDT",
+            "abbreviation": "T"
+        },
+        {
+            "asset": "Treasure",
+            "network": "Arbitrum",
+            "trading_pair": "MAGIC/USDT",
+            "abbreviation": "MAGIC"
+        },
+        {
+            "asset": "Trump",
+            "network": "Solana",
+            "trading_pair": "TRUMP/USD, TRUMP/USDT",
+            "abbreviation": "TRUMP"
+        },
+        {
+            "asset": "Uniswap",
+            "network": "ERC-20/BEP-20",
+            "trading_pair": "UNI/USD, UNI/USDT",
+            "abbreviation": "UNI"
+        },
+        {
+            "asset": "USD Coin",
+            "network": "ERC-20/BEP-20/Solana/AVAXC",
+            "trading_pair": "USDC/USD, USDC/USDT",
+            "abbreviation": "USDC"
+        },
+        {
+            "asset": "Vechain",
+            "network": "VeChain",
+            "trading_pair": "VET/USD, VET/USDT",
+            "abbreviation": "VET"
+        },
+        {
+            "asset": "VeThor Token",
+            "network": "VeChain",
+            "trading_pair": "VTHO/USD, VTHO/USDT",
+            "abbreviation": "VTHO"
+        },
+        {
+            "asset": "Vite Network",
+            "network": "BEP-20",
+            "trading_pair": "VITE/USDT",
+            "abbreviation": "VITE"
+        },
+        {
+            "asset": "Voxies",
+            "network": "Polygon",
+            "trading_pair": "VOXEL/USDT",
+            "abbreviation": "VOXEL"
+        },
+        {
+            "asset": "WAX Network",
+            "network": "WAX (memo required)/ERC-20",
+            "trading_pair": "WAXP/USDT",
+            "abbreviation": "WAXP"
+        },
+        {
+            "asset": "Wrapped Bitcoin",
+            "network": "ERC-20",
+            "trading_pair": "WBTC/BTC",
+            "abbreviation": "WBTC"
+        },
+        {
+            "asset": "XRP",
+            "network": "XRPL (memo required)",
+            "trading_pair": "XRP/USDT",
+            "abbreviation": "XRP"
+        },
+        {
+            "asset": "yearn.finance",
+            "network": "ERC-20",
+            "trading_pair": "YFI/USDT",
+            "abbreviation": "YFI"
+        },
+        {
+            "asset": "Zcash",
+            "network": "Zcash/BEP-20",
+            "trading_pair": "ZEC/USDT",
+            "abbreviation": "ZEC"
+        },
+        {
+            "asset": "Zilliqa",
+            "network": "Zilliqa",
+            "trading_pair": "ZIL/USD, ZIL/USDT",
+            "abbreviation": "ZIL"
+        }
+    ]
+}
